@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { createPatPool } from './pat-pool.js';
+import { createPatPool } from './pat-pool';
 
 describe('createPatPool', () => {
   afterEach(() => {

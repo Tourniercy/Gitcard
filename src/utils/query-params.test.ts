@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { parseCardOptions } from './query-params.js';
+import { parseCardOptions } from './query-params';
 
 describe('parseCardOptions', () => {
   it('returns defaults for empty query', () => {

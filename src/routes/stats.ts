@@ -1,8 +1,8 @@
 import type { Hono } from 'hono';
-import type { AppConfig } from '../config.js';
-import type { Cache } from '../cache/index.js';
-import { renderStatsCard } from '../cards/stats-card.js';
-import { createCardRoute } from './card-factory.js';
+import type { AppConfig } from '../config';
+import type { Cache } from '../cache/index';
+import { renderStatsCard } from '../cards/stats-card';
+import { createCardRoute } from './card-factory';
 
 export function createStatsRoute(config: AppConfig, cache: Cache): Hono {
   return createCardRoute(config, cache, {

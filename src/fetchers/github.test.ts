@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { fetchGitHubData } from './github.js';
+import { fetchGitHubData } from './github';
 
 const mockUser = {
   name: 'Test User',

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import type { CardOptions } from '../types.js';
+import type { CardOptions } from '../types';
 
 const booleanString = z
   .enum(['true', 'false', '1', '0', ''])

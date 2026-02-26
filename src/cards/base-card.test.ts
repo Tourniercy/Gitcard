@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createArcPath, createGlassFilter, formatNumber } from './base-card.js';
+import { createArcPath, createGlassFilter, formatNumber } from './base-card';
 
 describe('formatNumber', () => {
   it('formats with default locale', () => {

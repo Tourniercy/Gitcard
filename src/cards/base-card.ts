@@ -1,8 +1,8 @@
-import type { Theme } from '../themes/index.js';
-import type { CardOptions } from '../types.js';
-import { encodeHTML } from '../utils/sanitize.js';
+import type { Theme } from '../themes/index';
+import type { CardOptions } from '../types';
+import { encodeHTML } from '../utils/sanitize';
 
-export { encodeHTML } from '../utils/sanitize.js';
+export { encodeHTML } from '../utils/sanitize';
 
 const FONT_FAMILY = "'Segoe UI', system-ui, -apple-system, sans-serif";
 

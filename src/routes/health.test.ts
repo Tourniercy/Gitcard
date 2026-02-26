@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { Hono } from 'hono';
-import { healthRoute } from './health.js';
+import { healthRoute } from './health';
 
 describe('GET /health', () => {
   it('returns 200 with status ok', async () => {

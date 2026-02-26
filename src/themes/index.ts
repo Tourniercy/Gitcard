@@ -1,7 +1,7 @@
-import type { Theme } from './themes.js';
-import { darkTheme, defaultTheme, draculaTheme } from './themes.js';
+import type { Theme } from './themes';
+import { darkTheme, defaultTheme, draculaTheme } from './themes';
 
-export type { Theme } from './themes.js';
+export type { Theme } from './themes';
 
 const themes: Record<string, Theme> = {
   default: defaultTheme,

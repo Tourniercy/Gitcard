@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { getTheme, THEME_NAMES } from './index.js';
+import { getTheme, THEME_NAMES } from './index';
 
 describe('theme system', () => {
   it('returns default theme', () => {

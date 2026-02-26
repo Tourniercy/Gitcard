@@ -1,5 +1,5 @@
 import { Redis } from 'ioredis';
-import type { Cache } from './index.js';
+import type { Cache } from './index';
 
 export function createRedisCache(redisUrl: string): Cache {
   const client = new Redis(redisUrl);

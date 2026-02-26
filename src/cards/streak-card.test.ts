@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { renderStreakCard } from './streak-card.js';
-import type { StreakData, CardOptions } from '../types.js';
+import { renderStreakCard } from './streak-card';
+import type { StreakData, CardOptions } from '../types';
 
 const mockStreak: StreakData = {
   username: 'testuser',

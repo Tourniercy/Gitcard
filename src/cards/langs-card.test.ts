@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { renderLangsCard } from './langs-card.js';
-import type { TopLangsData, CardOptions } from '../types.js';
+import { renderLangsCard } from './langs-card';
+import type { TopLangsData, CardOptions } from '../types';
 
 const mockLangs: TopLangsData = {
   username: 'testuser',
