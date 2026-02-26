@@ -1,13 +1,13 @@
 import { Hono } from 'hono';
 import { createHash } from 'node:crypto';
-import type { AppConfig } from '../config.js';
-import type { Cache } from '../cache/index.js';
-import type { CardOptions } from '../types.js';
-import { createPatPool } from '../utils/pat-pool.js';
-import { parseCardOptions } from '../utils/query-params.js';
-import { fetchGitHubData, GitHubApiError } from '../fetchers/github.js';
-import type { FetchResult } from '../fetchers/github.js';
-import { svgResponse, errorSvg } from './card-response.js';
+import type { AppConfig } from '../config';
+import type { Cache } from '../cache/index';
+import type { CardOptions } from '../types';
+import { createPatPool } from '../utils/pat-pool';
+import { parseCardOptions } from '../utils/query-params';
+import { fetchGitHubData, GitHubApiError } from '../fetchers/github';
+import type { FetchResult } from '../fetchers/github';
+import { svgResponse, errorSvg } from './card-response';
 
 interface CardRouteConfig {
   path: string;

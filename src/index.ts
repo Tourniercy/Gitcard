@@ -1,10 +1,10 @@
 import { Hono } from 'hono';
-import { loadConfig } from './config.js';
-import { createCache } from './cache/index.js';
-import { healthRoute } from './routes/health.js';
-import { createStatsRoute } from './routes/stats.js';
-import { createStreakRoute } from './routes/streak.js';
-import { createTopLangsRoute } from './routes/top-langs.js';
+import { loadConfig } from './config';
+import { createCache } from './cache/index';
+import { healthRoute } from './routes/health';
+import { createStatsRoute } from './routes/stats';
+import { createStreakRoute } from './routes/streak';
+import { createTopLangsRoute } from './routes/top-langs';
 
 const config = loadConfig();
 const cache = createCache(config.redisUrl);

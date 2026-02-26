@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { encodeHTML } from './sanitize.js';
+import { encodeHTML } from './sanitize';
 
 describe('encodeHTML', () => {
   it('escapes ampersands', () => {

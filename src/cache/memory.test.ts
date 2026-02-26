@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createMemoryCache } from './memory.js';
+import { createMemoryCache } from './memory';
 
 function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));

@@ -1,6 +1,6 @@
-import type { CardOptions, TopLangsData } from '../types.js';
-import { getTheme } from '../themes/index.js';
-import { createCardWrapper, createDonutSegment, encodeHTML } from './base-card.js';
+import type { CardOptions, TopLangsData } from '../types';
+import { getTheme } from '../themes/index';
+import { createCardWrapper, createDonutSegment, encodeHTML } from './base-card';
 
 const CARD_WIDTH = 495;
 const CARD_HEIGHT = 195;

@@ -3,8 +3,8 @@ export interface Cache {
   set(key: string, value: string, ttlSeconds: number): Promise<void>;
 }
 
-import { createMemoryCache } from './memory.js';
-import { createRedisCache } from './redis.js';
+import { createMemoryCache } from './memory';
+import { createRedisCache } from './redis';
 
 export function createCache(redisUrl?: string): Cache {
   if (redisUrl) {
@@ -13,5 +13,5 @@ export function createCache(redisUrl?: string): Cache {
   return createMemoryCache();
 }
 
-export { createMemoryCache } from './memory.js';
-export { createRedisCache } from './redis.js';
+export { createMemoryCache } from './memory';
+export { createRedisCache } from './redis';

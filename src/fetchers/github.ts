@@ -1,5 +1,5 @@
-import type { GitHubGraphQLResponse, GitHubUser } from './types.js';
-import type { GitHubStats, StreakData, TopLangsData } from '../types.js';
+import type { GitHubGraphQLResponse, GitHubUser } from './types';
+import type { GitHubStats, StreakData, TopLangsData } from '../types';
 
 const GITHUB_GRAPHQL_URL = 'https://api.github.com/graphql';
 

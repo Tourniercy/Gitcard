@@ -1,5 +1,5 @@
 import { LRUCache } from 'lru-cache';
-import type { Cache } from './index.js';
+import type { Cache } from './index';
 
 export function createMemoryCache(maxEntries = 500): Cache {
   const cache = new LRUCache<string, string>({

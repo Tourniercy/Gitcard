@@ -1,6 +1,6 @@
-import type { CardOptions, GitHubStats } from '../types.js';
-import { getTheme } from '../themes/index.js';
-import { createCardWrapper, createRingChart, encodeHTML, formatNumber } from './base-card.js';
+import type { CardOptions, GitHubStats } from '../types';
+import { getTheme } from '../themes/index';
+import { createCardWrapper, createRingChart, encodeHTML, formatNumber } from './base-card';
 
 const CARD_WIDTH = 495;
 const CARD_HEIGHT = 195;

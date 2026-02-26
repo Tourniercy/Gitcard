@@ -1,6 +1,6 @@
-import type { CardOptions, StreakData } from '../types.js';
-import { getTheme } from '../themes/index.js';
-import { createCardWrapper, encodeHTML, formatNumber } from './base-card.js';
+import type { CardOptions, StreakData } from '../types';
+import { getTheme } from '../themes/index';
+import { createCardWrapper, encodeHTML, formatNumber } from './base-card';
 
 const CARD_WIDTH = 495;
 const CARD_HEIGHT = 195;

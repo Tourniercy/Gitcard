@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { renderStatsCard } from './stats-card.js';
-import type { GitHubStats, CardOptions } from '../types.js';
+import { renderStatsCard } from './stats-card';
+import type { GitHubStats, CardOptions } from '../types';
 
 const mockStats: GitHubStats = {
   username: 'testuser',
