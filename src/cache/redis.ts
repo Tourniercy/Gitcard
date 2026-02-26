@@ -1,10 +1,10 @@
-import Redis from 'ioredis';
+import { Redis } from 'ioredis';
 import type { Cache } from './index.js';
 
 export function createRedisCache(redisUrl: string): Cache {
   const client = new Redis(redisUrl);
 
-  client.on('error', (err) => {
+  client.on('error', (err: Error) => {
     console.error('[redis] Connection error:', err.message);
   });
 
