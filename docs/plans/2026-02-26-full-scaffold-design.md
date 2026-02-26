@@ -16,20 +16,20 @@ Since GitHub's Camo proxy strips CSS `backdrop-filter`, the glass effect is impl
 
 ## Tech Stack
 
-| Layer | Choice |
-|---|---|
-| Runtime | Node.js 24 LTS (24.13.x) |
-| Framework | Hono + @hono/node-server |
-| Language | TypeScript 5.8+ (strict) |
-| Build | Vite 8 (beta, Rolldown-powered) |
-| Linter | Oxlint 1.x |
-| Formatter | Oxfmt (beta) |
-| Package manager | pnpm 10+ |
-| Version manager | Volta |
-| Deployment | Docker + docker compose |
-| Memory cache | lru-cache |
-| Redis cache | ioredis |
-| Validation | Zod |
+| Layer           | Choice                          |
+| --------------- | ------------------------------- |
+| Runtime         | Node.js 24 LTS (24.13.x)        |
+| Framework       | Hono + @hono/node-server        |
+| Language        | TypeScript 5.8+ (strict)        |
+| Build           | Vite 8 (beta, Rolldown-powered) |
+| Linter          | Oxlint 1.x                      |
+| Formatter       | Oxfmt (beta)                    |
+| Package manager | pnpm 10+                        |
+| Version manager | Volta                           |
+| Deployment      | Docker + docker compose         |
+| Memory cache    | lru-cache                       |
+| Redis cache     | ioredis                         |
+| Validation      | Zod                             |
 
 Excluded: Express, ESLint, Prettier, Biome, axios, node-fetch, React/JSX, any ORM/database, PM2.
 
@@ -69,6 +69,7 @@ src/
 ### SVG rendering: hybrid approach
 
 Shared SVG utilities live in `base-card.ts`:
+
 - `createGlassFilter()` — SVG `<defs>` block with glassmorphism filter
 - `createArcPath(cx, cy, radius, startAngle, endAngle)` — SVG path `d` for arcs
 - `createCardWrapper(width, height, content, options)` — outer `<svg>` with glass bg
@@ -78,31 +79,31 @@ Each card file owns its full layout as a monolithic template literal function.
 
 ## API Routes
 
-| Route | Method | Content-Type | Description |
-|---|---|---|---|
-| `/:username` | GET | `image/svg+xml` | Stats card |
-| `/:username/streak` | GET | `image/svg+xml` | Streak card |
-| `/:username/top-langs` | GET | `image/svg+xml` | Top languages card |
-| `/health` | GET | `application/json` | Docker health check |
+| Route                  | Method | Content-Type       | Description         |
+| ---------------------- | ------ | ------------------ | ------------------- |
+| `/:username`           | GET    | `image/svg+xml`    | Stats card          |
+| `/:username/streak`    | GET    | `image/svg+xml`    | Streak card         |
+| `/:username/top-langs` | GET    | `image/svg+xml`    | Top languages card  |
+| `/health`              | GET    | `application/json` | Docker health check |
 
 ### Query parameters
 
 Shared across card routes, validated with Zod:
 
-| Param | Type | Default | Description |
-|---|---|---|---|
-| `theme` | string | `"default"` | Theme name |
-| `hide` | string | `""` | Comma-separated stats to hide |
-| `show_icons` | boolean | `true` | Show icons |
-| `hide_border` | boolean | `false` | Hide card border |
-| `hide_title` | boolean | `false` | Hide card title |
-| `bg_color` | string | — | Background color override (hex) |
-| `title_color` | string | — | Title color override |
-| `text_color` | string | — | Text color override |
-| `icon_color` | string | — | Icon color override |
-| `border_color` | string | — | Border color override |
-| `cache_seconds` | number | `14400` | Cache TTL override (min 1800) |
-| `locale` | string | `"en"` | Number format locale |
+| Param           | Type    | Default     | Description                     |
+| --------------- | ------- | ----------- | ------------------------------- |
+| `theme`         | string  | `"default"` | Theme name                      |
+| `hide`          | string  | `""`        | Comma-separated stats to hide   |
+| `show_icons`    | boolean | `true`      | Show icons                      |
+| `hide_border`   | boolean | `false`     | Hide card border                |
+| `hide_title`    | boolean | `false`     | Hide card title                 |
+| `bg_color`      | string  | —           | Background color override (hex) |
+| `title_color`   | string  | —           | Title color override            |
+| `text_color`    | string  | —           | Text color override             |
+| `icon_color`    | string  | —           | Icon color override             |
+| `border_color`  | string  | —           | Border color override           |
+| `cache_seconds` | number  | `14400`     | Cache TTL override (min 1800)   |
+| `locale`        | string  | `"en"`      | Number format locale            |
 
 ### Request flow
 
@@ -159,18 +160,19 @@ All cards are 495×195px. Font: `'Segoe UI', system-ui, -apple-system, sans-seri
 ```typescript
 interface Theme {
   name: string;
-  background: string;      // card bg (semi-transparent for glass)
-  backgroundBlur: string;  // blur backdrop color
-  border: string;          // subtle border
-  title: string;           // title text color
-  text: string;            // body text color
-  muted: string;           // secondary text
-  icon: string;            // icon/accent color
-  ring: string;            // progress ring color
+  background: string; // card bg (semi-transparent for glass)
+  backgroundBlur: string; // blur backdrop color
+  border: string; // subtle border
+  title: string; // title text color
+  text: string; // body text color
+  muted: string; // secondary text
+  icon: string; // icon/accent color
+  ring: string; // progress ring color
 }
 ```
 
 Initial themes (3):
+
 - `default` — light, clean white glass
 - `dark` — dark mode glass
 - `dracula` — purple-accented glass
@@ -212,13 +214,13 @@ Format: `card:{type}:{username}:{paramsHash}`
 
 ## Error Handling
 
-| Condition | Status | Response |
-|---|---|---|
-| Invalid username (not found) | 404 | Error SVG card |
-| GitHub API error | 502 | Error SVG card |
-| All PATs rate limited | 429 | Error SVG card + `Retry-After` header |
-| Invalid query params | 400 | JSON error (Zod messages) |
-| Health check | 200 | JSON status (always succeeds) |
+| Condition                    | Status | Response                              |
+| ---------------------------- | ------ | ------------------------------------- |
+| Invalid username (not found) | 404    | Error SVG card                        |
+| GitHub API error             | 502    | Error SVG card                        |
+| All PATs rate limited        | 429    | Error SVG card + `Retry-After` header |
+| Invalid query params         | 400    | JSON error (Zod messages)             |
+| Health check                 | 200    | JSON status (always succeeds)         |
 
 Error SVG cards keep `<img>` tags from visually breaking in READMEs.
 
@@ -232,11 +234,11 @@ Error SVG cards keep `<img>` tags from visually breaking in READMEs.
 
 All env vars loaded in `config.ts` via Zod. No direct `process.env` usage outside this file.
 
-| Var | Required | Default | Description |
-|---|---|---|---|
-| `PAT_1` | Yes | — | GitHub PAT (at least one) |
-| `PAT_2`...`PAT_N` | No | — | Additional PATs |
-| `PORT` | No | `3000` | Server port |
-| `REDIS_URL` | No | — | Redis connection string |
-| `CACHE_TTL` | No | `14400` | Default cache TTL (seconds) |
-| `LOG_LEVEL` | No | `"info"` | Log level |
+| Var               | Required | Default  | Description                 |
+| ----------------- | -------- | -------- | --------------------------- |
+| `PAT_1`           | Yes      | —        | GitHub PAT (at least one)   |
+| `PAT_2`...`PAT_N` | No       | —        | Additional PATs             |
+| `PORT`            | No       | `3000`   | Server port                 |
+| `REDIS_URL`       | No       | —        | Redis connection string     |
+| `CACHE_TTL`       | No       | `14400`  | Default cache TTL (seconds) |
+| `LOG_LEVEL`       | No       | `"info"` | Log level                   |

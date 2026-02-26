@@ -27,10 +27,7 @@ export function createCardRoute(
     const username = c.req.param('username') as string;
     const options = parseCardOptions(c.req.query());
 
-    const paramsHash = createHash('md5')
-      .update(JSON.stringify(options))
-      .digest('hex')
-      .slice(0, 8);
+    const paramsHash = createHash('md5').update(JSON.stringify(options)).digest('hex').slice(0, 8);
     const cacheKey = `card:${routeConfig.cachePrefix}:${username}:${paramsHash}`;
 
     // Check cache

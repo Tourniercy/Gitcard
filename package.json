@@ -21,26 +21,29 @@
     "docker:logs": "docker compose logs -f app"
   },
   "dependencies": {
-    "hono": "^4",
     "@hono/node-server": "^1",
-    "zod": "^3",
+    "hono": "^4",
+    "ioredis": "^5",
     "lru-cache": "^11",
-    "ioredis": "^5"
+    "zod": "^3"
   },
   "devDependencies": {
-    "typescript": "^5.8",
-    "vite": "^8.0.0-beta",
     "@hono/vite-build": "^1",
     "@hono/vite-dev-server": "^0.25.0",
-    "vitest": "^3",
     "@types/node": "^24",
-    "oxlint": "^1"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": ["esbuild"]
+    "oxfmt": "^0.35.0",
+    "oxlint": "^1",
+    "typescript": "^5.8",
+    "vite": "^8.0.0-beta",
+    "vitest": "^3"
   },
   "volta": {
     "node": "24.13.1",
     "pnpm": "10.5.2"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   }
 }
