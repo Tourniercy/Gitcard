@@ -27,8 +27,6 @@ describe('encodeHTML', () => {
   });
 
   it('escapes multiple special chars in one string', () => {
-    expect(encodeHTML('<a href="x">&</a>')).toBe(
-      '&lt;a href=&quot;x&quot;&gt;&amp;&lt;/a&gt;',
-    );
+    expect(encodeHTML('<a href="x">&</a>')).toBe('&lt;a href=&quot;x&quot;&gt;&amp;&lt;/a&gt;');
   });
 });

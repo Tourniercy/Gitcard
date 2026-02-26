@@ -45,7 +45,7 @@ describe('renderStatsCard', () => {
 
   it('hides title when hideTitle is true', () => {
     const svg = renderStatsCard(mockStats, { ...defaultOptions, hideTitle: true });
-    expect(svg).not.toContain("Test User&#39;s GitHub Stats");
+    expect(svg).not.toContain('Test User&#39;s GitHub Stats');
   });
 
   it('hides specified stats', () => {

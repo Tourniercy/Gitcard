@@ -15,6 +15,7 @@
 ## Task 1: Project Initialization
 
 **Files:**
+
 - Create: `package.json`
 - Create: `tsconfig.json`
 - Create: `vite.config.ts`
@@ -192,6 +193,7 @@ git commit -m "chore: initialize project with deps and configs"
 ## Task 2: Utility — HTML Sanitization
 
 **Files:**
+
 - Create: `src/utils/sanitize.ts`
 - Create: `src/utils/sanitize.test.ts`
 
@@ -227,9 +229,7 @@ describe('encodeHTML', () => {
   });
 
   it('escapes multiple special chars in one string', () => {
-    expect(encodeHTML('<a href="x">&</a>')).toBe(
-      '&lt;a href=&quot;x&quot;&gt;&amp;&lt;/a&gt;',
-    );
+    expect(encodeHTML('<a href="x">&</a>')).toBe('&lt;a href=&quot;x&quot;&gt;&amp;&lt;/a&gt;');
   });
 });
 ```
@@ -274,6 +274,7 @@ git commit -m "feat: add HTML/SVG entity escaping utility"
 ## Task 3: Utility — PAT Token Pool
 
 **Files:**
+
 - Create: `src/utils/pat-pool.ts`
 - Create: `src/utils/pat-pool.test.ts`
 
@@ -396,6 +397,7 @@ git commit -m "feat: add PAT token pool with round-robin rotation"
 ## Task 4: Config & Types
 
 **Files:**
+
 - Create: `src/types.ts`
 - Create: `src/config.ts`
 - Create: `src/config.test.ts`
@@ -578,6 +580,7 @@ git commit -m "feat: add config loader with Zod validation and shared types"
 ## Task 5: Query Parameter Validation
 
 **Files:**
+
 - Create: `src/utils/query-params.ts`
 - Create: `src/utils/query-params.test.ts`
 
@@ -723,6 +726,7 @@ git commit -m "feat: add query parameter validation with Zod"
 ## Task 6: Theme System
 
 **Files:**
+
 - Create: `src/themes/themes.ts`
 - Create: `src/themes/index.ts`
 - Create: `src/themes/themes.test.ts`
@@ -863,6 +867,7 @@ git commit -m "feat: add theme system with default, dark, and dracula themes"
 ## Task 7: Cache Layer
 
 **Files:**
+
 - Create: `src/cache/index.ts`
 - Create: `src/cache/memory.ts`
 - Create: `src/cache/redis.ts`
@@ -1040,6 +1045,7 @@ git commit -m "feat: add cache layer with LRU memory and Redis backends"
 ## Task 8: GitHub Fetcher
 
 **Files:**
+
 - Create: `src/fetchers/types.ts`
 - Create: `src/fetchers/github.ts`
 - Create: `src/fetchers/github.test.ts`
@@ -1445,6 +1451,7 @@ git commit -m "feat: add GitHub GraphQL fetcher with stats, streak, and language
 ## Task 9: Base Card SVG Utilities
 
 **Files:**
+
 - Create: `src/cards/base-card.ts`
 - Create: `src/cards/base-card.test.ts`
 
@@ -1682,6 +1689,7 @@ git commit -m "feat: add base card SVG utilities (glass filter, arcs, ring chart
 ## Task 10: Stats Card
 
 **Files:**
+
 - Create: `src/cards/stats-card.ts`
 - Create: `src/cards/stats-card.test.ts`
 
@@ -1873,6 +1881,7 @@ git commit -m "feat: add stats card with ring chart grade and glassmorphism"
 ## Task 11: Streak Card
 
 **Files:**
+
 - Create: `src/cards/streak-card.ts`
 - Create: `src/cards/streak-card.test.ts`
 
@@ -2067,6 +2076,7 @@ git commit -m "feat: add streak card with flame icon and three-column layout"
 ## Task 12: Top Languages Card
 
 **Files:**
+
 - Create: `src/cards/langs-card.ts`
 - Create: `src/cards/langs-card.test.ts`
 
@@ -2230,6 +2240,7 @@ git commit -m "feat: add top languages card with donut chart and legend"
 ## Task 13: Route Handlers
 
 **Files:**
+
 - Create: `src/routes/health.ts`
 - Create: `src/routes/stats.ts`
 - Create: `src/routes/streak.ts`
@@ -2304,10 +2315,7 @@ export function createStatsRoute(config: AppConfig, cache: Cache): Hono {
     const username = c.req.param('username');
     const options = parseCardOptions(c.req.query());
 
-    const paramsHash = createHash('md5')
-      .update(JSON.stringify(options))
-      .digest('hex')
-      .slice(0, 8);
+    const paramsHash = createHash('md5').update(JSON.stringify(options)).digest('hex').slice(0, 8);
     const cacheKey = `card:stats:${username}:${paramsHash}`;
 
     const cached = await cache.get(cacheKey);
@@ -2373,10 +2381,7 @@ export function createStreakRoute(config: AppConfig, cache: Cache): Hono {
     const username = c.req.param('username');
     const options = parseCardOptions(c.req.query());
 
-    const paramsHash = createHash('md5')
-      .update(JSON.stringify(options))
-      .digest('hex')
-      .slice(0, 8);
+    const paramsHash = createHash('md5').update(JSON.stringify(options)).digest('hex').slice(0, 8);
     const cacheKey = `card:streak:${username}:${paramsHash}`;
 
     const cached = await cache.get(cacheKey);
@@ -2426,10 +2431,7 @@ export function createTopLangsRoute(config: AppConfig, cache: Cache): Hono {
     const username = c.req.param('username');
     const options = parseCardOptions(c.req.query());
 
-    const paramsHash = createHash('md5')
-      .update(JSON.stringify(options))
-      .digest('hex')
-      .slice(0, 8);
+    const paramsHash = createHash('md5').update(JSON.stringify(options)).digest('hex').slice(0, 8);
     const cacheKey = `card:langs:${username}:${paramsHash}`;
 
     const cached = await cache.get(cacheKey);
@@ -2469,6 +2471,7 @@ git commit -m "feat: add route handlers for health, stats, streak, and top-langs
 ## Task 14: App Entry Point
 
 **Files:**
+
 - Create: `src/index.ts`
 
 **Step 1: Write the Hono app entry**
@@ -2545,6 +2548,7 @@ git commit -m "feat: add Hono app entry point with route registration"
 ## Task 15: Docker Setup
 
 **Files:**
+
 - Create: `Dockerfile`
 - Create: `docker-compose.yml`
 - Create: `.dockerignore`
@@ -2598,7 +2602,7 @@ services:
   app:
     build: .
     ports:
-      - "3000:3000"
+      - '3000:3000'
     environment:
       - PAT_1=${PAT_1}
       - PORT=3000
@@ -2610,7 +2614,7 @@ services:
         condition: service_healthy
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/health"]
+      test: ['CMD', 'wget', '--no-verbose', '--tries=1', '--spider', 'http://localhost:3000/health']
       interval: 30s
       timeout: 5s
       retries: 3
@@ -2622,7 +2626,7 @@ services:
       - redis-data:/data
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ['CMD', 'redis-cli', 'ping']
       interval: 10s
       timeout: 5s
       retries: 3
@@ -2655,6 +2659,7 @@ git commit -m "feat: add Docker multi-stage build and docker compose with Redis"
 ## Task 16: Integration Smoke Test
 
 **Files:**
+
 - Create: `src/routes/health.test.ts`
 
 **Step 1: Write integration test for health endpoint**
@@ -2726,6 +2731,7 @@ Expected: Server starts on port 3000
 **Step 5: Update .gitignore if needed**
 
 Ensure `.gitignore` includes:
+
 ```
 node_modules/
 dist/
@@ -2744,24 +2750,24 @@ git commit -m "chore: final cleanup and verification"
 
 ## Summary
 
-| Task | What | Files | Tests |
-|---|---|---|---|
-| 1 | Project init | 6 config files | — |
-| 2 | HTML sanitize | 2 | 7 tests |
-| 3 | PAT pool | 2 | 6 tests |
-| 4 | Config & types | 3 | 3 tests |
-| 5 | Query params | 2 | 7 tests |
-| 6 | Themes | 3 | 5 tests |
-| 7 | Cache layer | 4 | 3 tests |
-| 8 | GitHub fetcher | 3 | 4 tests |
-| 9 | Base card | 2 | 5+ tests |
-| 10 | Stats card | 2 | 6 tests |
-| 11 | Streak card | 2 | 4 tests |
-| 12 | Langs card | 2 | 5 tests |
-| 13 | Routes | 5 | — |
-| 14 | App entry | 1 | — |
-| 15 | Docker | 3 | — |
-| 16 | Smoke test | 1 | 1 test |
-| 17 | Verification | — | — |
+| Task | What           | Files          | Tests    |
+| ---- | -------------- | -------------- | -------- |
+| 1    | Project init   | 6 config files | —        |
+| 2    | HTML sanitize  | 2              | 7 tests  |
+| 3    | PAT pool       | 2              | 6 tests  |
+| 4    | Config & types | 3              | 3 tests  |
+| 5    | Query params   | 2              | 7 tests  |
+| 6    | Themes         | 3              | 5 tests  |
+| 7    | Cache layer    | 4              | 3 tests  |
+| 8    | GitHub fetcher | 3              | 4 tests  |
+| 9    | Base card      | 2              | 5+ tests |
+| 10   | Stats card     | 2              | 6 tests  |
+| 11   | Streak card    | 2              | 4 tests  |
+| 12   | Langs card     | 2              | 5 tests  |
+| 13   | Routes         | 5              | —        |
+| 14   | App entry      | 1              | —        |
+| 15   | Docker         | 3              | —        |
+| 16   | Smoke test     | 1              | 1 test   |
+| 17   | Verification   | —              | —        |
 
 **Total: ~42 files, ~56 tests, 17 tasks, ~17 commits**
