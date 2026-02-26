@@ -197,7 +197,7 @@ function extractLanguages(user: GitHubUser, username: string): TopLangsData {
       color,
       percentage: totalSize > 0 ? (size / totalSize) * 100 : 0,
     }))
-    .sort((a, b) => b.size - a.size)
+    .toSorted((a, b) => b.size - a.size)
     .slice(0, 5);
 
   return { username, languages };
