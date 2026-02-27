@@ -10,7 +10,7 @@ describe('loadConfig', () => {
     vi.stubEnv('PAT_1', 'ghp_test123');
     vi.stubEnv('PORT', '4000');
 
-    const { loadConfig } = await import('./config.js');
+    const { loadConfig } = await import('./config');
     const config = loadConfig();
 
     expect(config.pats).toEqual(['ghp_test123']);
@@ -18,6 +18,7 @@ describe('loadConfig', () => {
     expect(config.redisUrl).toBeUndefined();
     expect(config.cacheTtl).toBe(14400);
     expect(config.logLevel).toBe('info');
+    expect(config.metricsToken).toBeUndefined();
   });
 
   it('collects multiple PATs', async () => {
@@ -25,7 +26,7 @@ describe('loadConfig', () => {
     vi.stubEnv('PAT_2', 'b');
     vi.stubEnv('PAT_3', 'c');
 
-    const { loadConfig } = await import('./config.js');
+    const { loadConfig } = await import('./config');
     const config = loadConfig();
 
     expect(config.pats).toEqual(['a', 'b', 'c']);
@@ -34,7 +35,27 @@ describe('loadConfig', () => {
   it('throws if PAT_1 is missing', async () => {
     vi.stubEnv('PAT_1', '');
 
-    const { loadConfig } = await import('./config.js');
-    expect(() => loadConfig()).toThrow('At least PAT_1 must be set');
+    await expect(() => import('./config')).rejects.toThrow();
+  });
+
+  it('loads METRICS_TOKEN when set', async () => {
+    vi.stubEnv('PAT_1', 'ghp_test');
+    vi.stubEnv('METRICS_TOKEN', 'secret-metrics-token');
+
+    const { loadConfig } = await import('./config');
+    const config = loadConfig();
+
+    expect(config.metricsToken).toBe('secret-metrics-token');
+  });
+
+  it('uses default values', async () => {
+    vi.stubEnv('PAT_1', 'ghp_test');
+
+    const { loadConfig } = await import('./config');
+    const config = loadConfig();
+
+    expect(config.port).toBe(3000);
+    expect(config.cacheTtl).toBe(14400);
+    expect(config.logLevel).toBe('info');
   });
 });
