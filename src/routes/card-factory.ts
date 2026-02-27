@@ -29,12 +29,13 @@ export function createCardRoute(
     const options = parseCardOptions(c.req.query());
 
     const paramsHash = createHash('md5').update(JSON.stringify(options)).digest('hex').slice(0, 8);
-    const cacheKey = `card:${routeConfig.cachePrefix}:${username}:${paramsHash}`;
+    const svgCacheKey = `svg:${routeConfig.cachePrefix}:${username}:${paramsHash}`;
+    const dataCacheKey = `data:${username}`;
 
-    // Check cache
-    const cached = await cache.get(cacheKey);
-    if (cached) {
-      return svgResponse(c, cached, options.cacheSeconds);
+    // Layer 1: Check SVG cache
+    const cachedSvg = await cache.get(svgCacheKey);
+    if (cachedSvg) {
+      return svgResponse(c, cachedSvg, options.cacheSeconds);
     }
 
     // Fetch and render
@@ -46,24 +47,35 @@ export function createCardRoute(
       },
       async () => {
         try {
-          const token = patPool.getNextToken();
           let data: FetchResult;
 
-          try {
-            data = await fetchGitHubData(username, token);
-          } catch (err) {
-            // If rate-limited, mark token exhausted and retry with next token
-            if (err instanceof GitHubRateLimitError) {
-              patPool.markExhausted(token);
-              const retryToken = patPool.getNextToken();
-              data = await fetchGitHubData(username, retryToken);
-            } else {
-              throw err;
+          // Layer 2: Check data cache
+          const cachedData = await cache.get(dataCacheKey);
+          if (cachedData) {
+            data = JSON.parse(cachedData) as FetchResult;
+          } else {
+            // Fetch from GitHub
+            const token = patPool.getNextToken();
+
+            try {
+              data = await fetchGitHubData(username, token);
+            } catch (err) {
+              // If rate-limited, mark token exhausted and retry with next token
+              if (err instanceof GitHubRateLimitError) {
+                patPool.markExhausted(token);
+                const retryToken = patPool.getNextToken();
+                data = await fetchGitHubData(username, retryToken);
+              } else {
+                throw err;
+              }
             }
+
+            // Store data in cache with config TTL
+            await cache.set(dataCacheKey, JSON.stringify(data), config.cacheTtl);
           }
 
           const svg = routeConfig.render(data, options);
-          await cache.set(cacheKey, svg, options.cacheSeconds);
+          await cache.set(svgCacheKey, svg, options.cacheSeconds);
           Sentry.metrics.count('cards_generated_total', 1, {
             attributes: { card_type: routeConfig.cachePrefix },
           });
