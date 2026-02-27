@@ -91,7 +91,6 @@ describeIntegration('integration: GitHub API (real token)', () => {
       port: 3000,
       cacheTtl: 60,
       logLevel: 'info' as const,
-      metricsToken: undefined,
       redisUrl: undefined,
       sentryDsn: undefined,
       sentryTracesSampleRate: 0,
