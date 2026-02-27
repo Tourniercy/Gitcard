@@ -125,9 +125,11 @@ export async function fetchGitHubData(username: string, token: string): Promise<
         const json = (await response.json()) as GitHubGraphQLResponse;
 
         if (json.errors?.length) {
-          throw new GitHubApiError(
-            `GraphQL errors: ${json.errors.map((e) => e.message).join(', ')}`,
-          );
+          const messages = json.errors.map((e) => e.message).join(', ');
+          if (messages.includes('Could not resolve to a User')) {
+            throw new GitHubNotFoundError(username);
+          }
+          throw new GitHubApiError(`GraphQL errors: ${messages}`);
         }
 
         const user = json.data?.user;
@@ -146,10 +148,12 @@ export async function fetchGitHubData(username: string, token: string): Promise<
           languages: extractLanguages(user, username),
         };
       } catch (err) {
-        Sentry.captureException(err, {
-          tags: { username },
-          extra: { operation: 'fetchGitHubData' },
-        });
+        if (!(err instanceof GitHubNotFoundError) && !(err instanceof GitHubRateLimitError)) {
+          Sentry.captureException(err, {
+            tags: { username },
+            extra: { operation: 'fetchGitHubData' },
+          });
+        }
         throw err;
       }
     },
