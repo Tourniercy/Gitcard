@@ -1,8 +1,12 @@
 node_modules
+apps/*/node_modules
 dist
+apps/*/dist
 .git
 .env
+.env.local
 *.md
 .DS_Store
 .vscode
 .claude
+docs
