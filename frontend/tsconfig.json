@@ -4,17 +4,13 @@
     "target": "ES2024",
     "module": "ESNext",
     "moduleResolution": "bundler",
+    "jsx": "react-jsx",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
-    "outDir": "dist",
+    "outDir": "../dist/static",
     "rootDir": "src",
-    "types": ["node"]
+    "types": ["react", "react-dom"]
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "dist", "frontend"]
+  "include": ["src/**/*.ts", "src/**/*.tsx"]
 }

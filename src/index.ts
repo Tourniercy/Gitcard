@@ -1,5 +1,6 @@
 import './telemetry';
 import * as Sentry from '@sentry/node';
+import { serveStatic } from '@hono/node-server/serve-static';
 import { Hono } from 'hono';
 import { loadConfig } from './config';
 import { createCache } from './cache';
@@ -28,6 +29,10 @@ app.route('', createDataRoute(config, cache));
 app.route('', createStatsRoute(config, cache));
 app.route('', createStreakRoute(config, cache));
 app.route('', createTopLangsRoute(config, cache));
+
+// Serve frontend static files
+app.use('/assets/*', serveStatic({ root: './dist/static' }));
+app.get('/', serveStatic({ root: './dist/static', path: '/index.html' }));
 
 // 404 fallback
 app.notFound((c) => {
