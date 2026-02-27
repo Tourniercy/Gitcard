@@ -22,10 +22,10 @@ app.route('', healthRoute);
 // Metrics (bearer auth protected)
 app.route('', createMetricsRoute(config.metricsToken));
 
-// Card routes — order matters: more specific paths first
+// Card routes — all under /stats/:username
+app.route('', createStatsRoute(config, cache));
 app.route('', createStreakRoute(config, cache));
 app.route('', createTopLangsRoute(config, cache));
-app.route('', createStatsRoute(config, cache));
 
 // 404 fallback
 app.notFound((c) => {
