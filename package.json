@@ -22,9 +22,10 @@
   },
   "dependencies": {
     "@hono/node-server": "^1",
+    "@keyv/redis": "^5.1.6",
+    "@t3-oss/env-core": "^0.13.10",
+    "cacheable": "^2.3.2",
     "hono": "^4",
-    "ioredis": "^5",
-    "lru-cache": "^11",
     "zod": "^3"
   },
   "devDependencies": {
