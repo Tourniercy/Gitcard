@@ -5,11 +5,7 @@ import type { Cache } from '../cache/index';
 import type { CardOptions } from '../types';
 import { createPatPool } from '../utils/pat-pool';
 import { parseCardOptions } from '../utils/query-params';
-import {
-  fetchGitHubData,
-  GitHubNotFoundError,
-  GitHubRateLimitError,
-} from '../fetchers/github';
+import { fetchGitHubData, GitHubNotFoundError, GitHubRateLimitError } from '../fetchers/github';
 import type { FetchResult } from '../fetchers/github';
 import { svgResponse, errorSvg } from './card-response';
 

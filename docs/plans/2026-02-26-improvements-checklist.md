@@ -10,13 +10,14 @@ Areas to investigate and potentially adopt for the next iteration of the project
 
 **Libraries to evaluate:**
 
-| Library | What it does |
-|---|---|
+| Library            | What it does                                                                                            |
+| ------------------ | ------------------------------------------------------------------------------------------------------- |
 | `@t3-oss/env-core` | Type-safe env validation with Zod, splits server/client vars, built for T3 stack but framework-agnostic |
-| `znv` | Minimal Zod-based env parsing — `parseEnv(process.env, schema)` |
-| `envalid` | Mature env validation with validators, defaults, and TypeScript types |
+| `znv`              | Minimal Zod-based env parsing — `parseEnv(process.env, schema)`                                         |
+| `envalid`          | Mature env validation with validators, defaults, and TypeScript types                                   |
 
 **What to check:**
+
 - Does it replace our `config.ts` entirely or just simplify it?
 - Does it play well with Vite's `loadEnv()` in dev mode?
 - Do we still need the PAT_1..PAT_N dynamic collection, or can we rethink that?
@@ -29,14 +30,15 @@ Areas to investigate and potentially adopt for the next iteration of the project
 
 **Libraries to evaluate:**
 
-| Library | What it does |
-|---|---|
-| `cacheable` | Multi-tier caching (memory + Redis) with a single API, TTL, key prefixing, built-in stats |
-| `keyv` | Simple key-value store with adapters for Redis, SQLite, Postgres, etc. Unified API. |
-| `unstorage` | Universal storage layer from UnJS — supports memory, Redis, filesystem, Cloudflare KV, etc. |
-| `hono/cache` | Hono's built-in Cache middleware — may handle response caching at the middleware level |
+| Library      | What it does                                                                                |
+| ------------ | ------------------------------------------------------------------------------------------- |
+| `cacheable`  | Multi-tier caching (memory + Redis) with a single API, TTL, key prefixing, built-in stats   |
+| `keyv`       | Simple key-value store with adapters for Redis, SQLite, Postgres, etc. Unified API.         |
+| `unstorage`  | Universal storage layer from UnJS — supports memory, Redis, filesystem, Cloudflare KV, etc. |
+| `hono/cache` | Hono's built-in Cache middleware — may handle response caching at the middleware level      |
 
 **What to check:**
+
 - Can we replace `src/cache/` entirely with a library?
 - Does it support TTL per key, max entries, and graceful fallback?
 - Does it add unnecessary weight for our simple get/set needs?
@@ -50,13 +52,14 @@ Areas to investigate and potentially adopt for the next iteration of the project
 
 **Libraries to evaluate:**
 
-| Library | What it does |
-|---|---|
-| `graphql-request` | Minimal GraphQL client — typed queries, error handling, retries, headers |
-| `gql.tada` | Type-safe GraphQL with automatic TypeScript type inference from queries |
+| Library            | What it does                                                                      |
+| ------------------ | --------------------------------------------------------------------------------- |
+| `graphql-request`  | Minimal GraphQL client — typed queries, error handling, retries, headers          |
+| `gql.tada`         | Type-safe GraphQL with automatic TypeScript type inference from queries           |
 | `@octokit/graphql` | GitHub's official GraphQL client — handles auth, pagination, rate limits natively |
 
 **What to check:**
+
 - `@octokit/graphql` might be the best fit since it's GitHub-specific and handles rate limiting, pagination, and auth headers
 - Does it replace our PAT pool logic or work alongside it?
 - Does `gql.tada` give us type safety on query responses without a codegen step?
@@ -69,6 +72,7 @@ Areas to investigate and potentially adopt for the next iteration of the project
 **Problem:** We have no visibility into how endpoints are being used — no request counts, no latency tracking, no error rates.
 
 **What we want:**
+
 - Request count per endpoint (stats / streak / top-langs / health)
 - Response time (p50, p95, p99)
 - Cache hit/miss ratio
@@ -77,19 +81,21 @@ Areas to investigate and potentially adopt for the next iteration of the project
 
 **Approaches to evaluate:**
 
-| Approach | Pros | Cons |
-|---|---|---|
-| **Hono middleware + in-memory counters** | Zero deps, simple, export via `/metrics` endpoint | Lost on restart, no persistence |
-| **Prometheus + prom-client** | Industry standard, Grafana dashboards, alerting | Needs Prometheus server in docker compose |
-| **Hono + `hono-pino` (structured logging)** | Structured JSON logs, parse with any log tool | No dashboards without extra tooling |
-| **OpenTelemetry (`@opentelemetry/sdk-node`)** | Traces + metrics + logs, vendor-neutral | Heavy setup, overkill for small service |
+| Approach                                      | Pros                                              | Cons                                      |
+| --------------------------------------------- | ------------------------------------------------- | ----------------------------------------- |
+| **Hono middleware + in-memory counters**      | Zero deps, simple, export via `/metrics` endpoint | Lost on restart, no persistence           |
+| **Prometheus + prom-client**                  | Industry standard, Grafana dashboards, alerting   | Needs Prometheus server in docker compose |
+| **Hono + `hono-pino` (structured logging)**   | Structured JSON logs, parse with any log tool     | No dashboards without extra tooling       |
+| **OpenTelemetry (`@opentelemetry/sdk-node`)** | Traces + metrics + logs, vendor-neutral           | Heavy setup, overkill for small service   |
 
 **Recommended investigation order:**
+
 1. Start with a simple Hono middleware that tracks counts + latency in-memory, exposed via `GET /metrics`
 2. If we need persistence/dashboards, add Prometheus (`prom-client`) + Grafana to docker compose
 3. Structured logging with `hono-pino` is orthogonal and can be added alongside either approach
 
 **What to check:**
+
 - Does Hono have a built-in timing/metrics middleware?
 - Can we add Prometheus to docker compose without complicating the deployment?
 - What's the minimal setup for a `/metrics` endpoint with request counts and latency?

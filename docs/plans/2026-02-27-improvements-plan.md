@@ -15,11 +15,13 @@
 ## Task 1: Install New Dependencies
 
 **Files:**
+
 - Modify: `package.json`
 
 **Step 1: Install new deps**
 
 Run:
+
 ```bash
 pnpm add cacheable @keyv/redis @t3-oss/env-core
 ```
@@ -27,6 +29,7 @@ pnpm add cacheable @keyv/redis @t3-oss/env-core
 **Step 2: Remove old deps**
 
 Run:
+
 ```bash
 pnpm remove lru-cache ioredis
 ```
@@ -48,6 +51,7 @@ git commit -m "chore: swap lru-cache + ioredis for cacheable, add @t3-oss/env-co
 ## Task 2: Migrate Config to @t3-oss/env-core
 
 **Files:**
+
 - Modify: `src/config.ts`
 - Modify: `src/config.test.ts`
 - Modify: `.env.example`
@@ -183,6 +187,7 @@ export function loadConfig(): AppConfig {
 **Step 4: Update .env.example**
 
 Add to `.env.example`:
+
 ```
 # Metrics (optional — if not set, /metrics endpoint returns 404)
 # METRICS_TOKEN=your-secret-token-here
@@ -210,6 +215,7 @@ git commit -m "refactor: migrate config to @t3-oss/env-core, add METRICS_TOKEN"
 ## Task 3: Metrics Store
 
 **Files:**
+
 - Create: `src/metrics/store.ts`
 - Create: `src/metrics/store.test.ts`
 
@@ -421,6 +427,7 @@ git commit -m "feat: add in-memory metrics store with request/cache tracking"
 ## Task 4: Metrics Middleware
 
 **Files:**
+
 - Create: `src/metrics/middleware.ts`
 - Create: `src/metrics/middleware.test.ts`
 
@@ -520,6 +527,7 @@ git commit -m "feat: add Hono metrics middleware for request tracking"
 ## Task 5: Metrics Route (Protected)
 
 **Files:**
+
 - Create: `src/routes/metrics.ts`
 - Create: `src/routes/metrics.test.ts`
 
@@ -639,6 +647,7 @@ git commit -m "feat: add bearer-auth protected /metrics endpoint"
 ## Task 6: Migrate Cache to cacheable
 
 **Files:**
+
 - Rewrite: `src/cache/index.ts`
 - Delete: `src/cache/memory.ts`
 - Delete: `src/cache/redis.ts`
@@ -758,6 +767,7 @@ git commit -m "refactor: replace lru-cache + ioredis with cacheable"
 ## Task 7: Typed Error Classes for GitHub Fetcher
 
 **Files:**
+
 - Modify: `src/fetchers/github.ts`
 - Modify: `src/fetchers/github.test.ts`
 
@@ -829,43 +839,47 @@ export class GitHubRateLimitError extends GitHubApiError {
 In `src/fetchers/github.ts`, update the `fetchGitHubData` function:
 
 Replace the HTTP error check block:
+
 ```typescript
-  if (!response.ok) {
-    throw new GitHubApiError(
-      `GitHub API error: ${response.status} ${response.statusText}`,
-      response.status,
-    );
-  }
+if (!response.ok) {
+  throw new GitHubApiError(
+    `GitHub API error: ${response.status} ${response.statusText}`,
+    response.status,
+  );
+}
 ```
 
 With:
+
 ```typescript
-  if (!response.ok) {
-    if (response.status === 403 || response.status === 429) {
-      const remaining = Number(response.headers.get('x-ratelimit-remaining') ?? 0);
-      const resetEpoch = response.headers.get('x-ratelimit-reset');
-      const resetAt = resetEpoch ? new Date(Number(resetEpoch) * 1000) : undefined;
-      throw new GitHubRateLimitError(remaining, resetAt);
-    }
-    throw new GitHubApiError(
-      `GitHub API error: ${response.status} ${response.statusText}`,
-      response.status,
-    );
+if (!response.ok) {
+  if (response.status === 403 || response.status === 429) {
+    const remaining = Number(response.headers.get('x-ratelimit-remaining') ?? 0);
+    const resetEpoch = response.headers.get('x-ratelimit-reset');
+    const resetAt = resetEpoch ? new Date(Number(resetEpoch) * 1000) : undefined;
+    throw new GitHubRateLimitError(remaining, resetAt);
   }
+  throw new GitHubApiError(
+    `GitHub API error: ${response.status} ${response.statusText}`,
+    response.status,
+  );
+}
 ```
 
 Replace the user-not-found check:
+
 ```typescript
-  if (!user) {
-    throw new GitHubApiError(`User not found: ${username}`, 404);
-  }
+if (!user) {
+  throw new GitHubApiError(`User not found: ${username}`, 404);
+}
 ```
 
 With:
+
 ```typescript
-  if (!user) {
-    throw new GitHubNotFoundError(username);
-  }
+if (!user) {
+  throw new GitHubNotFoundError(username);
+}
 ```
 
 **Step 5: Run tests to verify they pass**
@@ -885,6 +899,7 @@ git commit -m "feat: add typed GitHub error classes with rate limit header extra
 ## Task 8: Update Card Factory to Use Typed Errors
 
 **Files:**
+
 - Modify: `src/routes/card-factory.ts`
 
 **Step 1: Update imports**
@@ -892,11 +907,13 @@ git commit -m "feat: add typed GitHub error classes with rate limit header extra
 In `src/routes/card-factory.ts`, update the import:
 
 From:
+
 ```typescript
 import { fetchGitHubData, GitHubApiError } from '../fetchers/github';
 ```
 
 To:
+
 ```typescript
 import {
   fetchGitHubData,
@@ -938,11 +955,13 @@ Replace the catch block in `card-factory.ts` (the outer try-catch, lines 60-85):
 Also update the inner catch to use `GitHubRateLimitError`:
 
 Replace:
+
 ```typescript
         if (err instanceof GitHubApiError && (err.status === 403 || err.status === 429)) {
 ```
 
 With:
+
 ```typescript
         if (err instanceof GitHubRateLimitError) {
 ```
@@ -964,6 +983,7 @@ git commit -m "refactor: use typed GitHub error classes in card factory"
 ## Task 9: Wire Everything Into the App Entry Point
 
 **Files:**
+
 - Modify: `src/index.ts`
 
 **Step 1: Add metrics middleware and route**
@@ -1036,14 +1056,16 @@ git commit -m "feat: wire metrics middleware and protected /metrics route into a
 ## Task 10: Update Docker Config and .env.example
 
 **Files:**
+
 - Modify: `docker-compose.yml`
 - Modify: `.env.example`
 
 **Step 1: Add METRICS_TOKEN to docker-compose.yml**
 
 In the `app` service `environment` section of `docker-compose.yml`, add:
+
 ```yaml
-      - METRICS_TOKEN=${METRICS_TOKEN:-}
+- METRICS_TOKEN=${METRICS_TOKEN:-}
 ```
 
 **Step 2: Verify .env.example is complete**
@@ -1094,12 +1116,12 @@ Run: `pnpm dev` (manual check — Ctrl+C after confirming it starts without erro
 
 ## Summary of Changes
 
-| Area | What changes | New deps | Removed deps |
-|------|-------------|----------|-------------|
-| Config | `@t3-oss/env-core` + `METRICS_TOKEN` env var | `@t3-oss/env-core` | — |
-| Metrics | New `src/metrics/` module + `GET /metrics` route | — (hono built-ins) | — |
-| Caching | `cacheable` replaces custom cache layer | `cacheable`, `@keyv/redis` | `lru-cache`, `ioredis` |
-| Fetcher | Typed error classes + rate limit header extraction | — | — |
+| Area    | What changes                                       | New deps                   | Removed deps           |
+| ------- | -------------------------------------------------- | -------------------------- | ---------------------- |
+| Config  | `@t3-oss/env-core` + `METRICS_TOKEN` env var       | `@t3-oss/env-core`         | —                      |
+| Metrics | New `src/metrics/` module + `GET /metrics` route   | — (hono built-ins)         | —                      |
+| Caching | `cacheable` replaces custom cache layer            | `cacheable`, `@keyv/redis` | `lru-cache`, `ioredis` |
+| Fetcher | Typed error classes + rate limit header extraction | —                          | —                      |
 
 ---
 
