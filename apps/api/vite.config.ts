@@ -8,6 +8,9 @@ export default defineConfig(({ mode }) => {
   Object.assign(process.env, env);
 
   return {
+    server: {
+      port: 3001,
+    },
     plugins: [
       devServer({
         entry: 'src/index.ts',

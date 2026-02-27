@@ -5,14 +5,16 @@ RUN corepack enable && corepack prepare pnpm@10.5.2 --activate
 
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY apps/api/package.json apps/api/
+COPY apps/web/package.json apps/web/
 RUN pnpm install --frozen-lockfile
 
-COPY tsconfig.json vite.config.ts vite.client.config.ts ./
-COPY src/ src/
-COPY frontend/ frontend/
+COPY tsconfig.base.json ./
+COPY apps/api/ apps/api/
+COPY apps/web/ apps/web/
 
-RUN pnpm build
+RUN pnpm -r build
 
 # Production stage
 FROM node:24-alpine AS runner
@@ -23,10 +25,12 @@ RUN addgroup -g 1001 -S app && adduser -S app -u 1001
 
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile --prod
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY apps/api/package.json apps/api/
+RUN pnpm install --frozen-lockfile --prod --filter api
 
-COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/apps/api/dist apps/api/dist
+COPY --from=builder /app/apps/web/dist apps/web/dist
 
 USER app
 
@@ -35,4 +39,4 @@ EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
   CMD wget --no-verbose --tries=1 --spider http://localhost:3000/health || exit 1
 
-CMD ["node", "dist/index.js"]
+CMD ["node", "apps/api/dist/index.js"]
