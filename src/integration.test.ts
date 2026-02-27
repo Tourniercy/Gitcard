@@ -126,4 +126,129 @@ describeIntegration('integration: GitHub API (real token)', () => {
     const errorSvg = await notFoundRes.text();
     expect(errorSvg).toContain('User not found');
   });
+
+  it('/api/data/:username returns valid JSON data', async () => {
+    const { Hono } = await import('hono');
+    const { createDataRoute } = await import('./routes/data');
+    const { createCache } = await import('./cache/index');
+
+    const config = {
+      pats: [GITHUB_TOKEN!],
+      port: 3000,
+      cacheTtl: 60,
+      logLevel: 'info' as const,
+      redisUrl: undefined,
+      sentryDsn: undefined,
+      sentryTracesSampleRate: 0,
+      sentryEnvironment: 'test',
+    };
+    const cache = createCache(undefined);
+
+    const app = new Hono();
+    app.route('', createDataRoute(config, cache));
+
+    const res = await app.request('/api/data/torvalds');
+    expect(res.status).toBe(200);
+    expect(res.headers.get('content-type')).toContain('application/json');
+
+    const body = await res.json();
+    expect(body.stats.username).toBe('torvalds');
+    expect(body.streak.username).toBe('torvalds');
+    expect(body.languages.username).toBe('torvalds');
+  });
+
+  it('/api/data/:username returns 404 for non-existent user', async () => {
+    const { Hono } = await import('hono');
+    const { createDataRoute } = await import('./routes/data');
+    const { createCache } = await import('./cache/index');
+
+    const config = {
+      pats: [GITHUB_TOKEN!],
+      port: 3000,
+      cacheTtl: 60,
+      logLevel: 'info' as const,
+      redisUrl: undefined,
+      sentryDsn: undefined,
+      sentryTracesSampleRate: 0,
+      sentryEnvironment: 'test',
+    };
+    const cache = createCache(undefined);
+
+    const app = new Hono();
+    app.route('', createDataRoute(config, cache));
+
+    const res = await app.request('/api/data/this-user-does-not-exist-xyz-123456789');
+    expect(res.status).toBe(404);
+  });
+
+  it('/api/themes returns theme list', async () => {
+    const { Hono } = await import('hono');
+    const { createDataRoute } = await import('./routes/data');
+    const { createCache } = await import('./cache/index');
+
+    const config = {
+      pats: [GITHUB_TOKEN!],
+      port: 3000,
+      cacheTtl: 60,
+      logLevel: 'info' as const,
+      redisUrl: undefined,
+      sentryDsn: undefined,
+      sentryTracesSampleRate: 0,
+      sentryEnvironment: 'test',
+    };
+    const cache = createCache(undefined);
+
+    const app = new Hono();
+    app.route('', createDataRoute(config, cache));
+
+    const res = await app.request('/api/themes');
+    expect(res.status).toBe(200);
+
+    const themes: string[] = await res.json();
+    expect(Array.isArray(themes)).toBe(true);
+    expect(themes).toContain('default');
+    expect(themes).toContain('dark');
+    expect(themes).toContain('dracula');
+  });
+
+  it('two-layer cache: second request with different theme reuses data cache', async () => {
+    const { Hono } = await import('hono');
+    const { createStatsRoute } = await import('./routes/stats');
+    const { createCache } = await import('./cache/index');
+
+    const config = {
+      pats: [GITHUB_TOKEN!],
+      port: 3000,
+      cacheTtl: 60,
+      logLevel: 'info' as const,
+      redisUrl: undefined,
+      sentryDsn: undefined,
+      sentryTracesSampleRate: 0,
+      sentryEnvironment: 'test',
+    };
+    const cache = createCache(undefined);
+
+    const app = new Hono();
+    app.route('', createStatsRoute(config, cache));
+
+    // First request — populates data cache and SVG cache for default theme
+    const res1 = await app.request('/stats/torvalds');
+    expect(res1.status).toBe(200);
+    expect(res1.headers.get('content-type')).toContain('image/svg+xml');
+    const svg1 = await res1.text();
+    expect(svg1).toContain('<svg');
+
+    // Second request with different theme — should reuse data cache (no extra API call)
+    const res2 = await app.request('/stats/torvalds?theme=dark');
+    expect(res2.status).toBe(200);
+    expect(res2.headers.get('content-type')).toContain('image/svg+xml');
+    const svg2 = await res2.text();
+    expect(svg2).toContain('<svg');
+
+    // Verify the data cache key exists (proves data was cached)
+    const cachedData = await cache.get('data:torvalds');
+    expect(cachedData).not.toBeNull();
+    const parsed = JSON.parse(cachedData!);
+    expect(parsed.stats.username).toBe('torvalds');
+  });
 });
