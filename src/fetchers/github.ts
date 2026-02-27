@@ -69,6 +69,23 @@ export class GitHubApiError extends Error {
   }
 }
 
+export class GitHubNotFoundError extends GitHubApiError {
+  constructor(public username: string) {
+    super(`User not found: ${username}`, 404);
+    this.name = 'GitHubNotFoundError';
+  }
+}
+
+export class GitHubRateLimitError extends GitHubApiError {
+  constructor(
+    public remaining: number,
+    public resetAt?: Date,
+  ) {
+    super('GitHub API rate limit exceeded', 429);
+    this.name = 'GitHubRateLimitError';
+  }
+}
+
 export async function fetchGitHubData(username: string, token: string): Promise<FetchResult> {
   const response = await fetch(GITHUB_GRAPHQL_URL, {
     method: 'POST',
@@ -81,6 +98,12 @@ export async function fetchGitHubData(username: string, token: string): Promise<
   });
 
   if (!response.ok) {
+    if (response.status === 403 || response.status === 429) {
+      const remaining = Number(response.headers.get('x-ratelimit-remaining') ?? 0);
+      const resetEpoch = response.headers.get('x-ratelimit-reset');
+      const resetAt = resetEpoch ? new Date(Number(resetEpoch) * 1000) : undefined;
+      throw new GitHubRateLimitError(remaining, resetAt);
+    }
     throw new GitHubApiError(
       `GitHub API error: ${response.status} ${response.statusText}`,
       response.status,
@@ -95,7 +118,7 @@ export async function fetchGitHubData(username: string, token: string): Promise<
 
   const user = json.data?.user;
   if (!user) {
-    throw new GitHubApiError(`User not found: ${username}`, 404);
+    throw new GitHubNotFoundError(username);
   }
 
   return {

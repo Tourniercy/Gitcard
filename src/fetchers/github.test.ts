@@ -1,5 +1,10 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { fetchGitHubData } from './github';
+import {
+  fetchGitHubData,
+  GitHubApiError,
+  GitHubNotFoundError,
+  GitHubRateLimitError,
+} from './github';
 
 const mockUser = {
   name: 'Test User',
@@ -101,5 +106,31 @@ describe('fetchGitHubData', () => {
     );
 
     await expect(fetchGitHubData('user', 'fake-token')).rejects.toThrow();
+  });
+});
+
+describe('GitHub error classes', () => {
+  it('GitHubNotFoundError has correct properties', () => {
+    const err = new GitHubNotFoundError('octocat');
+    expect(err).toBeInstanceOf(GitHubApiError);
+    expect(err.name).toBe('GitHubNotFoundError');
+    expect(err.status).toBe(404);
+    expect(err.username).toBe('octocat');
+    expect(err.message).toContain('octocat');
+  });
+
+  it('GitHubRateLimitError has correct properties', () => {
+    const resetAt = new Date('2026-02-27T12:00:00Z');
+    const err = new GitHubRateLimitError(0, resetAt);
+    expect(err).toBeInstanceOf(GitHubApiError);
+    expect(err.name).toBe('GitHubRateLimitError');
+    expect(err.status).toBe(429);
+    expect(err.remaining).toBe(0);
+    expect(err.resetAt).toEqual(resetAt);
+  });
+
+  it('GitHubRateLimitError works without resetAt', () => {
+    const err = new GitHubRateLimitError(0);
+    expect(err.resetAt).toBeUndefined();
   });
 });
