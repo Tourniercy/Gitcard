@@ -18,7 +18,8 @@
     "docker:build": "docker compose build",
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down",
-    "docker:logs": "docker compose logs -f app"
+    "docker:logs": "docker compose logs -f app",
+    "prepare": "husky"
   },
   "dependencies": {
     "@hono/node-server": "^1",
@@ -35,6 +36,7 @@
     "@hono/vite-dev-server": "^0.25.0",
     "@types/node": "^24",
     "@types/primer__octicons": "^19.21.0",
+    "husky": "^9.1.7",
     "oxfmt": "^0.35.0",
     "oxlint": "^1",
     "typescript": "^5.8",
