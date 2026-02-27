@@ -9,8 +9,6 @@ describe('loadConfig', () => {
   it('loads config with required PAT_1', async () => {
     vi.stubEnv('PAT_1', 'ghp_test123');
     vi.stubEnv('PORT', '4000');
-    vi.stubEnv('METRICS_TOKEN', '');
-
     const { loadConfig } = await import('./config');
     const config = loadConfig();
 
@@ -19,7 +17,6 @@ describe('loadConfig', () => {
     expect(config.redisUrl).toBeUndefined();
     expect(config.cacheTtl).toBe(14400);
     expect(config.logLevel).toBe('info');
-    expect(config.metricsToken).toBeUndefined();
   });
 
   it('collects multiple PATs', async () => {
@@ -39,16 +36,6 @@ describe('loadConfig', () => {
     await expect(() => import('./config')).rejects.toThrow();
   });
 
-  it('loads METRICS_TOKEN when set', async () => {
-    vi.stubEnv('PAT_1', 'ghp_test');
-    vi.stubEnv('METRICS_TOKEN', 'secret-metrics-token');
-
-    const { loadConfig } = await import('./config');
-    const config = loadConfig();
-
-    expect(config.metricsToken).toBe('secret-metrics-token');
-  });
-
   it('uses default values', async () => {
     vi.stubEnv('PAT_1', 'ghp_test');
 
@@ -62,7 +49,6 @@ describe('loadConfig', () => {
 
   it('loads Sentry config when set', async () => {
     vi.stubEnv('PAT_1', 'ghp_test');
-    vi.stubEnv('METRICS_TOKEN', '');
     vi.stubEnv('SENTRY_DSN', 'https://key@o123.ingest.sentry.io/456');
     vi.stubEnv('SENTRY_TRACES_SAMPLE_RATE', '0.5');
     vi.stubEnv('SENTRY_ENVIRONMENT', 'staging');
@@ -77,7 +63,6 @@ describe('loadConfig', () => {
 
   it('uses Sentry defaults when not set', async () => {
     vi.stubEnv('PAT_1', 'ghp_test');
-    vi.stubEnv('METRICS_TOKEN', '');
     vi.stubEnv('SENTRY_DSN', '');
     vi.stubEnv('SENTRY_TRACES_SAMPLE_RATE', '');
     vi.stubEnv('SENTRY_ENVIRONMENT', '');

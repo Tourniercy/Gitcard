@@ -5,7 +5,6 @@ import { loadConfig } from './config';
 import { createCache } from './cache';
 import { metricsMiddleware } from './metrics/middleware';
 import { healthRoute } from './routes/health';
-import { createMetricsRoute } from './routes/metrics';
 import { createStatsRoute } from './routes/stats';
 import { createStreakRoute } from './routes/streak';
 import { createTopLangsRoute } from './routes/top-langs';
@@ -20,9 +19,6 @@ app.use('*', metricsMiddleware);
 
 // Health check (no auth)
 app.route('', healthRoute);
-
-// Metrics (bearer auth protected)
-app.route('', createMetricsRoute(config.metricsToken));
 
 // Card routes — all under /stats/:username
 app.route('', createStatsRoute(config, cache));
