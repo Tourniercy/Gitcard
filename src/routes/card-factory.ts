@@ -5,7 +5,11 @@ import type { Cache } from '../cache/index';
 import type { CardOptions } from '../types';
 import { createPatPool } from '../utils/pat-pool';
 import { parseCardOptions } from '../utils/query-params';
-import { fetchGitHubData, GitHubApiError } from '../fetchers/github';
+import {
+  fetchGitHubData,
+  GitHubNotFoundError,
+  GitHubRateLimitError,
+} from '../fetchers/github';
 import type { FetchResult } from '../fetchers/github';
 import { svgResponse, errorSvg } from './card-response';
 
@@ -45,7 +49,7 @@ export function createCardRoute(
         data = await fetchGitHubData(username, token);
       } catch (err) {
         // If rate-limited, mark token exhausted and retry with next token
-        if (err instanceof GitHubApiError && (err.status === 403 || err.status === 429)) {
+        if (err instanceof GitHubRateLimitError) {
           patPool.markExhausted(token);
           const retryToken = patPool.getNextToken();
           data = await fetchGitHubData(username, retryToken);
@@ -58,20 +62,16 @@ export function createCardRoute(
       await cache.set(cacheKey, svg, options.cacheSeconds);
       return svgResponse(c, svg, options.cacheSeconds);
     } catch (err) {
-      if (err instanceof GitHubApiError) {
-        if (err.status === 404) {
-          const svg = errorSvg(`User not found: ${username}`);
-          c.status(404);
-          return svgResponse(c, svg, 300);
-        }
-        if (err.status === 403 || err.status === 429) {
-          const svg = errorSvg('GitHub API rate limit exceeded. Please try again later.');
-          c.status(429);
-          return svgResponse(c, svg, 60);
-        }
+      if (err instanceof GitHubNotFoundError) {
+        const svg = errorSvg(`User not found: ${username}`);
+        c.status(404);
+        return svgResponse(c, svg, 300);
       }
-
-      // All PATs exhausted
+      if (err instanceof GitHubRateLimitError) {
+        const svg = errorSvg('GitHub API rate limit exceeded. Please try again later.');
+        c.status(429);
+        return svgResponse(c, svg, 60);
+      }
       if (err instanceof Error && err.message === 'All PAT tokens are rate-limited') {
         const svg = errorSvg('All API tokens are rate-limited. Please try again later.');
         c.status(429);
