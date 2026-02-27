@@ -8,6 +8,7 @@ import { healthRoute } from './routes/health';
 import { createStatsRoute } from './routes/stats';
 import { createStreakRoute } from './routes/streak';
 import { createTopLangsRoute } from './routes/top-langs';
+import { createDataRoute } from './routes/data';
 
 const config = loadConfig();
 const cache = createCache(config.redisUrl);
@@ -19,6 +20,9 @@ app.use('*', metricsMiddleware);
 
 // Health check (no auth)
 app.route('', healthRoute);
+
+// Data API routes
+app.route('', createDataRoute(config, cache));
 
 // Card routes — all under /stats/:username
 app.route('', createStatsRoute(config, cache));
