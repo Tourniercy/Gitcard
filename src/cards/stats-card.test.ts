@@ -57,4 +57,15 @@ describe('renderStatsCard', () => {
     const svg = renderStatsCard(mockStats, defaultOptions);
     expect(svg).toContain('<circle');
   });
+
+  it('renders SVG path icons when showIcons is true', () => {
+    const svg = renderStatsCard(mockStats, defaultOptions);
+    expect(svg).toContain('viewBox="0 0 16 16"');
+    expect(svg).toContain('<path');
+  });
+
+  it('hides icons when showIcons is false', () => {
+    const svg = renderStatsCard(mockStats, { ...defaultOptions, showIcons: false });
+    expect(svg).not.toContain('viewBox="0 0 16 16"');
+  });
 });
