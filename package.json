@@ -23,6 +23,7 @@
   "dependencies": {
     "@hono/node-server": "^1",
     "@keyv/redis": "^5.1.6",
+    "@primer/octicons": "^19.22.0",
     "@sentry/node": "^10.40.0",
     "@t3-oss/env-core": "^0.13.10",
     "cacheable": "^2.3.2",
@@ -33,6 +34,7 @@
     "@hono/vite-build": "^1",
     "@hono/vite-dev-server": "^0.25.0",
     "@types/node": "^24",
+    "@types/primer__octicons": "^19.21.0",
     "oxfmt": "^0.35.0",
     "oxlint": "^1",
     "typescript": "^5.8",

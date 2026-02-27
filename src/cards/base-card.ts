@@ -1,3 +1,4 @@
+import octicons from '@primer/octicons';
 import type { Theme } from '../themes/index';
 import type { CardOptions } from '../types';
 import { encodeHTML } from '../utils/sanitize';
@@ -5,6 +6,16 @@ import { encodeHTML } from '../utils/sanitize';
 export { encodeHTML } from '../utils/sanitize';
 
 const FONT_FAMILY = "'Segoe UI', system-ui, -apple-system, sans-serif";
+
+/**
+ * Render a GitHub Octicon as an inline `<svg>` element for embedding inside card SVGs.
+ */
+export function octiconSvg(name: string, x: number, y: number, size: number, fill: string): string {
+  const icon = octicons[name];
+  if (!icon) return '';
+  const variant = icon.heights[size as 16 | 24] ?? icon.heights[16];
+  return `<svg x="${x}" y="${y}" width="${size}" height="${size}" viewBox="0 0 ${size} ${variant.width}" fill="${fill}">${variant.path}</svg>`;
+}
 
 export function formatNumber(n: number, locale: string): string {
   return new Intl.NumberFormat(locale).format(n);
