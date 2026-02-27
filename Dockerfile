@@ -8,8 +8,9 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 
-COPY tsconfig.json vite.config.ts ./
+COPY tsconfig.json vite.config.ts vite.client.config.ts ./
 COPY src/ src/
+COPY frontend/ frontend/
 
 RUN pnpm build
 
