@@ -6,7 +6,7 @@ import { createCardRoute } from './card-factory';
 
 export function createTopLangsRoute(config: AppConfig, cache: Cache): Hono {
   return createCardRoute(config, cache, {
-    path: '/:username/top-langs',
+    path: '/stats/:username/top-langs',
     cachePrefix: 'langs',
     render: (data, options) => renderLangsCard(data.languages, options),
   });

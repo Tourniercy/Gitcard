@@ -9,6 +9,7 @@ describe('loadConfig', () => {
   it('loads config with required PAT_1', async () => {
     vi.stubEnv('PAT_1', 'ghp_test123');
     vi.stubEnv('PORT', '4000');
+    vi.stubEnv('METRICS_TOKEN', '');
 
     const { loadConfig } = await import('./config');
     const config = loadConfig();

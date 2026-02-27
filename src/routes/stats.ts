@@ -6,7 +6,7 @@ import { createCardRoute } from './card-factory';
 
 export function createStatsRoute(config: AppConfig, cache: Cache): Hono {
   return createCardRoute(config, cache, {
-    path: '/:username',
+    path: '/stats/:username',
     cachePrefix: 'stats',
     render: (data, options) => renderStatsCard(data.stats, options),
   });
