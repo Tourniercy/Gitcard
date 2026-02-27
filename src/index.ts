@@ -1,3 +1,5 @@
+import './telemetry';
+import * as Sentry from '@sentry/node';
 import { Hono } from 'hono';
 import { loadConfig } from './config';
 import { createCache } from './cache';
@@ -34,6 +36,7 @@ app.notFound((c) => {
 
 // Global error handler
 app.onError((err, c) => {
+  Sentry.captureException(err);
   console.error('Unhandled error:', err);
   return c.json({ error: 'Internal server error' }, 500);
 });
