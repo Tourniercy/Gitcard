@@ -1,4 +1,5 @@
 import octicons from '@primer/octicons';
+import type { IconName } from '@primer/octicons';
 import type { Theme } from '../themes/index';
 import type { CardOptions } from '../types';
 import { encodeHTML } from '../utils/sanitize';
@@ -10,10 +11,14 @@ const FONT_FAMILY = "'Segoe UI', system-ui, -apple-system, sans-serif";
 /**
  * Render a GitHub Octicon as an inline `<svg>` element for embedding inside card SVGs.
  */
-export function octiconSvg(name: string, x: number, y: number, size: number, fill: string): string {
-  const icon = octicons[name];
-  if (!icon) return '';
-  const variant = icon.heights[size as 16 | 24] ?? icon.heights[16];
+export function octiconSvg(
+  name: IconName,
+  x: number,
+  y: number,
+  size: 16 | 24,
+  fill: string,
+): string {
+  const variant = octicons[name].heights[size]!;
   return `<svg x="${x}" y="${y}" width="${size}" height="${size}" viewBox="0 0 ${size} ${variant.width}" fill="${fill}">${variant.path}</svg>`;
 }
 
