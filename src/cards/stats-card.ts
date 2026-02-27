@@ -1,3 +1,4 @@
+import type { IconName } from '@primer/octicons';
 import type { CardOptions, GitHubStats } from '../types';
 import { getTheme } from '../themes/index';
 import {
@@ -15,7 +16,7 @@ interface StatRow {
   key: string;
   label: string;
   value: number;
-  icon: string;
+  icon: IconName;
 }
 
 function calculateGrade(stats: GitHubStats): { grade: string; percentage: number } {
