@@ -20,11 +20,11 @@ Existing (unchanged):
 
 ## Env Vars
 
-| Var | Required | Default | Description |
-|-----|----------|---------|-------------|
-| `SENTRY_DSN` | No | — | Sentry project DSN. If absent, Sentry disabled. |
-| `SENTRY_TRACES_SAMPLE_RATE` | No | `0.1` | Fraction of requests to trace (0.0–1.0) |
-| `SENTRY_ENVIRONMENT` | No | `"production"` | Environment tag in Sentry |
+| Var                         | Required | Default        | Description                                     |
+| --------------------------- | -------- | -------------- | ----------------------------------------------- |
+| `SENTRY_DSN`                | No       | —              | Sentry project DSN. If absent, Sentry disabled. |
+| `SENTRY_TRACES_SAMPLE_RATE` | No       | `0.1`          | Fraction of requests to trace (0.0–1.0)         |
+| `SENTRY_ENVIRONMENT`        | No       | `"production"` | Environment tag in Sentry                       |
 
 ## What Sentry Captures Automatically
 
@@ -34,23 +34,23 @@ Existing (unchanged):
 
 ## Custom Instrumentation
 
-| Metric | Type | Labels | Where |
-|--------|------|--------|-------|
-| `cards_generated_total` | Counter | `card_type` (stats/streak/langs) | `card-factory.ts` |
-| `cache_hits_total` | Counter | — | `cache/index.ts` |
-| `cache_misses_total` | Counter | — | `cache/index.ts` |
-| `github_api_duration` | Distribution | — | `fetchers/github.ts` |
+| Metric                  | Type         | Labels                           | Where                |
+| ----------------------- | ------------ | -------------------------------- | -------------------- |
+| `cards_generated_total` | Counter      | `card_type` (stats/streak/langs) | `card-factory.ts`    |
+| `cache_hits_total`      | Counter      | —                                | `cache/index.ts`     |
+| `cache_misses_total`    | Counter      | —                                | `cache/index.ts`     |
+| `github_api_duration`   | Distribution | —                                | `fetchers/github.ts` |
 
 ## Integration Points
 
-| File | Instrumentation |
-|------|----------------|
-| `src/telemetry.ts` (new) | `Sentry.init()` with `@sentry/opentelemetry`. Must be imported before all other modules. |
-| `src/index.ts` | Import telemetry first. `Sentry.captureException(err)` in global error handler. |
-| `src/routes/card-factory.ts` | `Sentry.startSpan()` wrapping GitHub fetch + card render. Increment `cards_generated_total`. |
-| `src/cache/index.ts` | `Sentry.startSpan()` for get/set. Increment `cache_hits_total` / `cache_misses_total` via `Sentry.metrics`. |
-| `src/fetchers/github.ts` | `Sentry.startSpan()` wrapping fetch call. `Sentry.captureException()` on errors with context (username, card type). |
-| `src/config.ts` | Add `SENTRY_DSN`, `SENTRY_TRACES_SAMPLE_RATE`, `SENTRY_ENVIRONMENT` to `createEnv()` and `AppConfig`. |
+| File                         | Instrumentation                                                                                                     |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `src/telemetry.ts` (new)     | `Sentry.init()` with `@sentry/opentelemetry`. Must be imported before all other modules.                            |
+| `src/index.ts`               | Import telemetry first. `Sentry.captureException(err)` in global error handler.                                     |
+| `src/routes/card-factory.ts` | `Sentry.startSpan()` wrapping GitHub fetch + card render. Increment `cards_generated_total`.                        |
+| `src/cache/index.ts`         | `Sentry.startSpan()` for get/set. Increment `cache_hits_total` / `cache_misses_total` via `Sentry.metrics`.         |
+| `src/fetchers/github.ts`     | `Sentry.startSpan()` wrapping fetch call. `Sentry.captureException()` on errors with context (username, card type). |
+| `src/config.ts`              | Add `SENTRY_DSN`, `SENTRY_TRACES_SAMPLE_RATE`, `SENTRY_ENVIRONMENT` to `createEnv()` and `AppConfig`.               |
 
 ## Dependencies
 
