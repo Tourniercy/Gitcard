@@ -5,10 +5,10 @@ services:
       - '3000:3000'
     environment:
       - PAT_1=${PAT_1}
-      - PORT=${PORT:-3000}
+      - PORT=3000
       - REDIS_URL=redis://redis:6379
-      - CACHE_TTL=${CACHE_TTL:-14400}
-      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - CACHE_TTL=14400
+      - LOG_LEVEL=info
       - METRICS_TOKEN=${METRICS_TOKEN:-}
       - SENTRY_DSN=${SENTRY_DSN:-}
       - SENTRY_TRACES_SAMPLE_RATE=${SENTRY_TRACES_SAMPLE_RATE:-0.1}
