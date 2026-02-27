@@ -59,4 +59,34 @@ describe('loadConfig', () => {
     expect(config.cacheTtl).toBe(14400);
     expect(config.logLevel).toBe('info');
   });
+
+  it('loads Sentry config when set', async () => {
+    vi.stubEnv('PAT_1', 'ghp_test');
+    vi.stubEnv('METRICS_TOKEN', '');
+    vi.stubEnv('SENTRY_DSN', 'https://key@o123.ingest.sentry.io/456');
+    vi.stubEnv('SENTRY_TRACES_SAMPLE_RATE', '0.5');
+    vi.stubEnv('SENTRY_ENVIRONMENT', 'staging');
+
+    const { loadConfig } = await import('./config');
+    const config = loadConfig();
+
+    expect(config.sentryDsn).toBe('https://key@o123.ingest.sentry.io/456');
+    expect(config.sentryTracesSampleRate).toBe(0.5);
+    expect(config.sentryEnvironment).toBe('staging');
+  });
+
+  it('uses Sentry defaults when not set', async () => {
+    vi.stubEnv('PAT_1', 'ghp_test');
+    vi.stubEnv('METRICS_TOKEN', '');
+    vi.stubEnv('SENTRY_DSN', '');
+    vi.stubEnv('SENTRY_TRACES_SAMPLE_RATE', '');
+    vi.stubEnv('SENTRY_ENVIRONMENT', '');
+
+    const { loadConfig } = await import('./config');
+    const config = loadConfig();
+
+    expect(config.sentryDsn).toBeUndefined();
+    expect(config.sentryTracesSampleRate).toBe(0.1);
+    expect(config.sentryEnvironment).toBe('production');
+  });
 });

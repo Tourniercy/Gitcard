@@ -8,6 +8,9 @@ const env = createEnv({
     REDIS_URL: z.string().url().optional(),
     CACHE_TTL: z.coerce.number().min(60).default(14400),
     METRICS_TOKEN: z.string().min(1).optional(),
+    SENTRY_DSN: z.string().url().optional(),
+    SENTRY_TRACES_SAMPLE_RATE: z.coerce.number().min(0).max(1).default(0.1),
+    SENTRY_ENVIRONMENT: z.string().min(1).default('production'),
     PAT_1: z.string().min(1, 'At least PAT_1 must be set'),
   },
   runtimeEnv: process.env,
@@ -31,6 +34,9 @@ export interface AppConfig {
   cacheTtl: number;
   logLevel: 'debug' | 'info' | 'warn' | 'error';
   metricsToken?: string;
+  sentryDsn?: string;
+  sentryTracesSampleRate: number;
+  sentryEnvironment: string;
 }
 
 export function loadConfig(): AppConfig {
@@ -41,5 +47,8 @@ export function loadConfig(): AppConfig {
     cacheTtl: env.CACHE_TTL,
     logLevel: env.LOG_LEVEL,
     metricsToken: env.METRICS_TOKEN,
+    sentryDsn: env.SENTRY_DSN,
+    sentryTracesSampleRate: env.SENTRY_TRACES_SAMPLE_RATE,
+    sentryEnvironment: env.SENTRY_ENVIRONMENT,
   };
 }
