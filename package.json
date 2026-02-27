@@ -22,13 +22,19 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
     "@hono/node-server": "^1",
     "@keyv/redis": "^5.1.6",
     "@primer/octicons": "^19.22.0",
     "@sentry/node": "^10.40.0",
     "@t3-oss/env-core": "^0.13.10",
+    "@vitejs/plugin-react": "^5.1.4",
     "cacheable": "^2.3.2",
     "hono": "^4",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
     "zod": "^3"
   },
   "devDependencies": {
@@ -36,6 +42,8 @@
     "@hono/vite-dev-server": "^0.25.0",
     "@types/node": "^24",
     "@types/primer__octicons": "^19.21.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
     "husky": "^9.1.7",
     "oxfmt": "^0.35.0",
     "oxlint": "^1",
