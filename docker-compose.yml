@@ -10,6 +10,9 @@ services:
       - CACHE_TTL=14400
       - LOG_LEVEL=info
       - METRICS_TOKEN=${METRICS_TOKEN:-}
+      - SENTRY_DSN=${SENTRY_DSN:-}
+      - SENTRY_TRACES_SAMPLE_RATE=${SENTRY_TRACES_SAMPLE_RATE:-0.1}
+      - SENTRY_ENVIRONMENT=${SENTRY_ENVIRONMENT:-production}
     depends_on:
       redis:
         condition: service_healthy
