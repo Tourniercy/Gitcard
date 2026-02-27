@@ -1,3 +1,5 @@
+import * as Sentry from '@sentry/node';
+
 import type { GitHubGraphQLResponse, GitHubUser } from './types';
 import type { GitHubStats, StreakData, TopLangsData } from '../types';
 
@@ -87,45 +89,71 @@ export class GitHubRateLimitError extends GitHubApiError {
 }
 
 export async function fetchGitHubData(username: string, token: string): Promise<FetchResult> {
-  const response = await fetch(GITHUB_GRAPHQL_URL, {
-    method: 'POST',
-    headers: {
-      Authorization: `bearer ${token}`,
-      'Content-Type': 'application/json',
-      'User-Agent': 'github-stats-cards',
+  return Sentry.startSpan(
+    {
+      name: `github.fetch ${username}`,
+      op: 'http.client',
+      attributes: { username },
     },
-    body: JSON.stringify({ query: USER_QUERY, variables: { login: username } }),
-  });
+    async () => {
+      const start = performance.now();
 
-  if (!response.ok) {
-    if (response.status === 403 || response.status === 429) {
-      const remaining = Number(response.headers.get('x-ratelimit-remaining') ?? 0);
-      const resetEpoch = response.headers.get('x-ratelimit-reset');
-      const resetAt = resetEpoch ? new Date(Number(resetEpoch) * 1000) : undefined;
-      throw new GitHubRateLimitError(remaining, resetAt);
-    }
-    throw new GitHubApiError(
-      `GitHub API error: ${response.status} ${response.statusText}`,
-      response.status,
-    );
-  }
+      try {
+        const response = await fetch(GITHUB_GRAPHQL_URL, {
+          method: 'POST',
+          headers: {
+            Authorization: `bearer ${token}`,
+            'Content-Type': 'application/json',
+            'User-Agent': 'github-stats-cards',
+          },
+          body: JSON.stringify({ query: USER_QUERY, variables: { login: username } }),
+        });
 
-  const json = (await response.json()) as GitHubGraphQLResponse;
+        if (!response.ok) {
+          if (response.status === 403 || response.status === 429) {
+            const remaining = Number(response.headers.get('x-ratelimit-remaining') ?? 0);
+            const resetEpoch = response.headers.get('x-ratelimit-reset');
+            const resetAt = resetEpoch ? new Date(Number(resetEpoch) * 1000) : undefined;
+            throw new GitHubRateLimitError(remaining, resetAt);
+          }
+          throw new GitHubApiError(
+            `GitHub API error: ${response.status} ${response.statusText}`,
+            response.status,
+          );
+        }
 
-  if (json.errors?.length) {
-    throw new GitHubApiError(`GraphQL errors: ${json.errors.map((e) => e.message).join(', ')}`);
-  }
+        const json = (await response.json()) as GitHubGraphQLResponse;
 
-  const user = json.data?.user;
-  if (!user) {
-    throw new GitHubNotFoundError(username);
-  }
+        if (json.errors?.length) {
+          throw new GitHubApiError(
+            `GraphQL errors: ${json.errors.map((e) => e.message).join(', ')}`,
+          );
+        }
 
-  return {
-    stats: extractStats(user, username),
-    streak: extractStreak(user, username),
-    languages: extractLanguages(user, username),
-  };
+        const user = json.data?.user;
+        if (!user) {
+          throw new GitHubNotFoundError(username);
+        }
+
+        const durationMs = performance.now() - start;
+        Sentry.metrics.distribution('github_api_duration', durationMs, {
+          unit: 'millisecond',
+        });
+
+        return {
+          stats: extractStats(user, username),
+          streak: extractStreak(user, username),
+          languages: extractLanguages(user, username),
+        };
+      } catch (err) {
+        Sentry.captureException(err, {
+          tags: { username },
+          extra: { operation: 'fetchGitHubData' },
+        });
+        throw err;
+      }
+    },
+  );
 }
 
 function extractStats(user: GitHubUser, username: string): GitHubStats {
