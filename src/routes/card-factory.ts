@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/node';
 import { Hono } from 'hono';
 import { createHash } from 'node:crypto';
 import type { AppConfig } from '../config';
@@ -37,48 +38,60 @@ export function createCardRoute(
     }
 
     // Fetch and render
-    try {
-      const token = patPool.getNextToken();
-      let data: FetchResult;
+    return Sentry.startSpan(
+      {
+        name: `card.generate ${routeConfig.cachePrefix}`,
+        op: 'card.generate',
+        attributes: { username, card_type: routeConfig.cachePrefix },
+      },
+      async () => {
+        try {
+          const token = patPool.getNextToken();
+          let data: FetchResult;
 
-      try {
-        data = await fetchGitHubData(username, token);
-      } catch (err) {
-        // If rate-limited, mark token exhausted and retry with next token
-        if (err instanceof GitHubRateLimitError) {
-          patPool.markExhausted(token);
-          const retryToken = patPool.getNextToken();
-          data = await fetchGitHubData(username, retryToken);
-        } else {
-          throw err;
+          try {
+            data = await fetchGitHubData(username, token);
+          } catch (err) {
+            // If rate-limited, mark token exhausted and retry with next token
+            if (err instanceof GitHubRateLimitError) {
+              patPool.markExhausted(token);
+              const retryToken = patPool.getNextToken();
+              data = await fetchGitHubData(username, retryToken);
+            } else {
+              throw err;
+            }
+          }
+
+          const svg = routeConfig.render(data, options);
+          await cache.set(cacheKey, svg, options.cacheSeconds);
+          Sentry.metrics.count('cards_generated_total', 1, {
+            attributes: { card_type: routeConfig.cachePrefix },
+          });
+          return svgResponse(c, svg, options.cacheSeconds);
+        } catch (err) {
+          if (err instanceof GitHubNotFoundError) {
+            const svg = errorSvg(`User not found: ${username}`);
+            c.status(404);
+            return svgResponse(c, svg, 300);
+          }
+          if (err instanceof GitHubRateLimitError) {
+            const svg = errorSvg('GitHub API rate limit exceeded. Please try again later.');
+            c.status(429);
+            return svgResponse(c, svg, 60);
+          }
+          if (err instanceof Error && err.message === 'All PAT tokens are rate-limited') {
+            const svg = errorSvg('All API tokens are rate-limited. Please try again later.');
+            c.status(429);
+            return svgResponse(c, svg, 60);
+          }
+
+          console.error(`Error generating ${routeConfig.cachePrefix} card for ${username}:`, err);
+          const svg = errorSvg('An error occurred while generating the card.');
+          c.status(502);
+          return svgResponse(c, svg, 60);
         }
-      }
-
-      const svg = routeConfig.render(data, options);
-      await cache.set(cacheKey, svg, options.cacheSeconds);
-      return svgResponse(c, svg, options.cacheSeconds);
-    } catch (err) {
-      if (err instanceof GitHubNotFoundError) {
-        const svg = errorSvg(`User not found: ${username}`);
-        c.status(404);
-        return svgResponse(c, svg, 300);
-      }
-      if (err instanceof GitHubRateLimitError) {
-        const svg = errorSvg('GitHub API rate limit exceeded. Please try again later.');
-        c.status(429);
-        return svgResponse(c, svg, 60);
-      }
-      if (err instanceof Error && err.message === 'All PAT tokens are rate-limited') {
-        const svg = errorSvg('All API tokens are rate-limited. Please try again later.');
-        c.status(429);
-        return svgResponse(c, svg, 60);
-      }
-
-      console.error(`Error generating ${routeConfig.cachePrefix} card for ${username}:`, err);
-      const svg = errorSvg('An error occurred while generating the card.');
-      c.status(502);
-      return svgResponse(c, svg, 60);
-    }
+      },
+    );
   });
 
   return app;
