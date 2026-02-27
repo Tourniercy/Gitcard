@@ -1,19 +1,18 @@
+import { createEnv } from '@t3-oss/env-core';
 import { z } from 'zod';
 
-const configSchema = z.object({
-  port: z.coerce.number().default(3000),
-  redisUrl: z.string().url().optional(),
-  cacheTtl: z.coerce.number().min(60).default(14400),
-  logLevel: z.enum(['debug', 'info', 'warn', 'error']).default('info'),
+const env = createEnv({
+  server: {
+    PORT: z.coerce.number().min(1).max(65535).default(3000),
+    LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error']).default('info'),
+    REDIS_URL: z.string().url().optional(),
+    CACHE_TTL: z.coerce.number().min(60).default(14400),
+    METRICS_TOKEN: z.string().min(1).optional(),
+    PAT_1: z.string().min(1, 'At least PAT_1 must be set'),
+  },
+  runtimeEnv: process.env,
+  emptyStringAsUndefined: true,
 });
-
-export interface AppConfig {
-  pats: string[];
-  port: number;
-  redisUrl?: string;
-  cacheTtl: number;
-  logLevel: 'debug' | 'info' | 'warn' | 'error';
-}
 
 function collectPats(): string[] {
   const pats: string[] = [];
@@ -25,21 +24,22 @@ function collectPats(): string[] {
   return pats;
 }
 
+export interface AppConfig {
+  pats: string[];
+  port: number;
+  redisUrl?: string;
+  cacheTtl: number;
+  logLevel: 'debug' | 'info' | 'warn' | 'error';
+  metricsToken?: string;
+}
+
 export function loadConfig(): AppConfig {
-  const pats = collectPats();
-  if (pats.length === 0) {
-    throw new Error('At least PAT_1 must be set');
-  }
-
-  const parsed = configSchema.parse({
-    port: process.env['PORT'],
-    redisUrl: process.env['REDIS_URL'] || undefined,
-    cacheTtl: process.env['CACHE_TTL'],
-    logLevel: process.env['LOG_LEVEL'],
-  });
-
   return {
-    pats,
-    ...parsed,
+    pats: collectPats(),
+    port: env.PORT,
+    redisUrl: env.REDIS_URL,
+    cacheTtl: env.CACHE_TTL,
+    logLevel: env.LOG_LEVEL,
+    metricsToken: env.METRICS_TOKEN,
   };
 }
