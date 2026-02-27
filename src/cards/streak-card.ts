@@ -48,7 +48,7 @@ export function renderStreakCard(data: StreakData, options: CardOptions): string
         ${formatNumber(data.totalContributions, options.locale)}
       </text>
       <text x="${col1X}" y="${dateY}" text-anchor="middle" class="muted">
-        ${encodeHTML(formatDateRange(data.currentStreakStart, data.currentStreakEnd))}
+        Past Year
       </text>
     </g>
 
