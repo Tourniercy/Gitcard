@@ -28,6 +28,6 @@ describe('theme system', () => {
     expect(THEME_NAMES).toContain('default');
     expect(THEME_NAMES).toContain('dark');
     expect(THEME_NAMES).toContain('dracula');
-    expect(THEME_NAMES.length).toBe(3);
+    expect(THEME_NAMES.length).toBe(35);
   });
 });
