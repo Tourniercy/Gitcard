@@ -63,7 +63,7 @@ export function ThemeCombobox({ value, onValueChange }: ThemeComboboxProps) {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
-        <Command>
+        <Command defaultValue={value}>
           <CommandInput placeholder="Search themes..." />
           <CommandList className="max-h-[250px]">
             <CommandEmpty>No theme found.</CommandEmpty>

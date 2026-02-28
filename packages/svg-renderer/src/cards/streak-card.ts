@@ -40,7 +40,7 @@ export function renderStreakCard(data: StreakData, options: CardOptions): string
     ${titleSection}
 
     <!-- Total Contributions -->
-    <g class="fade-in" style="animation-delay: 0s;">
+    <g>
       ${octiconSvg('calendar', col1X - 8, iconY, 16, accentColor)}
       <text x="${col1X}" y="${labelY}" text-anchor="middle" class="stat-label">Contributions</text>
       <text x="${col1X}" y="${valueY}" text-anchor="middle"
@@ -57,7 +57,7 @@ export function renderStreakCard(data: StreakData, options: CardOptions): string
           stroke="${theme.border}" stroke-width="1" opacity="0.5" />
 
     <!-- Current Streak (emphasized) -->
-    <g class="fade-in" style="animation-delay: 0.15s;">
+    <g>
       ${octiconSvg('flame', col2X - 8, iconY, 16, accentColor)}
       <text x="${col2X}" y="${labelY}" text-anchor="middle" class="stat-label">Current Streak</text>
       <text x="${col2X}" y="${valueY + 4}" text-anchor="middle"
@@ -76,7 +76,7 @@ export function renderStreakCard(data: StreakData, options: CardOptions): string
           stroke="${theme.border}" stroke-width="1" opacity="0.5" />
 
     <!-- Longest Streak -->
-    <g class="fade-in" style="animation-delay: 0.3s;">
+    <g>
       ${octiconSvg('trophy', col3X - 8, iconY, 16, accentColor)}
       <text x="${col3X}" y="${labelY}" text-anchor="middle" class="stat-label">Longest Streak</text>
       <text x="${col3X}" y="${valueY}" text-anchor="middle"

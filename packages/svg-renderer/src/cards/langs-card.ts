@@ -20,7 +20,7 @@ export function renderLangsCard(data: TopLangsData, options: CardOptions): strin
   // Build donut segments
   let currentAngle = 0;
   const donutSegments = data.languages
-    .map((lang, i) => {
+    .map((lang) => {
       const sweepAngle = (lang.percentage / 100) * Math.PI * 2;
       // Leave a tiny gap between segments
       const gap = 0.02;
@@ -30,9 +30,7 @@ export function renderLangsCard(data: TopLangsData, options: CardOptions): strin
 
       if (sweepAngle < 0.05) return ''; // Skip tiny segments
 
-      return `<g class="fade-in" style="animation-delay: ${i * 0.1}s;">
-        ${createDonutSegment(donutCx, donutCy, donutRadius, startAngle, endAngle, lang.color)}
-      </g>`;
+      return createDonutSegment(donutCx, donutCy, donutRadius, startAngle, endAngle, lang.color);
     })
     .join('');
 
@@ -45,7 +43,7 @@ export function renderLangsCard(data: TopLangsData, options: CardOptions): strin
     .map((lang, i) => {
       const y = legendStartY + i * legendRowHeight;
       return `
-        <g class="fade-in" style="animation-delay: ${(i + data.languages.length) * 0.05}s;">
+        <g>
           <circle cx="${legendX}" cy="${y - 4}" r="5" fill="${lang.color}" />
           <text x="${legendX + 14}" y="${y}" class="stat-label">${encodeHTML(lang.name)}</text>
           <text x="${CARD_WIDTH - 25}" y="${y}" class="stat-value" text-anchor="end">${lang.percentage.toFixed(1)}%</text>

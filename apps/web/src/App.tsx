@@ -1,22 +1,18 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { GitHubLogoIcon } from '@radix-ui/react-icons';
 import { useCardConfig } from '@/hooks/useCardConfig';
 import { useGitHubData } from '@/hooks/useGitHubData';
 import type { CardConfig, CardType } from '@/hooks/useCardConfig';
 import { Sidebar } from '@/components/Sidebar';
 import { CardList } from '@/components/CardList';
 import { ModeToggle } from '@/components/mode-toggle';
+import { Button } from '@/components/ui/button';
+
+const ALL_CARDS: CardType[] = ['stats', 'streak', 'top-langs'];
 
 export function App() {
-  const {
-    config,
-    setUsername,
-    toggleCard,
-    setTheme,
-    setOption,
-    buildQueryString,
-    cardPaths,
-    cardOptions,
-  } = useCardConfig();
+  const { config, setUsername, setTheme, setOption, buildQueryString, cardPaths, cardOptions } =
+    useCardConfig();
 
   const [debouncedUsername, setDebouncedUsername] = useState('');
   const debounceRef = useRef<ReturnType<typeof setTimeout>>(null);
@@ -63,14 +59,25 @@ export function App() {
   return (
     <div className="flex min-h-screen flex-col">
       {/* Header */}
-      <header className="sticky top-0 z-50 flex items-center justify-between border-b bg-background/95 px-6 py-3 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="flex items-baseline gap-3">
-          <h1 className="text-xl font-bold tracking-tight text-primary">GitCard</h1>
-          <p className="hidden text-sm text-muted-foreground sm:block">
-            GitHub Stats Card Configurator
-          </p>
+      <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container flex h-14 items-center">
+          <a href="/" className="mr-2 flex items-center md:mr-6 md:space-x-2">
+            <span className="hidden font-bold md:inline-block">GitCard</span>
+          </a>
+          <nav className="flex flex-1 items-center md:justify-end">
+            <Button variant="ghost" size="icon" className="size-8" asChild>
+              <a
+                aria-label="GitHub repo"
+                href="https://github.com/Tourniercy/Gitcard"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <GitHubLogoIcon className="size-4" aria-hidden="true" />
+              </a>
+            </Button>
+            <ModeToggle />
+          </nav>
         </div>
-        <ModeToggle />
       </header>
 
       {/* Body */}
@@ -78,7 +85,6 @@ export function App() {
         <Sidebar
           config={config}
           onUsernameChange={setUsername}
-          onToggleCard={toggleCard}
           onThemeChange={setTheme}
           onToggle={handleToggle}
         />
@@ -106,7 +112,7 @@ export function App() {
           )}
 
           {showPreview && (
-            <CardList cards={config.cards} data={data} options={cardOptions} buildSrc={buildSrc} />
+            <CardList cards={ALL_CARDS} data={data} options={cardOptions} buildSrc={buildSrc} />
           )}
         </main>
       </div>

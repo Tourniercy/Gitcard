@@ -76,11 +76,6 @@ export function createCardWrapper(
 
   <style>
     * { font-family: ${FONT_FAMILY}; }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(5px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .fade-in { animation: fadeIn 0.6s ease-out forwards; }
     .title { font-size: 14px; font-weight: 600; fill: ${options.titleColor ? `#${options.titleColor}` : theme.title}; }
     .stat-label { font-size: 12px; fill: ${options.textColor ? `#${options.textColor}` : theme.muted}; }
     .stat-value { font-size: 14px; font-weight: 700; fill: ${options.textColor ? `#${options.textColor}` : theme.text}; }
@@ -122,7 +117,7 @@ export function createRingChart(
             stroke-dashoffset="${offset}"
             stroke-linecap="round"
             transform="rotate(-90 ${cx} ${cy})"
-            class="fade-in" />
+            />
     <text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central"
           font-size="18" font-weight="700" fill="${color}">
       ${encodeHTML(label)}
@@ -140,7 +135,7 @@ export function createDonutSegment(
 ): string {
   const innerRadius = radius * 0.6;
   const d = createDonutArcPath(cx, cy, radius, innerRadius, startAngle, endAngle);
-  return `<path d="${d}" fill="${color}" class="fade-in" />`;
+  return `<path d="${d}" fill="${color}" />`;
 }
 
 function createDonutArcPath(

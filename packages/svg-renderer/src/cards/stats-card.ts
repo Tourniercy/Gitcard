@@ -82,7 +82,7 @@ export function renderStatsCard(stats: GitHubStats, options: CardOptions): strin
         : '';
       const labelX = options.showIcons ? statsStartX + 22 : statsStartX;
       return `
-        <g class="fade-in" style="animation-delay: ${i * 0.1}s;">
+        <g>
           ${iconPart}
           <text x="${labelX}" y="${y}" class="stat-label">${encodeHTML(stat.label)}</text>
           <text x="${CARD_WIDTH - 25}" y="${y}" class="stat-value" text-anchor="end">${formatNumber(stat.value, options.locale)}</text>
