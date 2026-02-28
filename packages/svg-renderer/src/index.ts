@@ -2,8 +2,8 @@
 export type { CardOptions, GitHubStats, StreakData, TopLangsData, LanguageData } from './types';
 
 // Theme system
-export type { Theme } from './themes/index';
-export { getTheme, THEME_NAMES } from './themes/index';
+export type { Theme, ThemeGroup } from './themes/index';
+export { getTheme, THEME_NAMES, THEME_GROUPS } from './themes/index';
 
 // Card renderers
 export { renderStatsCard } from './cards/stats-card';
