@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/api/package.json apps/api/
 COPY packages/svg-renderer/package.json packages/svg-renderer/
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile --ignore-scripts
 
 COPY tsconfig.base.json ./
 COPY packages/svg-renderer/ packages/svg-renderer/
@@ -29,7 +29,7 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/api/package.json apps/api/
 COPY packages/svg-renderer/package.json packages/svg-renderer/
 COPY packages/svg-renderer/src/ packages/svg-renderer/src/
-RUN pnpm install --frozen-lockfile --prod --filter api
+RUN pnpm install --frozen-lockfile --prod --ignore-scripts --filter api
 
 COPY --from=builder /app/apps/api/dist apps/api/dist
 
