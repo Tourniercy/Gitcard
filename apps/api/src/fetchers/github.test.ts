@@ -111,12 +111,12 @@ describe('fetchGitHubData', () => {
 
 describe('GitHub error classes', () => {
   it('GitHubNotFoundError has correct properties', () => {
-    const err = new GitHubNotFoundError('octocat');
+    const err = new GitHubNotFoundError('tourniercy');
     expect(err).toBeInstanceOf(GitHubApiError);
     expect(err.name).toBe('GitHubNotFoundError');
     expect(err.status).toBe(404);
-    expect(err.username).toBe('octocat');
-    expect(err.message).toContain('octocat');
+    expect(err.username).toBe('tourniercy');
+    expect(err.message).toContain('tourniercy');
   });
 
   it('GitHubRateLimitError has correct properties', () => {

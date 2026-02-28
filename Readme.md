@@ -3,7 +3,6 @@
   <p>Dynamically generated GitHub stats cards for your profile README.</p>
 
   <p>
-    <a href="https://github.com/Tourniercy/Gitcard/actions"><img src="https://github.com/Tourniercy/Gitcard/workflows/CI/badge.svg" alt="CI"></a>
     <a href="https://github.com/Tourniercy/Gitcard/issues"><img src="https://img.shields.io/github/issues/Tourniercy/Gitcard?color=0088ff" alt="Issues"></a>
     <a href="https://github.com/Tourniercy/Gitcard/pulls"><img src="https://img.shields.io/github/issues-pr/Tourniercy/Gitcard?color=0088ff" alt="Pull Requests"></a>
     <a href="https://github.com/Tourniercy/Gitcard/blob/main/LICENSE"><img src="https://img.shields.io/github/license/Tourniercy/Gitcard" alt="License"></a>
@@ -19,8 +18,6 @@
 </div>
 
 ---
-
-Inspired by [github-readme-stats](https://github.com/anuraghazra/github-readme-stats) and [github-readme-streak-stats](https://github.com/DenverCoder1/github-readme-streak-stats). Self-hosted, open source, and fully customizable.
 
 ## Stats Card
 

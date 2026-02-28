@@ -23,7 +23,7 @@ export function Sidebar({ config, onUsernameChange, onThemeChange, onToggle }: S
             id="username-input"
             value={config.username}
             onChange={(e) => onUsernameChange(e.target.value)}
-            placeholder="e.g. octocat"
+            placeholder="e.g. tourniercy"
             autoComplete="off"
             spellCheck={false}
           />
