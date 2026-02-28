@@ -5,6 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
 import { ThemeCombobox } from './ThemeCombobox';
+import { ColorInput } from './ColorInput';
 
 interface SidebarProps {
   config: CardConfig;
@@ -120,18 +121,13 @@ export function Sidebar({
               ['borderColor', 'Border'],
             ] as const
           ).map(([key, label]) => (
-            <div key={key} className="flex flex-col gap-1">
-              <Label htmlFor={`color-${key}`} className="text-xs font-normal text-muted-foreground">
-                {label}
-              </Label>
-              <Input
-                id={`color-${key}`}
-                value={config[key]}
-                onChange={(e) => onOptionChange(key, e.target.value)}
-                placeholder="e.g. 0d1117"
-                className="h-8 text-xs font-mono"
-              />
-            </div>
+            <ColorInput
+              key={key}
+              id={`color-${key}`}
+              label={label}
+              value={config[key]}
+              onChange={(v) => onOptionChange(key, v)}
+            />
           ))}
         </div>
 
