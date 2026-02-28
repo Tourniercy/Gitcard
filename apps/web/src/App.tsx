@@ -81,7 +81,7 @@ export function App() {
       </header>
 
       {/* Body */}
-      <div className="mx-auto grid w-full max-w-[1200px] flex-1 grid-cols-1 gap-6 p-6 md:grid-cols-[300px_1fr]">
+      <div className="container grid flex-1 grid-cols-1 gap-6 py-6 md:grid-cols-[300px_1fr]">
         <Sidebar
           config={config}
           onUsernameChange={setUsername}
