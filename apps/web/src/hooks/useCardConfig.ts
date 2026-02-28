@@ -1,7 +1,7 @@
 import { useState, useMemo, useCallback } from 'react';
 import type { CardOptions } from '@gitcard/svg-renderer';
 
-export type CardType = 'stats' | 'streak' | 'top-langs';
+export type CardType = 'stats' | 'streak' | 'top-langs' | 'profile';
 
 export interface CardConfig {
   username: string;
@@ -18,6 +18,7 @@ export interface CardConfig {
   locale: string;
   hide: string[];
   cacheSeconds: string;
+  layout: string;
 }
 
 interface UseCardConfigReturn {
@@ -45,12 +46,13 @@ const DEFAULTS: Omit<CardConfig, 'username' | 'cards'> = {
   locale: 'en',
   hide: [],
   cacheSeconds: '',
+  layout: 'compact',
 };
 
 export function useCardConfig(): UseCardConfigReturn {
   const [config, setConfig] = useState<CardConfig>({
     username: '',
-    cards: ['stats', 'streak', 'top-langs'],
+    cards: ['stats', 'streak', 'top-langs', 'profile'],
     ...DEFAULTS,
   });
 
@@ -85,6 +87,7 @@ export function useCardConfig(): UseCardConfigReturn {
       stats: `/stats/${u}`,
       streak: `/stats/${u}/streak`,
       'top-langs': `/stats/${u}/top-langs`,
+      profile: `/stats/${u}/profile`,
     };
   }, [config.username]);
 
@@ -128,6 +131,9 @@ export function useCardConfig(): UseCardConfigReturn {
       if (config.cacheSeconds && Number(config.cacheSeconds) >= 1800) {
         params.set('cache_seconds', config.cacheSeconds);
       }
+      if (cardType === 'top-langs' && config.layout) {
+        params.set('layout', config.layout);
+      }
 
       const qs = params.toString();
       return qs ? `?${qs}` : '';
@@ -149,6 +155,7 @@ export function useCardConfig(): UseCardConfigReturn {
       borderColor: config.borderColor || undefined,
       cacheSeconds: Number(config.cacheSeconds) || 14400,
       locale: config.locale,
+      layout: config.layout || undefined,
     }),
     [config],
   );

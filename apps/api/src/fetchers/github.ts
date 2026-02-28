@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/node';
 
 import type { GitHubGraphQLResponse, GitHubUser } from './types';
-import type { GitHubStats, StreakData, TopLangsData } from '@gitcard/svg-renderer';
+import type { GitHubStats, StreakData, TopLangsData, ProfileData } from '@gitcard/svg-renderer';
 
 const GITHUB_GRAPHQL_URL = 'https://api.github.com/graphql';
 
@@ -10,6 +10,7 @@ query($login: String!) {
   user(login: $login) {
     name
     login
+    createdAt
     contributionsCollection {
       totalCommitContributions
       restrictedContributionsCount
@@ -59,6 +60,7 @@ export interface FetchResult {
   stats: GitHubStats;
   streak: StreakData;
   languages: TopLangsData;
+  profile: ProfileData;
 }
 
 export class GitHubApiError extends Error {
@@ -146,6 +148,7 @@ export async function fetchGitHubData(username: string, token: string): Promise<
           stats: extractStats(user, username),
           streak: extractStreak(user, username),
           languages: extractLanguages(user, username),
+          profile: extractProfile(user, username),
         };
       } catch (err) {
         if (!(err instanceof GitHubNotFoundError) && !(err instanceof GitHubRateLimitError)) {
@@ -256,4 +259,21 @@ function extractLanguages(user: GitHubUser, username: string): TopLangsData {
     .slice(0, 5);
 
   return { username, languages };
+}
+
+function extractProfile(user: GitHubUser, username: string): ProfileData {
+  const calendar = user.contributionsCollection.contributionCalendar;
+  const contributionCalendar = calendar.weeks.flatMap((w) =>
+    w.contributionDays.map((d) => ({ date: d.date, count: d.contributionCount })),
+  );
+
+  return {
+    username,
+    name: user.name ?? user.login,
+    contributionsThisYear: calendar.totalContributions,
+    publicRepos: user.repositories.totalCount,
+    createdAt: user.createdAt,
+    email: null,
+    contributionCalendar,
+  };
 }

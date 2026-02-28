@@ -1,11 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
-import type { GitHubStats, StreakData, TopLangsData } from '@gitcard/svg-renderer';
+import type { GitHubStats, StreakData, TopLangsData, ProfileData } from '@gitcard/svg-renderer';
 import { api } from '@/lib/api';
 
 export interface GitHubData {
   stats: GitHubStats;
   streak: StreakData;
   languages: TopLangsData;
+  profile: ProfileData;
 }
 
 export function useGitHubData(username: string) {

@@ -12,6 +12,7 @@ const CARD_ALT: Record<CardType, string> = {
   stats: 'GitHub Stats',
   streak: 'GitHub Streak',
   'top-langs': 'Top Languages',
+  profile: 'GitHub Profile',
 };
 
 const API_BASE = import.meta.env.VITE_API_URL ?? '';
