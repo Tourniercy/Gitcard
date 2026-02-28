@@ -10,7 +10,6 @@ export function App() {
   const {
     config,
     setUsername,
-    setCards,
     toggleCard,
     setTheme,
     setOption,
@@ -59,13 +58,6 @@ export function App() {
     [setOption],
   );
 
-  const handleColorChange = useCallback(
-    (key: string, value: string) => {
-      setOption(key as keyof CardConfig, value as CardConfig[keyof CardConfig]);
-    },
-    [setOption],
-  );
-
   const showPreview = data !== null;
 
   return (
@@ -85,14 +77,10 @@ export function App() {
       <div className="mx-auto grid w-full max-w-[1200px] flex-1 grid-cols-1 gap-6 p-6 md:grid-cols-[300px_1fr]">
         <Sidebar
           config={config}
-          cards={config.cards}
           onUsernameChange={setUsername}
           onToggleCard={toggleCard}
           onThemeChange={setTheme}
           onToggle={handleToggle}
-          onColorChange={handleColorChange}
-          buildSrc={buildSrc}
-          hasData={showPreview}
         />
 
         <main className="flex min-w-0 flex-col gap-6">
@@ -118,7 +106,7 @@ export function App() {
           )}
 
           {showPreview && (
-            <CardList cards={config.cards} onReorder={setCards} data={data} options={cardOptions} />
+            <CardList cards={config.cards} data={data} options={cardOptions} buildSrc={buildSrc} />
           )}
         </main>
       </div>
