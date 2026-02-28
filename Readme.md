@@ -274,8 +274,8 @@ Request -> CDN (Cloudflare) -> VPS (Docker -> Node.js + Hono)
 
 ### Local Development Setup
 
-1. Install [Volta](https://volta.sh) and enable pnpm support (`VOLTA_FEATURE_PNPM=1`)
-2. Clone the repo and run `pnpm install` -- Volta handles Node/pnpm versions automatically
+1. Install [pnpm](https://pnpm.io/installation) (v10+)
+2. Clone the repo and run `pnpm install` -- pnpm auto-downloads the correct Node.js version
 3. Copy `.env.example` to `.env` in both `apps/api/` and `apps/web/` and add a GitHub PAT
 4. Run `pnpm dev`
 
