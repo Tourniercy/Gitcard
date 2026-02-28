@@ -78,6 +78,9 @@ function createMockCache(): Cache & {
     async set(key: string, value: string, _ttlSeconds: number): Promise<void> {
       store.set(key, value);
     },
+    async flush(): Promise<void> {
+      store.clear();
+    },
   };
 }
 

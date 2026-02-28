@@ -15,6 +15,9 @@
     &middot;
     <a href="https://github.com/Tourniercy/Gitcard/issues/new">Request Feature</a>
   </p>
+
+  <br />
+  <p><strong><a href="https://gitcard.rilcy.app/">Create your cards visually</a></strong> — pick a theme, customize colors, and copy the embed code.</p>
 </div>
 
 ---
