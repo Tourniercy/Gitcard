@@ -26,5 +26,11 @@ export function CardPreview({ id, data, options }: CardPreviewProps) {
   const svg = useMemo(() => renderers[id](data, options), [id, data, options]);
   const isCompactLangs = id === 'top-langs' && options.layout === 'compact';
   const maxWidth = id === 'profile' ? '' : isCompactLangs ? 'max-w-[300px]' : 'max-w-[495px]';
-  return <div className={`w-full ${maxWidth} p-4`} dangerouslySetInnerHTML={{ __html: svg }} />;
+  const scaleSvg = id === 'profile' ? '[&>svg]:w-full [&>svg]:h-auto' : '';
+  return (
+    <div
+      className={`w-full ${maxWidth} ${scaleSvg} p-4`}
+      dangerouslySetInnerHTML={{ __html: svg }}
+    />
+  );
 }
