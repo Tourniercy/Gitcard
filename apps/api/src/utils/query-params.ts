@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import type { CardOptions } from '../types';
+import type { CardOptions } from '@gitcard/svg-renderer';
 
 const booleanString = z
   .enum(['true', 'false', '1', '0', ''])

@@ -7,6 +7,7 @@ const env = createEnv({
     LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error']).default('info'),
     REDIS_URL: z.string().url().optional(),
     CACHE_TTL: z.coerce.number().min(60).default(14400),
+    CORS_ORIGIN: z.string().optional(),
     SENTRY_DSN: z.string().url().optional(),
     SENTRY_TRACES_SAMPLE_RATE: z.coerce.number().min(0).max(1).default(0.1),
     SENTRY_ENVIRONMENT: z.string().min(1).default('production'),
@@ -31,6 +32,7 @@ export interface AppConfig {
   port: number;
   redisUrl?: string;
   cacheTtl: number;
+  corsOrigin?: string;
   logLevel: 'debug' | 'info' | 'warn' | 'error';
   sentryDsn?: string;
   sentryTracesSampleRate: number;
@@ -43,6 +45,7 @@ export function loadConfig(): AppConfig {
     port: env.PORT,
     redisUrl: env.REDIS_URL,
     cacheTtl: env.CACHE_TTL,
+    corsOrigin: env.CORS_ORIGIN,
     logLevel: env.LOG_LEVEL,
     sentryDsn: env.SENTRY_DSN,
     sentryTracesSampleRate: env.SENTRY_TRACES_SAMPLE_RATE,

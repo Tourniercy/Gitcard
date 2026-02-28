@@ -58,9 +58,8 @@ describeIntegration('integration: GitHub API (real token)', () => {
     const result = await fetchGitHubData('torvalds', GITHUB_TOKEN!);
 
     // Dynamically import card renderers to test the full pipeline
-    const { renderStatsCard } = await import('./cards/stats-card');
-    const { renderStreakCard } = await import('./cards/streak-card');
-    const { renderLangsCard } = await import('./cards/langs-card');
+    const { renderStatsCard, renderStreakCard, renderLangsCard } =
+      await import('@gitcard/svg-renderer');
     const { parseCardOptions } = await import('./utils/query-params');
 
     const options = parseCardOptions({});

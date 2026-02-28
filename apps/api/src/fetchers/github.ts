@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/node';
 
 import type { GitHubGraphQLResponse, GitHubUser } from './types';
-import type { GitHubStats, StreakData, TopLangsData } from '../types';
+import type { GitHubStats, StreakData, TopLangsData } from '@gitcard/svg-renderer';
 
 const GITHUB_GRAPHQL_URL = 'https://api.github.com/graphql';
 

@@ -1,7 +1,7 @@
 import type { Hono } from 'hono';
 import type { AppConfig } from '../config';
 import type { Cache } from '../cache/index';
-import { renderStatsCard } from '../cards/stats-card';
+import { renderStatsCard } from '@gitcard/svg-renderer';
 import { createCardRoute } from './card-factory';
 
 export function createStatsRoute(config: AppConfig, cache: Cache): Hono {

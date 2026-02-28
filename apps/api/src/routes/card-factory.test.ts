@@ -64,7 +64,7 @@ import { Hono } from 'hono';
 import type { Cache } from '../cache/index';
 import type { AppConfig } from '../config';
 import type { FetchResult } from '../fetchers/github';
-import type { CardOptions } from '../types';
+import type { CardOptions } from '@gitcard/svg-renderer';
 
 function createMockCache(): Cache & {
   store: Map<string, string>;

@@ -1,6 +1,8 @@
 services:
-  app:
-    build: .
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
     ports:
       - '3000:3000'
     environment:
@@ -9,6 +11,7 @@ services:
       - REDIS_URL=redis://redis:6379
       - CACHE_TTL=14400
       - LOG_LEVEL=info
+      - CORS_ORIGIN=${CORS_ORIGIN:-*}
       - METRICS_TOKEN=${METRICS_TOKEN:-}
       - SENTRY_DSN=${SENTRY_DSN:-}
       - SENTRY_TRACES_SAMPLE_RATE=${SENTRY_TRACES_SAMPLE_RATE:-0.1}
@@ -23,6 +26,22 @@ services:
       timeout: 5s
       retries: 3
       start_period: 10s
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:3000}
+    ports:
+      - '8080:80'
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD', 'wget', '--no-verbose', '--tries=1', '--spider', 'http://localhost:80/']
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
 
   redis:
     image: redis:7-alpine

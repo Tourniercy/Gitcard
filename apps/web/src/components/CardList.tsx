@@ -15,21 +15,25 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import type { CardOptions } from '@gitcard/svg-renderer';
 import type { CardType } from '../hooks/useCardConfig';
+import type { GitHubData } from '../hooks/useGitHubData';
 import { CardPreview } from './CardPreview';
 
 interface CardListProps {
   cards: CardType[];
   onReorder: (cards: CardType[]) => void;
-  buildSrc: (card: CardType) => string;
+  data: GitHubData;
+  options: CardOptions;
 }
 
 interface SortableCardProps {
   id: CardType;
-  src: string;
+  data: GitHubData;
+  options: CardOptions;
 }
 
-function SortableCard({ id, src }: SortableCardProps) {
+function SortableCard({ id, data, options }: SortableCardProps) {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
 
   const style = {
@@ -42,12 +46,12 @@ function SortableCard({ id, src }: SortableCardProps) {
       <div className="sortable-card-handle">
         <span className="drag-icon">&#x2630;</span>
       </div>
-      <CardPreview id={id} src={src} />
+      <CardPreview id={id} data={data} options={options} />
     </div>
   );
 }
 
-export function CardList({ cards, onReorder, buildSrc }: CardListProps) {
+export function CardList({ cards, onReorder, data, options }: CardListProps) {
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -70,7 +74,7 @@ export function CardList({ cards, onReorder, buildSrc }: CardListProps) {
       <SortableContext items={cards} strategy={verticalListSortingStrategy}>
         <div className="card-list">
           {cards.map((card) => (
-            <SortableCard key={card} id={card} src={buildSrc(card)} />
+            <SortableCard key={card} id={card} data={data} options={options} />
           ))}
         </div>
       </SortableContext>

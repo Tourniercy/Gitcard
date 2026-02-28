@@ -1,6 +1,7 @@
 import './telemetry';
 import * as Sentry from '@sentry/node';
 import { Hono } from 'hono';
+import { cors } from 'hono/cors';
 import { loadConfig } from './config';
 import { createCache } from './cache';
 import { metricsMiddleware } from './metrics/middleware';
@@ -14,6 +15,16 @@ const config = loadConfig();
 const cache = createCache(config.redisUrl);
 
 const app = new Hono();
+
+// CORS — allow cross-origin requests from the web frontend
+app.use(
+  '*',
+  cors({
+    origin: config.corsOrigin ?? '*',
+    allowMethods: ['GET'],
+    maxAge: 86400,
+  }),
+);
 
 // Metrics middleware — track all requests
 app.use('*', metricsMiddleware);
