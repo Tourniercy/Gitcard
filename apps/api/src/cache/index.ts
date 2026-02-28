@@ -6,6 +6,7 @@ import { cacheCounters } from '../metrics/store';
 export interface Cache {
   get(key: string): Promise<string | null>;
   set(key: string, value: string, ttlSeconds: number): Promise<void>;
+  flush(): Promise<void>;
 }
 
 export function createCache(redisUrl?: string): Cache {
@@ -44,6 +45,10 @@ export function createCache(redisUrl?: string): Cache {
           await cache.set(key, value, ttlSeconds * 1000);
         },
       );
+    },
+
+    async flush(): Promise<void> {
+      await cache.clear();
     },
   };
 }

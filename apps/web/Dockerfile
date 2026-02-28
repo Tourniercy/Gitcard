@@ -17,6 +17,9 @@ COPY apps/web/ apps/web/
 ARG VITE_API_URL=https://api-gitcard.rilcy.app
 ENV VITE_API_URL=$VITE_API_URL
 
+ARG VITE_SENTRY_DSN=
+ENV VITE_SENTRY_DSN=$VITE_SENTRY_DSN
+
 RUN pnpm --filter web build
 
 # Production stage — serve static files with nginx

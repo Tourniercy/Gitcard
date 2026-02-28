@@ -31,4 +31,13 @@ describe('cache (cacheable)', () => {
     await cache.set('key', 'new', 3600);
     expect(await cache.get('key')).toBe('new');
   });
+
+  it('flush clears all entries', async () => {
+    const cache = createCache();
+    await cache.set('a', '1', 3600);
+    await cache.set('b', '2', 3600);
+    await cache.flush();
+    expect(await cache.get('a')).toBeNull();
+    expect(await cache.get('b')).toBeNull();
+  });
 });

@@ -15,6 +15,10 @@ import { createDataRoute } from './routes/data';
 const config = loadConfig();
 const cache = createCache(config.redisUrl);
 
+cache.flush().catch((err) => {
+  console.error('Failed to flush cache on startup:', err);
+});
+
 const app = new Hono();
 
 // CORS — allow cross-origin requests from the web frontend

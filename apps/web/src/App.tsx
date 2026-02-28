@@ -85,6 +85,7 @@ export function App() {
           onUsernameChange={setUsername}
           onThemeChange={setTheme}
           onToggle={handleToggle}
+          onOptionChange={setOption}
         />
 
         <main className="flex min-w-0 flex-col gap-6">
