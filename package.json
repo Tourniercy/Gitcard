@@ -24,9 +24,11 @@
     "oxlint": "^1",
     "typescript": "^5.8"
   },
-  "volta": {
-    "node": "24.13.1",
-    "pnpm": "10.5.2"
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "24.13.1"
+    }
   },
   "pnpm": {
     "onlyBuiltDependencies": [
