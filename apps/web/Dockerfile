@@ -14,7 +14,7 @@ COPY tsconfig.base.json ./
 COPY packages/svg-renderer/ packages/svg-renderer/
 COPY apps/web/ apps/web/
 
-ARG VITE_API_URL=https://api.gitcard.rilcy.app
+ARG VITE_API_URL=https://api-gitcard.rilcy.app
 ENV VITE_API_URL=$VITE_API_URL
 
 RUN pnpm --filter web build
