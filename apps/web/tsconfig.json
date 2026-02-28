@@ -3,7 +3,6 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "outDir": "dist",
-    "rootDir": "src",
     "types": ["react", "react-dom"],
     "baseUrl": ".",
     "paths": {
