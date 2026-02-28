@@ -1,18 +1,11 @@
-import { THEME_NAMES } from '@gitcard/svg-renderer';
 import type { CardConfig, CardType } from '@/hooks/useCardConfig';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Switch } from '@/components/ui/switch';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
+import { ThemeCombobox } from './ThemeCombobox';
 import { ColorPicker } from './ColorPicker';
 import { EmbedOutput } from './EmbedOutput';
 
@@ -101,18 +94,7 @@ export function Sidebar({
           {/* Theme */}
           <div className="flex flex-col gap-1.5">
             <Label>Theme</Label>
-            <Select value={config.theme} onValueChange={onThemeChange}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {THEME_NAMES.map((theme) => (
-                  <SelectItem key={theme} value={theme}>
-                    {theme.charAt(0).toUpperCase() + theme.slice(1)}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <ThemeCombobox value={config.theme} onValueChange={onThemeChange} />
           </div>
 
           <Separator />

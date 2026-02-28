@@ -79,6 +79,60 @@ const themes: Record<string, Theme> = {
 
 export const THEME_NAMES: string[] = Object.keys(themes);
 
+export interface ThemeGroup {
+  label: string;
+  themes: string[];
+}
+
+export const THEME_GROUPS: ThemeGroup[] = [
+  {
+    label: 'Light',
+    themes: [
+      'default',
+      'flat',
+      'breezy',
+      'rose',
+      'mint',
+      'sand',
+      'lavender',
+      'solarized',
+      'gruvbox-light',
+      'one-light',
+      'catppuccin-latte',
+      'cotton-candy',
+      'paper',
+    ],
+  },
+  {
+    label: 'Dark',
+    themes: ['dark', 'dim', 'midnight', 'onyx', 'slate'],
+  },
+  {
+    label: 'Editor',
+    themes: [
+      'dracula',
+      'monokai',
+      'nord',
+      'solarized-dark',
+      'gruvbox',
+      'tokyo-night',
+      'one-dark',
+      'catppuccin-mocha',
+      'synthwave',
+      'cobalt',
+      'night-owl',
+    ],
+  },
+  {
+    label: 'Atmosphere',
+    themes: ['aurora', 'ocean', 'forest', 'sunset', 'cherry'],
+  },
+  {
+    label: 'Accessibility',
+    themes: ['high-contrast'],
+  },
+];
+
 export function getTheme(name: string): Theme {
   return themes[name] ?? defaultTheme;
 }
