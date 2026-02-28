@@ -1,11 +1,10 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { useCardConfig } from './hooks/useCardConfig';
-import { useGitHubData } from './hooks/useGitHubData';
-import type { CardConfig, CardType } from './hooks/useCardConfig';
-import { Sidebar } from './components/Sidebar';
-import { CardList } from './components/CardList';
-import { EmbedOutput } from './components/EmbedOutput';
-import './styles/app.css';
+import { useCardConfig } from '@/hooks/useCardConfig';
+import { useGitHubData } from '@/hooks/useGitHubData';
+import type { CardConfig, CardType } from '@/hooks/useCardConfig';
+import { Sidebar } from '@/components/Sidebar';
+import { CardList } from '@/components/CardList';
+import { ModeToggle } from '@/components/mode-toggle';
 
 export function App() {
   const {
@@ -23,7 +22,6 @@ export function App() {
   const [debouncedUsername, setDebouncedUsername] = useState('');
   const debounceRef = useRef<ReturnType<typeof setTimeout>>(null);
 
-  // Debounce username input
   useEffect(() => {
     if (debounceRef.current) {
       clearTimeout(debounceRef.current);
@@ -69,64 +67,58 @@ export function App() {
   );
 
   const showPreview = data !== null;
-  const enabledCards = config.cards;
 
   return (
-    <div className="app">
-      <header className="app-header">
-        <div className="header-content">
-          <h1 className="header-title">GitCard</h1>
-          <p className="header-subtitle">GitHub Stats Card Configurator</p>
+    <div className="flex min-h-screen flex-col">
+      {/* Header */}
+      <header className="sticky top-0 z-50 flex items-center justify-between border-b bg-background/95 px-6 py-3 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="flex items-baseline gap-3">
+          <h1 className="text-xl font-bold tracking-tight text-primary">GitCard</h1>
+          <p className="hidden text-sm text-muted-foreground sm:block">
+            GitHub Stats Card Configurator
+          </p>
         </div>
-        <a
-          className="header-link"
-          href="https://github.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          GitHub
-        </a>
+        <ModeToggle />
       </header>
 
-      <div className="app-body">
+      {/* Body */}
+      <div className="mx-auto grid w-full max-w-[1200px] flex-1 grid-cols-1 gap-6 p-6 md:grid-cols-[300px_1fr]">
         <Sidebar
           config={config}
+          cards={config.cards}
           onUsernameChange={setUsername}
           onToggleCard={toggleCard}
           onThemeChange={setTheme}
           onToggle={handleToggle}
           onColorChange={handleColorChange}
+          buildSrc={buildSrc}
+          hasData={showPreview}
         />
 
-        <main className="main-content">
+        <main className="flex min-w-0 flex-col gap-6">
           {!config.username.trim() && (
-            <div className="preview-placeholder">
-              <p>Enter a GitHub username to get started</p>
+            <div className="flex min-h-[300px] items-center justify-center rounded-lg border-2 border-dashed">
+              <p className="text-muted-foreground">Enter a GitHub username to get started</p>
             </div>
           )}
 
           {config.username.trim() && isLoading && (
-            <div className="preview-placeholder">
-              <p>Loading...</p>
+            <div className="flex min-h-[300px] items-center justify-center rounded-lg border-2 border-dashed">
+              <div className="flex flex-col items-center gap-2">
+                <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+                <p className="text-sm text-muted-foreground">Loading...</p>
+              </div>
             </div>
           )}
 
           {config.username.trim() && error && !isLoading && (
-            <div className="preview-placeholder preview-error">
-              <p>{error}</p>
+            <div className="flex min-h-[300px] items-center justify-center rounded-lg border-2 border-dashed border-destructive bg-destructive/5">
+              <p className="text-destructive">{error}</p>
             </div>
           )}
 
           {showPreview && (
-            <>
-              <CardList
-                cards={enabledCards}
-                onReorder={setCards}
-                data={data}
-                options={cardOptions}
-              />
-              <EmbedOutput cards={enabledCards} buildSrc={buildSrc} />
-            </>
+            <CardList cards={config.cards} onReorder={setCards} data={data} options={cardOptions} />
           )}
         </main>
       </div>

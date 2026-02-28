@@ -15,9 +15,10 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { GripVertical } from 'lucide-react';
 import type { CardOptions } from '@gitcard/svg-renderer';
-import type { CardType } from '../hooks/useCardConfig';
-import type { GitHubData } from '../hooks/useGitHubData';
+import type { CardType } from '@/hooks/useCardConfig';
+import type { GitHubData } from '@/hooks/useGitHubData';
 import { CardPreview } from './CardPreview';
 
 interface CardListProps {
@@ -42,9 +43,15 @@ function SortableCard({ id, data, options }: SortableCardProps) {
   };
 
   return (
-    <div ref={setNodeRef} style={style} className="sortable-card" {...attributes} {...listeners}>
-      <div className="sortable-card-handle">
-        <span className="drag-icon">&#x2630;</span>
+    <div
+      ref={setNodeRef}
+      style={style}
+      className="rounded-lg border bg-card shadow-sm cursor-grab overflow-hidden transition-shadow hover:shadow-md active:cursor-grabbing active:shadow-lg"
+      {...attributes}
+      {...listeners}
+    >
+      <div className="flex items-center gap-2 px-3 py-2 border-b bg-muted/50">
+        <GripVertical className="h-4 w-4 text-muted-foreground" />
       </div>
       <CardPreview id={id} data={data} options={options} />
     </div>
@@ -72,7 +79,7 @@ export function CardList({ cards, onReorder, data, options }: CardListProps) {
   return (
     <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
       <SortableContext items={cards} strategy={verticalListSortingStrategy}>
-        <div className="card-list">
+        <div className="flex flex-col gap-4">
           {cards.map((card) => (
             <SortableCard key={card} id={card} data={data} options={options} />
           ))}
