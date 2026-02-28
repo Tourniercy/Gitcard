@@ -1,5 +1,8 @@
 import { useState, useCallback } from 'react';
-import type { CardType } from '../hooks/useCardConfig';
+import { Copy, Check } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import type { CardType } from '@/hooks/useCardConfig';
 
 interface EmbedOutputProps {
   cards: CardType[];
@@ -41,33 +44,49 @@ export function EmbedOutput({ cards, buildSrc }: EmbedOutputProps) {
   }, []);
 
   return (
-    <div className="embed-output">
-      <h3>Embed Code</h3>
-
-      <div className="embed-section">
-        <div className="embed-header">
-          <span className="embed-label">Markdown</span>
-          <button
-            type="button"
-            className="copy-btn"
-            onClick={() => handleCopy(markdown, 'markdown')}
-          >
-            {copiedType === 'markdown' ? 'Copied!' : 'Copy Markdown'}
-          </button>
+    <div className="flex flex-col gap-4">
+      <div>
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-sm font-medium">Markdown</span>
+          <Button variant="ghost" size="sm" onClick={() => handleCopy(markdown, 'markdown')}>
+            {copiedType === 'markdown' ? (
+              <>
+                <Check className="mr-1 h-3 w-3" />
+                Copied
+              </>
+            ) : (
+              <>
+                <Copy className="mr-1 h-3 w-3" />
+                Copy
+              </>
+            )}
+          </Button>
         </div>
-        <pre className="embed-code">
+        <pre className="rounded-md bg-muted p-3 text-xs font-mono overflow-x-auto">
           <code>{markdown}</code>
         </pre>
       </div>
 
-      <div className="embed-section">
-        <div className="embed-header">
-          <span className="embed-label">HTML</span>
-          <button type="button" className="copy-btn" onClick={() => handleCopy(html, 'html')}>
-            {copiedType === 'html' ? 'Copied!' : 'Copy HTML'}
-          </button>
+      <Separator />
+
+      <div>
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-sm font-medium">HTML</span>
+          <Button variant="ghost" size="sm" onClick={() => handleCopy(html, 'html')}>
+            {copiedType === 'html' ? (
+              <>
+                <Check className="mr-1 h-3 w-3" />
+                Copied
+              </>
+            ) : (
+              <>
+                <Copy className="mr-1 h-3 w-3" />
+                Copy
+              </>
+            )}
+          </Button>
         </div>
-        <pre className="embed-code">
+        <pre className="rounded-md bg-muted p-3 text-xs font-mono overflow-x-auto">
           <code>{html}</code>
         </pre>
       </div>

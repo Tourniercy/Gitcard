@@ -5,8 +5,8 @@ import {
   renderLangsCard,
   type CardOptions,
 } from '@gitcard/svg-renderer';
-import type { CardType } from '../hooks/useCardConfig';
-import type { GitHubData } from '../hooks/useGitHubData';
+import type { CardType } from '@/hooks/useCardConfig';
+import type { GitHubData } from '@/hooks/useGitHubData';
 
 interface CardPreviewProps {
   id: CardType;
@@ -22,5 +22,5 @@ const renderers: Record<CardType, (data: GitHubData, options: CardOptions) => st
 
 export function CardPreview({ id, data, options }: CardPreviewProps) {
   const svg = useMemo(() => renderers[id](data, options), [id, data, options]);
-  return <div className="card-preview-img" dangerouslySetInnerHTML={{ __html: svg }} />;
+  return <div className="w-full max-w-[495px] p-4" dangerouslySetInnerHTML={{ __html: svg }} />;
 }

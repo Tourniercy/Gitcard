@@ -4,7 +4,11 @@
     "jsx": "react-jsx",
     "outDir": "dist",
     "rootDir": "src",
-    "types": ["react", "react-dom"]
+    "types": ["react", "react-dom"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"],
   "references": [{ "path": "./tsconfig.node.json" }]
