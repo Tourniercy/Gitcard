@@ -19,6 +19,7 @@
     "@t3-oss/env-core": "^0.13.10",
     "cacheable": "^2.3.2",
     "hono": "^4",
+    "hono-rate-limiter": "^0.5.3",
     "zod": "^3"
   },
   "devDependencies": {
