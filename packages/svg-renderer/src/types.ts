@@ -11,6 +11,7 @@ export interface CardOptions {
   borderColor?: string;
   cacheSeconds: number;
   locale: string;
+  layout?: string;
 }
 
 export interface GitHubStats {
@@ -45,4 +46,19 @@ export interface LanguageData {
 export interface TopLangsData {
   username: string;
   languages: LanguageData[];
+}
+
+export interface ContributionDay {
+  date: string;
+  count: number;
+}
+
+export interface ProfileData {
+  username: string;
+  name: string;
+  contributionsThisYear: number;
+  publicRepos: number;
+  createdAt: string;
+  email: string | null;
+  contributionCalendar: ContributionDay[];
 }

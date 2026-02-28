@@ -9,6 +9,7 @@ import { healthRoute } from './routes/health';
 import { createStatsRoute } from './routes/stats';
 import { createStreakRoute } from './routes/streak';
 import { createTopLangsRoute } from './routes/top-langs';
+import { createProfileRoute } from './routes/profile';
 import { createDataRoute } from './routes/data';
 
 const config = loadConfig();
@@ -35,7 +36,8 @@ const routes = app
   .route('', createDataRoute(config, cache))
   .route('', createStatsRoute(config, cache))
   .route('', createStreakRoute(config, cache))
-  .route('', createTopLangsRoute(config, cache));
+  .route('', createTopLangsRoute(config, cache))
+  .route('', createProfileRoute(config, cache));
 
 // 404 fallback
 app.notFound((c) => {

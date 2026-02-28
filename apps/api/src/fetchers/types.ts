@@ -8,6 +8,7 @@ export interface GitHubGraphQLResponse {
 export interface GitHubUser {
   name: string | null;
   login: string;
+  createdAt: string;
   contributionsCollection: {
     totalCommitContributions: number;
     restrictedContributionsCount: number;

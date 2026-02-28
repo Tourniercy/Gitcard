@@ -31,6 +31,7 @@ const querySchema = z.object({
     .transform((v) => Math.max(v, 1800))
     .default(14400),
   locale: z.string().default('en'),
+  layout: z.string().optional(),
 });
 
 export function parseCardOptions(query: Record<string, string | undefined>): CardOptions {
@@ -48,5 +49,6 @@ export function parseCardOptions(query: Record<string, string | undefined>): Car
     borderColor: parsed.border_color,
     cacheSeconds: parsed.cache_seconds,
     locale: parsed.locale,
+    layout: parsed.layout,
   };
 }

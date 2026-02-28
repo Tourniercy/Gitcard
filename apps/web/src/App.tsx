@@ -8,7 +8,7 @@ import { CardList } from '@/components/CardList';
 import { ModeToggle } from '@/components/mode-toggle';
 import { Button } from '@/components/ui/button';
 
-const ALL_CARDS: CardType[] = ['stats', 'streak', 'top-langs'];
+const ALL_CARDS: CardType[] = ['stats', 'streak', 'top-langs', 'profile'];
 
 export function App() {
   const { config, setUsername, setTheme, setOption, buildQueryString, cardPaths, cardOptions } =
