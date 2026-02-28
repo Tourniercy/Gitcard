@@ -1,7 +1,6 @@
-import type { CardConfig, CardType } from '@/hooks/useCardConfig';
+import type { CardConfig } from '@/hooks/useCardConfig';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
 import { ThemeCombobox } from './ThemeCombobox';
@@ -9,28 +8,13 @@ import { ThemeCombobox } from './ThemeCombobox';
 interface SidebarProps {
   config: CardConfig;
   onUsernameChange: (username: string) => void;
-  onToggleCard: (card: CardType) => void;
   onThemeChange: (theme: string) => void;
   onToggle: (key: string, value: boolean) => void;
 }
 
-const CARD_LABELS: Record<CardType, string> = {
-  stats: 'Stats',
-  streak: 'Streak',
-  'top-langs': 'Top Languages',
-};
-
-const ALL_CARDS: CardType[] = ['stats', 'streak', 'top-langs'];
-
-export function Sidebar({
-  config,
-  onUsernameChange,
-  onToggleCard,
-  onThemeChange,
-  onToggle,
-}: SidebarProps) {
+export function Sidebar({ config, onUsernameChange, onThemeChange, onToggle }: SidebarProps) {
   return (
-    <aside className="sticky top-[65px] self-start max-h-[calc(100vh-65px-3rem)] overflow-y-auto rounded-lg border bg-card p-4 shadow-sm">
+    <aside className="sticky top-[73px] self-start max-h-[calc(100vh-73px-3rem)] overflow-y-auto rounded-lg border bg-card p-4 shadow-sm">
       <div className="flex flex-col gap-4">
         {/* Username */}
         <div className="flex flex-col gap-1.5">
@@ -43,24 +27,6 @@ export function Sidebar({
             autoComplete="off"
             spellCheck={false}
           />
-        </div>
-
-        <Separator />
-
-        {/* Card selection */}
-        <div className="flex flex-col gap-1.5">
-          <Label>Cards</Label>
-          <div className="flex flex-col gap-2">
-            {ALL_CARDS.map((card) => (
-              <label key={card} className="flex items-center gap-2 text-sm cursor-pointer">
-                <Checkbox
-                  checked={config.cards.includes(card)}
-                  onCheckedChange={() => onToggleCard(card)}
-                />
-                {CARD_LABELS[card]}
-              </label>
-            ))}
-          </div>
         </div>
 
         <Separator />
