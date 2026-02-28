@@ -19,7 +19,7 @@ const renderers: Record<CardType, (data: GitHubData, options: CardOptions) => st
   stats: (data, options) => renderStatsCard(data.stats, options),
   streak: (data, options) => renderStreakCard(data.streak, options),
   'top-langs': (data, options) => renderLangsCard(data.languages, options),
-  profile: (data, options) => renderProfileCard(data.profile, options),
+  profile: (data, options) => (data.profile ? renderProfileCard(data.profile, options) : ''),
 };
 
 const CARD_WIDTHS: Record<CardType, number> = {
@@ -36,6 +36,9 @@ function getMaxWidth(id: CardType, options: CardOptions): number {
 
 export function CardPreview({ id, data, options }: CardPreviewProps) {
   const svg = useMemo(() => renderers[id](data, options), [id, data, options]);
+
+  if (!svg) return null;
+
   const src = `data:image/svg+xml,${encodeURIComponent(svg)}`;
 
   return (

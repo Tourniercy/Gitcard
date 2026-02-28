@@ -6,7 +6,7 @@ export interface GitHubData {
   stats: GitHubStats;
   streak: StreakData;
   languages: TopLangsData;
-  profile: ProfileData;
+  profile?: ProfileData;
 }
 
 export function useGitHubData(username: string) {
