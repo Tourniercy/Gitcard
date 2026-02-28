@@ -17,16 +17,16 @@
     "@keyv/redis": "^5.1.6",
     "@sentry/node": "^10.40.0",
     "@t3-oss/env-core": "^0.13.10",
-    "cacheable": "^2.3.2",
+    "cacheable": "^2.3.3",
     "hono": "^4",
     "hono-rate-limiter": "^0.5.3",
-    "zod": "^3"
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@hono/vite-build": "^1",
     "@hono/vite-dev-server": "^0.25.0",
     "@types/node": "^24",
     "vite": "^8.0.0-beta",
-    "vitest": "^3"
+    "vitest": "^4.0.18"
   }
 }
