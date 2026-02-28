@@ -29,16 +29,13 @@ app.use(
 // Metrics middleware — track all requests
 app.use('*', metricsMiddleware);
 
-// Health check (no auth)
-app.route('', healthRoute);
-
-// Data API routes
-app.route('', createDataRoute(config, cache));
-
-// Card routes — all under /stats/:username
-app.route('', createStatsRoute(config, cache));
-app.route('', createStreakRoute(config, cache));
-app.route('', createTopLangsRoute(config, cache));
+// Chain routes for Hono RPC type inference
+const routes = app
+  .route('', healthRoute)
+  .route('', createDataRoute(config, cache))
+  .route('', createStatsRoute(config, cache))
+  .route('', createStreakRoute(config, cache))
+  .route('', createTopLangsRoute(config, cache));
 
 // 404 fallback
 app.notFound((c) => {
@@ -53,3 +50,4 @@ app.onError((err, c) => {
 });
 
 export default app;
+export type AppType = typeof routes;

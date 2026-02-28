@@ -38,7 +38,7 @@ export function App() {
     };
   }, [config.username]);
 
-  const { data, isLoading, error } = useGitHubData(debouncedUsername);
+  const { data, isPending, error } = useGitHubData(debouncedUsername);
 
   const buildSrc = useCallback(
     (card: CardType): string => {
@@ -53,8 +53,6 @@ export function App() {
     },
     [setOption],
   );
-
-  const showPreview = data !== null;
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -96,7 +94,7 @@ export function App() {
             </div>
           )}
 
-          {config.username.trim() && isLoading && (
+          {config.username.trim() && isPending && (
             <div className="flex min-h-[300px] items-center justify-center rounded-lg border-2 border-dashed">
               <div className="flex flex-col items-center gap-2">
                 <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
@@ -105,13 +103,13 @@ export function App() {
             </div>
           )}
 
-          {config.username.trim() && error && !isLoading && (
+          {config.username.trim() && error && !isPending && (
             <div className="flex min-h-[300px] items-center justify-center rounded-lg border-2 border-dashed border-destructive bg-destructive/5">
-              <p className="text-destructive">{error}</p>
+              <p className="text-destructive">{error.message}</p>
             </div>
           )}
 
-          {showPreview && (
+          {data && (
             <CardList cards={ALL_CARDS} data={data} options={cardOptions} buildSrc={buildSrc} />
           )}
         </main>
