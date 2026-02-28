@@ -4,7 +4,6 @@ import type { CardType } from '../hooks/useCardConfig';
 interface EmbedOutputProps {
   cards: CardType[];
   buildSrc: (card: CardType) => string;
-  baseUrl: string;
 }
 
 const CARD_ALT: Record<CardType, string> = {
@@ -13,16 +12,18 @@ const CARD_ALT: Record<CardType, string> = {
   'top-langs': 'Top Languages',
 };
 
-export function EmbedOutput({ cards, buildSrc, baseUrl }: EmbedOutputProps) {
+const API_BASE = import.meta.env.VITE_API_URL ?? '';
+
+export function EmbedOutput({ cards, buildSrc }: EmbedOutputProps) {
   const [copiedType, setCopiedType] = useState<string | null>(null);
 
   const markdownLines = cards.map((card) => {
-    const src = `${baseUrl}${buildSrc(card)}`;
+    const src = `${API_BASE}${buildSrc(card)}`;
     return `![${CARD_ALT[card]}](${src})`;
   });
 
   const htmlLines = cards.map((card) => {
-    const src = `${baseUrl}${buildSrc(card)}`;
+    const src = `${API_BASE}${buildSrc(card)}`;
     return `<img src="${src}" alt="${CARD_ALT[card]}" />`;
   });
 

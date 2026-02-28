@@ -1,4 +1,5 @@
 import { useState, useMemo, useCallback } from 'react';
+import type { CardOptions } from '@gitcard/svg-renderer';
 
 export type CardType = 'stats' | 'streak' | 'top-langs';
 
@@ -28,6 +29,7 @@ interface UseCardConfigReturn {
   setOption: <K extends keyof CardConfig>(key: K, value: CardConfig[K]) => void;
   buildQueryString: (cardType: CardType) => string;
   cardPaths: Record<CardType, string>;
+  cardOptions: CardOptions;
 }
 
 const DEFAULTS: Omit<CardConfig, 'username' | 'cards'> = {
@@ -133,6 +135,24 @@ export function useCardConfig(): UseCardConfigReturn {
     [config],
   );
 
+  const cardOptions = useMemo<CardOptions>(
+    () => ({
+      theme: config.theme,
+      hide: config.hide,
+      showIcons: config.showIcons,
+      hideBorder: config.hideBorder,
+      hideTitle: config.hideTitle,
+      bgColor: config.bgColor || undefined,
+      titleColor: config.titleColor || undefined,
+      textColor: config.textColor || undefined,
+      iconColor: config.iconColor || undefined,
+      borderColor: config.borderColor || undefined,
+      cacheSeconds: Number(config.cacheSeconds) || 14400,
+      locale: config.locale,
+    }),
+    [config],
+  );
+
   return {
     config,
     setUsername,
@@ -142,5 +162,6 @@ export function useCardConfig(): UseCardConfigReturn {
     setOption,
     buildQueryString,
     cardPaths,
+    cardOptions,
   };
 }

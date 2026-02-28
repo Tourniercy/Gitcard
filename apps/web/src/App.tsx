@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useCardConfig } from './hooks/useCardConfig';
+import { useGitHubData } from './hooks/useGitHubData';
 import type { CardConfig, CardType } from './hooks/useCardConfig';
 import { Sidebar } from './components/Sidebar';
 import { CardList } from './components/CardList';
@@ -16,12 +17,10 @@ export function App() {
     setOption,
     buildQueryString,
     cardPaths,
+    cardOptions,
   } = useCardConfig();
 
   const [debouncedUsername, setDebouncedUsername] = useState('');
-  const [isValid, setIsValid] = useState(false);
-  const [isChecking, setIsChecking] = useState(false);
-  const [hasChecked, setHasChecked] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout>>(null);
 
   // Debounce username input
@@ -32,8 +31,6 @@ export function App() {
 
     if (!config.username.trim()) {
       setDebouncedUsername('');
-      setIsValid(false);
-      setHasChecked(false);
       return;
     }
 
@@ -48,35 +45,7 @@ export function App() {
     };
   }, [config.username]);
 
-  // Validate username via API
-  useEffect(() => {
-    if (!debouncedUsername) {
-      return;
-    }
-
-    let cancelled = false;
-    setIsChecking(true);
-
-    fetch(`/api/data/${encodeURIComponent(debouncedUsername)}`)
-      .then((res) => {
-        if (!cancelled) {
-          setIsValid(res.ok);
-          setHasChecked(true);
-          setIsChecking(false);
-        }
-      })
-      .catch(() => {
-        if (!cancelled) {
-          setIsValid(false);
-          setHasChecked(true);
-          setIsChecking(false);
-        }
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [debouncedUsername]);
+  const { data, isLoading, error } = useGitHubData(debouncedUsername);
 
   const buildSrc = useCallback(
     (card: CardType): string => {
@@ -99,9 +68,7 @@ export function App() {
     [setOption],
   );
 
-  const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
-
-  const showPreview = isValid && debouncedUsername;
+  const showPreview = data !== null;
   const enabledCards = config.cards;
 
   return (
@@ -138,22 +105,27 @@ export function App() {
             </div>
           )}
 
-          {config.username.trim() && isChecking && (
+          {config.username.trim() && isLoading && (
             <div className="preview-placeholder">
-              <p>Checking username...</p>
+              <p>Loading...</p>
             </div>
           )}
 
-          {config.username.trim() && hasChecked && !isValid && !isChecking && (
+          {config.username.trim() && error && !isLoading && (
             <div className="preview-placeholder preview-error">
-              <p>User not found</p>
+              <p>{error}</p>
             </div>
           )}
 
           {showPreview && (
             <>
-              <CardList cards={enabledCards} onReorder={setCards} buildSrc={buildSrc} />
-              <EmbedOutput cards={enabledCards} buildSrc={buildSrc} baseUrl={baseUrl} />
+              <CardList
+                cards={enabledCards}
+                onReorder={setCards}
+                data={data}
+                options={cardOptions}
+              />
+              <EmbedOutput cards={enabledCards} buildSrc={buildSrc} />
             </>
           )}
         </main>

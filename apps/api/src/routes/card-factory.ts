@@ -3,7 +3,7 @@ import { Hono } from 'hono';
 import { createHash } from 'node:crypto';
 import type { AppConfig } from '../config';
 import type { Cache } from '../cache/index';
-import type { CardOptions } from '../types';
+import type { CardOptions } from '@gitcard/svg-renderer';
 import { createPatPool } from '../utils/pat-pool';
 import { parseCardOptions } from '../utils/query-params';
 import { fetchGitHubData, GitHubNotFoundError, GitHubRateLimitError } from '../fetchers/github';

@@ -3,7 +3,7 @@ import type { AppConfig } from '../config';
 import type { Cache } from '../cache/index';
 import { createPatPool } from '../utils/pat-pool';
 import { fetchGitHubData, GitHubNotFoundError, GitHubRateLimitError } from '../fetchers/github';
-import { THEME_NAMES } from '../themes/index';
+import { THEME_NAMES } from '@gitcard/svg-renderer';
 
 export function createDataRoute(config: AppConfig, cache: Cache): Hono {
   const app = new Hono();

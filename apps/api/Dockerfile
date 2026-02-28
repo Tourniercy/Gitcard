@@ -7,14 +7,14 @@ WORKDIR /app
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/api/package.json apps/api/
-COPY apps/web/package.json apps/web/
+COPY packages/svg-renderer/package.json packages/svg-renderer/
 RUN pnpm install --frozen-lockfile
 
 COPY tsconfig.base.json ./
+COPY packages/svg-renderer/ packages/svg-renderer/
 COPY apps/api/ apps/api/
-COPY apps/web/ apps/web/
 
-RUN pnpm -r build
+RUN pnpm --filter api build
 
 # Production stage
 FROM node:24-alpine AS runner
@@ -27,10 +27,11 @@ WORKDIR /app
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/api/package.json apps/api/
+COPY packages/svg-renderer/package.json packages/svg-renderer/
+COPY packages/svg-renderer/src/ packages/svg-renderer/src/
 RUN pnpm install --frozen-lockfile --prod --filter api
 
 COPY --from=builder /app/apps/api/dist apps/api/dist
-COPY --from=builder /app/apps/web/dist apps/web/dist
 
 USER app
 

@@ -1,7 +1,7 @@
 import type { Hono } from 'hono';
 import type { AppConfig } from '../config';
 import type { Cache } from '../cache/index';
-import { renderLangsCard } from '../cards/langs-card';
+import { renderLangsCard } from '@gitcard/svg-renderer';
 import { createCardRoute } from './card-factory';
 
 export function createTopLangsRoute(config: AppConfig, cache: Cache): Hono {
