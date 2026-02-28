@@ -22,17 +22,25 @@ const renderers: Record<CardType, (data: GitHubData, options: CardOptions) => st
   profile: (data, options) => renderProfileCard(data.profile, options),
 };
 
+const CARD_WIDTHS: Record<CardType, number> = {
+  stats: 495,
+  streak: 495,
+  'top-langs': 495,
+  profile: 700,
+};
+
+function getMaxWidth(id: CardType, options: CardOptions): number {
+  if (id === 'top-langs' && options.layout === 'compact') return 300;
+  return CARD_WIDTHS[id];
+}
+
 export function CardPreview({ id, data, options }: CardPreviewProps) {
   const svg = useMemo(() => renderers[id](data, options), [id, data, options]);
-  const isCompactLangs = id === 'top-langs' && options.layout === 'compact';
-  const maxWidth = isCompactLangs ? 'max-w-[300px]' : 'max-w-[495px]';
-  if (id === 'profile') {
-    return (
-      <div
-        className="w-full max-w-[700px] p-4 [&>svg]:w-full [&>svg]:h-auto"
-        dangerouslySetInnerHTML={{ __html: svg }}
-      />
-    );
-  }
-  return <div className={`w-full ${maxWidth} p-4`} dangerouslySetInnerHTML={{ __html: svg }} />;
+  const src = `data:image/svg+xml,${encodeURIComponent(svg)}`;
+
+  return (
+    <div className="p-4" style={{ maxWidth: getMaxWidth(id, options) }}>
+      <img src={src} alt={`GitHub ${id} card`} className="w-full" />
+    </div>
+  );
 }
