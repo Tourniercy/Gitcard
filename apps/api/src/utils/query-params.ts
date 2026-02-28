@@ -4,12 +4,12 @@ import type { CardOptions } from '@gitcard/svg-renderer';
 const booleanString = z
   .enum(['true', 'false', '1', '0', ''])
   .transform((v) => v === 'true' || v === '1')
-  .default('true');
+  .default(true);
 
 const booleanStringFalse = z
   .enum(['true', 'false', '1', '0', ''])
   .transform((v) => v === 'true' || v === '1')
-  .default('false');
+  .default(false);
 
 const querySchema = z.object({
   theme: z.string().default('default'),
