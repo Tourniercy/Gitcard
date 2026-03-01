@@ -2,19 +2,18 @@ import { Hono } from 'hono';
 import { getConnInfo } from '@hono/node-server/conninfo';
 import { rateLimiter } from 'hono-rate-limiter';
 import type { AppConfig } from '../config';
-import type { Cache } from '../cache/index';
-import { createPatPool } from '../utils/pat-pool';
+import type { Cache } from '../cache';
+
+import type { PatPool } from '../utils/pat-pool';
 import {
-  fetchGitHubData,
+  fetchWithRetry,
   GitHubNotFoundError,
   GitHubRateLimitError,
   type FetchResult,
 } from '../fetchers/github';
 import { THEME_NAMES } from '@gitcard/svg-renderer';
 
-export function createDataRoute(config: AppConfig, cache: Cache) {
-  const patPool = createPatPool(config.pats);
-
+export function createDataRoute(config: AppConfig, cache: Cache, patPool: PatPool) {
   return new Hono()
     .use(
       '/api/data/*',
@@ -43,20 +42,7 @@ export function createDataRoute(config: AppConfig, cache: Cache) {
           return c.json(JSON.parse(cachedData) as FetchResult);
         }
 
-        const token = patPool.getNextToken();
-
-        let data: FetchResult;
-        try {
-          data = await fetchGitHubData(username, token);
-        } catch (err) {
-          if (err instanceof GitHubRateLimitError) {
-            patPool.markExhausted(token);
-            const retryToken = patPool.getNextToken();
-            data = await fetchGitHubData(username, retryToken);
-          } else {
-            throw err;
-          }
-        }
+        const data = await fetchWithRetry(username, patPool);
 
         await cache.set(dataCacheKey, JSON.stringify(data), config.cacheTtl);
 

@@ -65,6 +65,7 @@ import type { Cache } from '../cache/index';
 import type { AppConfig } from '../config';
 import type { FetchResult } from '../fetchers/github';
 import type { CardOptions } from '@gitcard/svg-renderer';
+import { createPatPool } from '../utils/pat-pool';
 
 function createMockCache(): Cache & {
   store: Map<string, string>;
@@ -110,7 +111,7 @@ describe('card-factory two-layer cache', () => {
     const config = createTestConfig();
     const renderFn = vi.fn((_data: FetchResult, _options: CardOptions) => '<svg>mock</svg>');
 
-    const route = createCardRoute(config, cache, {
+    const route = createCardRoute(config, cache, createPatPool(config.pats), {
       path: '/stats/:username',
       cachePrefix: 'stats',
       render: renderFn,
@@ -145,7 +146,7 @@ describe('card-factory two-layer cache', () => {
     const config = createTestConfig();
     const renderFn = vi.fn((_data: FetchResult, _options: CardOptions) => '<svg>mock</svg>');
 
-    const route = createCardRoute(config, cache, {
+    const route = createCardRoute(config, cache, createPatPool(config.pats), {
       path: '/stats/:username',
       cachePrefix: 'stats',
       render: renderFn,

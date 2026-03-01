@@ -4,6 +4,7 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { loadConfig } from './config';
 import { createCache } from './cache';
+import { createPatPool } from './utils/pat-pool';
 import { metricsMiddleware } from './metrics/middleware';
 import { healthRoute } from './routes/health';
 import { createStatsRoute } from './routes/stats';
@@ -14,6 +15,7 @@ import { createDataRoute } from './routes/data';
 
 const config = loadConfig();
 const cache = createCache(config.redisUrl);
+const patPool = createPatPool(config.pats);
 
 cache.flush().catch((err) => {
   console.error('Failed to flush cache on startup:', err);
@@ -37,11 +39,11 @@ app.use('*', metricsMiddleware);
 // Chain routes for Hono RPC type inference
 const routes = app
   .route('', healthRoute)
-  .route('', createDataRoute(config, cache))
-  .route('', createStatsRoute(config, cache))
-  .route('', createStreakRoute(config, cache))
-  .route('', createTopLangsRoute(config, cache))
-  .route('', createProfileRoute(config, cache));
+  .route('', createDataRoute(config, cache, patPool))
+  .route('', createStatsRoute(config, cache, patPool))
+  .route('', createStreakRoute(config, cache, patPool))
+  .route('', createTopLangsRoute(config, cache, patPool))
+  .route('', createProfileRoute(config, cache, patPool));
 
 // 404 fallback
 app.notFound((c) => {

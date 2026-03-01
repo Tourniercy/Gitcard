@@ -63,6 +63,7 @@ vi.mock('@sentry/node', () => ({
 import { Hono } from 'hono';
 import type { Cache } from '../cache/index';
 import type { AppConfig } from '../config';
+import { createPatPool } from '../utils/pat-pool';
 
 function createMockCache(): Cache & {
   store: Map<string, string>;
@@ -106,7 +107,7 @@ describe('GET /api/data/:username', () => {
 
     const cache = createMockCache();
     const config = createTestConfig();
-    const route = createDataRoute(config, cache);
+    const route = createDataRoute(config, cache, createPatPool(config.pats));
 
     const app = new Hono();
     app.route('', route);
@@ -143,7 +144,7 @@ describe('GET /api/data/:username', () => {
 
     const cache = createMockCache();
     const config = createTestConfig();
-    const route = createDataRoute(config, cache);
+    const route = createDataRoute(config, cache, createPatPool(config.pats));
 
     const app = new Hono();
     app.route('', route);
@@ -167,7 +168,7 @@ describe('GET /api/themes', () => {
 
     const cache = createMockCache();
     const config = createTestConfig();
-    const route = createDataRoute(config, cache);
+    const route = createDataRoute(config, cache, createPatPool(config.pats));
 
     const app = new Hono();
     app.route('', route);

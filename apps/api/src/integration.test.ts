@@ -97,10 +97,13 @@ describeIntegration('integration: GitHub API (real token)', () => {
     };
     const cache = createCache(undefined);
 
+    const { createPatPool } = await import('./utils/pat-pool');
+    const patPool = createPatPool(config.pats);
+
     const app = new Hono();
-    app.route('', createStatsRoute(config, cache));
-    app.route('', createStreakRoute(config, cache));
-    app.route('', createTopLangsRoute(config, cache));
+    app.route('', createStatsRoute(config, cache, patPool));
+    app.route('', createStreakRoute(config, cache, patPool));
+    app.route('', createTopLangsRoute(config, cache, patPool));
 
     // Stats card
     const statsRes = await app.request('/stats/torvalds');
@@ -130,6 +133,7 @@ describeIntegration('integration: GitHub API (real token)', () => {
     const { Hono } = await import('hono');
     const { createDataRoute } = await import('./routes/data');
     const { createCache } = await import('./cache/index');
+    const { createPatPool } = await import('./utils/pat-pool');
 
     const config = {
       pats: [GITHUB_TOKEN!],
@@ -144,7 +148,7 @@ describeIntegration('integration: GitHub API (real token)', () => {
     const cache = createCache(undefined);
 
     const app = new Hono();
-    app.route('', createDataRoute(config, cache));
+    app.route('', createDataRoute(config, cache, createPatPool(config.pats)));
 
     const res = await app.request('/api/data/torvalds');
     expect(res.status).toBe(200);
@@ -160,6 +164,7 @@ describeIntegration('integration: GitHub API (real token)', () => {
     const { Hono } = await import('hono');
     const { createDataRoute } = await import('./routes/data');
     const { createCache } = await import('./cache/index');
+    const { createPatPool } = await import('./utils/pat-pool');
 
     const config = {
       pats: [GITHUB_TOKEN!],
@@ -174,7 +179,7 @@ describeIntegration('integration: GitHub API (real token)', () => {
     const cache = createCache(undefined);
 
     const app = new Hono();
-    app.route('', createDataRoute(config, cache));
+    app.route('', createDataRoute(config, cache, createPatPool(config.pats)));
 
     const res = await app.request('/api/data/this-user-does-not-exist-xyz-123456789');
     expect(res.status).toBe(404);
@@ -184,6 +189,7 @@ describeIntegration('integration: GitHub API (real token)', () => {
     const { Hono } = await import('hono');
     const { createDataRoute } = await import('./routes/data');
     const { createCache } = await import('./cache/index');
+    const { createPatPool } = await import('./utils/pat-pool');
 
     const config = {
       pats: [GITHUB_TOKEN!],
@@ -198,7 +204,7 @@ describeIntegration('integration: GitHub API (real token)', () => {
     const cache = createCache(undefined);
 
     const app = new Hono();
-    app.route('', createDataRoute(config, cache));
+    app.route('', createDataRoute(config, cache, createPatPool(config.pats)));
 
     const res = await app.request('/api/themes');
     expect(res.status).toBe(200);
@@ -214,6 +220,7 @@ describeIntegration('integration: GitHub API (real token)', () => {
     const { Hono } = await import('hono');
     const { createStatsRoute } = await import('./routes/stats');
     const { createCache } = await import('./cache/index');
+    const { createPatPool } = await import('./utils/pat-pool');
 
     const config = {
       pats: [GITHUB_TOKEN!],
@@ -228,7 +235,7 @@ describeIntegration('integration: GitHub API (real token)', () => {
     const cache = createCache(undefined);
 
     const app = new Hono();
-    app.route('', createStatsRoute(config, cache));
+    app.route('', createStatsRoute(config, cache, createPatPool(config.pats)));
 
     // First request — populates data cache and SVG cache for default theme
     const res1 = await app.request('/stats/torvalds');
