@@ -42,15 +42,7 @@ export function createArcPath(
   return `M ${x1} ${y1} A ${radius} ${radius} 0 ${largeArc} 1 ${x2} ${y2}`;
 }
 
-export function createGlassFilter(id: string): string {
-  return `
-    <filter id="${id}" x="-10%" y="-10%" width="120%" height="120%">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur" />
-      <feColorMatrix in="blur" type="saturate" values="1.2" result="saturated" />
-      <feComposite in="SourceGraphic" in2="saturated" operator="over" />
-    </filter>
-  `;
-}
+let cardIdCounter = 0;
 
 export function createCardWrapper(
   width: number,
@@ -63,13 +55,13 @@ export function createCardWrapper(
   const borderColor = options.borderColor ? `#${options.borderColor}` : theme.border;
   const showBorder = !options.hideBorder;
   const radius = 8;
+  const uid = cardIdCounter++;
 
   return `
 <svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"
      xmlns="http://www.w3.org/2000/svg">
   <defs>
-    ${createGlassFilter('glass')}
-    <clipPath id="card-clip">
+    <clipPath id="clip-${uid}">
       <rect width="${width}" height="${height}" rx="${radius}" ry="${radius}" />
     </clipPath>
   </defs>
@@ -82,11 +74,7 @@ export function createCardWrapper(
     .muted { font-size: 11px; fill: ${theme.muted}; }
   </style>
 
-  <g clip-path="url(#card-clip)">
-    <!-- Glass backdrop -->
-    <rect width="${width}" height="${height}" rx="${radius}" ry="${radius}"
-          fill="${theme.backgroundBlur}" filter="url(#glass)" />
-    <!-- Glass overlay -->
+  <g clip-path="url(#clip-${uid})">
     <rect width="${width}" height="${height}" rx="${radius}" ry="${radius}"
           fill="${bg}" />
     ${showBorder ? `<rect width="${width}" height="${height}" rx="${radius}" ry="${radius}" fill="none" stroke="${borderColor}" stroke-width="1" />` : ''}

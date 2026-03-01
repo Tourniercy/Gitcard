@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createArcPath, createGlassFilter, formatNumber } from './base-card';
+import { createArcPath, formatNumber } from './base-card';
 
 describe('formatNumber', () => {
   it('formats with default locale', () => {
@@ -25,14 +25,5 @@ describe('createArcPath', () => {
   it('handles full circle', () => {
     const d = createArcPath(50, 50, 40, 0, Math.PI * 2 - 0.001);
     expect(d).toContain('A');
-  });
-});
-
-describe('createGlassFilter', () => {
-  it('returns SVG filter definition', () => {
-    const filter = createGlassFilter('glass-1');
-    expect(filter).toContain('<filter');
-    expect(filter).toContain('id="glass-1"');
-    expect(filter).toContain('feGaussianBlur');
   });
 });
