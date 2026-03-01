@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import type { CardOptions } from '@gitcard/svg-renderer';
+import { LOCALE_CODES } from '@gitcard/svg-renderer';
 
 const booleanString = z
   .enum(['true', 'false', '1', '0', ''])
@@ -30,7 +31,10 @@ const querySchema = z.object({
     .catch(14400)
     .transform((v) => Math.max(v, 1800))
     .default(14400),
-  locale: z.string().default('en'),
+  locale: z
+    .string()
+    .default('en')
+    .transform((v) => (LOCALE_CODES.includes(v) ? v : 'en')),
   layout: z.string().optional(),
 });
 

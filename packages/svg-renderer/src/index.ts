@@ -8,6 +8,7 @@ export type {
   ContributionDay,
   ProfileData,
 } from './types';
+export { SUPPORTED_LOCALES, LOCALE_CODES } from './types';
 
 // Theme system
 export type { Theme, ThemeGroup } from './themes/index';
