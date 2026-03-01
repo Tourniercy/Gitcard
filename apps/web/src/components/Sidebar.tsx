@@ -1,18 +1,11 @@
 import type { CardConfig } from '@/hooks/useCardConfig';
-import { SUPPORTED_LOCALES } from '@gitcard/svg-renderer';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
 import { ThemeCombobox } from './ThemeCombobox';
+import { LocaleCombobox } from './LocaleCombobox';
 import { ColorInput } from './ColorInput';
 
 interface SidebarProps {
@@ -96,23 +89,25 @@ export function Sidebar({
         {/* Hide Stats */}
         <div className="flex flex-col gap-3">
           <Label>Hide Stats</Label>
-          {(['stars', 'commits', 'prs', 'issues', 'forks', 'contribs'] as const).map((stat) => (
-            <div key={stat} className="flex items-center gap-2">
-              <Checkbox
-                id={`hide-${stat}`}
-                checked={config.hide.includes(stat)}
-                onCheckedChange={(checked) => {
-                  const next = checked
-                    ? [...config.hide, stat]
-                    : config.hide.filter((s) => s !== stat);
-                  onOptionChange('hide', next);
-                }}
-              />
-              <Label htmlFor={`hide-${stat}`} className="text-sm font-normal">
-                {stat}
-              </Label>
-            </div>
-          ))}
+          <div className="flex flex-wrap gap-x-3 gap-y-2">
+            {(['stars', 'commits', 'prs', 'issues', 'forks', 'contribs'] as const).map((stat) => (
+              <div key={stat} className="flex items-center gap-1.5">
+                <Checkbox
+                  id={`hide-${stat}`}
+                  checked={config.hide.includes(stat)}
+                  onCheckedChange={(checked) => {
+                    const next = checked
+                      ? [...config.hide, stat]
+                      : config.hide.filter((s) => s !== stat);
+                    onOptionChange('hide', next);
+                  }}
+                />
+                <Label htmlFor={`hide-${stat}`} className="text-sm font-normal">
+                  {stat}
+                </Label>
+              </div>
+            ))}
+          </div>
         </div>
 
         <Separator />
@@ -144,18 +139,10 @@ export function Sidebar({
         {/* Locale */}
         <div className="flex flex-col gap-1.5">
           <Label>Locale</Label>
-          <Select value={config.locale} onValueChange={(v) => onOptionChange('locale', v)}>
-            <SelectTrigger size="sm" className="w-full">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {SUPPORTED_LOCALES.map((l) => (
-                <SelectItem key={l.code} value={l.code}>
-                  {l.label} ({l.code})
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <LocaleCombobox
+            value={config.locale}
+            onValueChange={(v) => onOptionChange('locale', v)}
+          />
         </div>
       </div>
     </aside>

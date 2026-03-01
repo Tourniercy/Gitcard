@@ -1,29 +1,34 @@
-const LOCALE_CODES_LIST = [
-  'en',
-  'fr',
-  'de',
-  'es',
-  'pt',
-  'pt-BR',
-  'it',
-  'nl',
-  'ja',
-  'ko',
-  'zh',
-  'zh-TW',
-  'ru',
-  'ar',
-  'hi',
-  'pl',
-  'tr',
-  'sv',
-  'da',
-  'nb',
+const LOCALE_ENTRIES = [
+  { code: 'en', country: 'GB' },
+  { code: 'fr', country: 'FR' },
+  { code: 'de', country: 'DE' },
+  { code: 'es', country: 'ES' },
+  { code: 'pt', country: 'PT' },
+  { code: 'pt-BR', country: 'BR' },
+  { code: 'it', country: 'IT' },
+  { code: 'nl', country: 'NL' },
+  { code: 'ja', country: 'JP' },
+  { code: 'ko', country: 'KR' },
+  { code: 'zh', country: 'CN' },
+  { code: 'zh-TW', country: 'TW' },
+  { code: 'ru', country: 'RU' },
+  { code: 'ar', country: 'SA' },
+  { code: 'hi', country: 'IN' },
+  { code: 'pl', country: 'PL' },
+  { code: 'tr', country: 'TR' },
+  { code: 'sv', country: 'SE' },
+  { code: 'da', country: 'DK' },
+  { code: 'nb', country: 'NO' },
 ] as const;
 
-export const SUPPORTED_LOCALES = LOCALE_CODES_LIST.map((code) => ({
+function countryToFlag(country: string): string {
+  return [...country].map((c) => String.fromCodePoint(0x1f1e6 - 65 + c.charCodeAt(0))).join('');
+}
+
+export const SUPPORTED_LOCALES = LOCALE_ENTRIES.map(({ code, country }) => ({
   code,
   label: new Intl.DisplayNames([code], { type: 'language' }).of(code) ?? code,
+  flag: countryToFlag(country),
 }));
 
 export const LOCALE_CODES: string[] = SUPPORTED_LOCALES.map((l) => l.code);
