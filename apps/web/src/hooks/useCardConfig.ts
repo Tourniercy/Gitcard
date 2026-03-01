@@ -74,7 +74,15 @@ export function useCardConfig(): UseCardConfigReturn {
   }, []);
 
   const setTheme = useCallback((theme: string) => {
-    setConfig((prev) => ({ ...prev, theme }));
+    setConfig((prev) => ({
+      ...prev,
+      theme,
+      bgColor: '',
+      titleColor: '',
+      textColor: '',
+      iconColor: '',
+      borderColor: '',
+    }));
   }, []);
 
   const setOption = useCallback(<K extends keyof CardConfig>(key: K, value: CardConfig[K]) => {

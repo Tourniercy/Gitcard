@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import parse from 'html-react-parser';
 import {
   renderStatsCard,
   renderStreakCard,
@@ -35,15 +36,13 @@ function getMaxWidth(id: CardType, options: CardOptions): number {
 }
 
 export function CardPreview({ id, data, options }: CardPreviewProps) {
-  const svg = useMemo(() => renderers[id](data, options), [id, data, options]);
+  const elements = useMemo(() => parse(renderers[id](data, options)), [id, data, options]);
 
-  if (!svg) return null;
-
-  const src = `data:image/svg+xml,${encodeURIComponent(svg)}`;
+  if (!elements) return null;
 
   return (
-    <div className="p-4" style={{ maxWidth: getMaxWidth(id, options) }}>
-      <img src={src} alt={`GitHub ${id} card`} className="w-full" />
+    <div className="p-4 [&>svg]:w-full" style={{ maxWidth: getMaxWidth(id, options) }}>
+      {elements}
     </div>
   );
 }
