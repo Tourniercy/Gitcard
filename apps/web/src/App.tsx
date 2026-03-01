@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useCallback } from 'react';
+import { useDebounceValue } from 'usehooks-ts';
 import { GitHubLogoIcon } from '@radix-ui/react-icons';
 import { useCardConfig } from '@/hooks/useCardConfig';
 import { useGitHubData } from '@/hooks/useGitHubData';
@@ -14,29 +15,7 @@ export function App() {
   const { config, setUsername, setTheme, setOption, buildQueryString, cardPaths, cardOptions } =
     useCardConfig();
 
-  const [debouncedUsername, setDebouncedUsername] = useState('');
-  const debounceRef = useRef<ReturnType<typeof setTimeout>>(null);
-
-  useEffect(() => {
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
-    }
-
-    if (!config.username.trim()) {
-      setDebouncedUsername('');
-      return;
-    }
-
-    debounceRef.current = setTimeout(() => {
-      setDebouncedUsername(config.username.trim());
-    }, 300);
-
-    return () => {
-      if (debounceRef.current) {
-        clearTimeout(debounceRef.current);
-      }
-    };
-  }, [config.username]);
+  const [debouncedUsername] = useDebounceValue(config.username.trim(), 300);
 
   const { data, isPending, error } = useGitHubData(debouncedUsername);
 
