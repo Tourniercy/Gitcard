@@ -17,7 +17,7 @@ The service is API-only — there is no frontend, no database, no authentication
 - **Linter**: Oxlint 1.x (config: `.oxlintrc.json`)
 - **Formatter**: Oxfmt beta (config: `.oxfmtrc.json`)
 - **Package manager**: pnpm 10+
-- **Version manager**: Volta (local dev only — pins node + pnpm in `package.json`)
+- **Version manager**: pnpm (`use-node-version` in `.npmrc` — auto-downloads the pinned Node.js)
 - **Deployment**: Docker + docker compose (no PM2, no systemd)
 
 ### What we do NOT use
@@ -30,7 +30,7 @@ The service is API-only — there is no frontend, no database, no authentication
 - **No React or JSX rendering libraries** — SVG is built via TypeScript template literals.
 - **No ORM or database** — caching only (in-memory LRU + Redis via docker compose).
 - **No PM2, no systemd** — Docker is the process manager. `restart: unless-stopped` handles crashes.
-- **No nvm, fnm, or n** — Volta is the version manager. The `volta` section in `package.json` is the source of truth.
+- **No Volta, nvm, fnm, or n** — pnpm manages Node.js via `use-node-version` in `.npmrc`.
 
 ## Documentation lookup — always use Context7
 
@@ -199,16 +199,9 @@ pnpm docker:logs    # docker compose logs -f app
 
 ## Version management
 
-This project uses **Volta** for local development. The `volta` section in `package.json` pins:
+This project uses **pnpm's built-in Node.js management**. The `.npmrc` file pins the Node.js version via `use-node-version=24.13.1`. When you run any `pnpm` command, it automatically downloads and uses the correct Node.js version.
 
-- `node`: 24.13.1
-- `pnpm`: 10.5.2
-
-When you `cd` into the project, Volta automatically activates the correct versions. No manual switching.
-
-> Volta's pnpm support requires `VOLTA_FEATURE_PNPM=1` in your shell profile.
-
-In Docker, we use `node:24-alpine` directly — Volta is not installed in the container.
+In Docker, we use `node:24-alpine` directly.
 
 ## Code style
 
@@ -279,6 +272,7 @@ Docker handles:
 
 ### Updating Node.js version
 
-1. Update the `volta.node` field in `package.json`
-2. Update the `FROM node:XX-alpine` line in `Dockerfile`
-3. Rebuild: `docker compose up -d --build`
+1. Update `use-node-version` in `.npmrc`
+2. Update `devEngines.runtime.version` in root `package.json`
+3. Update the `FROM node:XX-alpine` line in `Dockerfile`
+4. Rebuild: `docker compose up -d --build`
