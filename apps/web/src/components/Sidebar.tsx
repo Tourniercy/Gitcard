@@ -1,7 +1,15 @@
 import type { CardConfig } from '@/hooks/useCardConfig';
+import { SUPPORTED_LOCALES } from '@gitcard/svg-renderer';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
 import { ThemeCombobox } from './ThemeCombobox';
@@ -135,14 +143,19 @@ export function Sidebar({
 
         {/* Locale */}
         <div className="flex flex-col gap-1.5">
-          <Label htmlFor="locale-input">Locale</Label>
-          <Input
-            id="locale-input"
-            value={config.locale}
-            onChange={(e) => onOptionChange('locale', e.target.value)}
-            placeholder="en"
-            className="h-8"
-          />
+          <Label>Locale</Label>
+          <Select value={config.locale} onValueChange={(v) => onOptionChange('locale', v)}>
+            <SelectTrigger size="sm" className="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {SUPPORTED_LOCALES.map((l) => (
+                <SelectItem key={l.code} value={l.code}>
+                  {l.label} ({l.code})
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
       </div>
     </aside>
