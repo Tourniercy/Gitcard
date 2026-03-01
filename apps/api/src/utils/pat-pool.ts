@@ -1,4 +1,4 @@
-interface PatPool {
+export interface PatPool {
   getNextToken(): string;
   markExhausted(token: string): void;
 }

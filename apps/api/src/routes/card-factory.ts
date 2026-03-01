@@ -4,9 +4,9 @@ import { createHash } from 'node:crypto';
 import type { AppConfig } from '../config';
 import type { Cache } from '../cache/index';
 import type { CardOptions } from '@gitcard/svg-renderer';
-import { createPatPool } from '../utils/pat-pool';
+import type { PatPool } from '../utils/pat-pool';
 import { parseCardOptions } from '../utils/query-params';
-import { fetchGitHubData, GitHubNotFoundError, GitHubRateLimitError } from '../fetchers/github';
+import { fetchWithRetry, GitHubNotFoundError, GitHubRateLimitError } from '../fetchers/github';
 import type { FetchResult } from '../fetchers/github';
 import { svgResponse, errorSvg } from './card-response';
 
@@ -19,10 +19,10 @@ interface CardRouteConfig {
 export function createCardRoute(
   config: AppConfig,
   cache: Cache,
+  patPool: PatPool,
   routeConfig: CardRouteConfig,
 ): Hono {
   const app = new Hono();
-  const patPool = createPatPool(config.pats);
 
   app.get(routeConfig.path, async (c) => {
     const username = c.req.param('username') as string;
@@ -54,21 +54,8 @@ export function createCardRoute(
           if (cachedData) {
             data = JSON.parse(cachedData) as FetchResult;
           } else {
-            // Fetch from GitHub
-            const token = patPool.getNextToken();
-
-            try {
-              data = await fetchGitHubData(username, token);
-            } catch (err) {
-              // If rate-limited, mark token exhausted and retry with next token
-              if (err instanceof GitHubRateLimitError) {
-                patPool.markExhausted(token);
-                const retryToken = patPool.getNextToken();
-                data = await fetchGitHubData(username, retryToken);
-              } else {
-                throw err;
-              }
-            }
+            // Fetch from GitHub with automatic retry on rate limit
+            data = await fetchWithRetry(username, patPool);
 
             // Store data in cache with config TTL
             await cache.set(dataCacheKey, JSON.stringify(data), config.cacheTtl);

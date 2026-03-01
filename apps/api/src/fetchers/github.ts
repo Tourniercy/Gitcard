@@ -2,6 +2,7 @@ import * as Sentry from '@sentry/node';
 
 import type { GitHubGraphQLResponse, GitHubUser } from './types';
 import type { GitHubStats, StreakData, TopLangsData, ProfileData } from '@gitcard/svg-renderer';
+import type { PatPool } from '../utils/pat-pool';
 
 const GITHUB_GRAPHQL_URL = 'https://api.github.com/graphql';
 
@@ -161,6 +162,19 @@ export async function fetchGitHubData(username: string, token: string): Promise<
       }
     },
   );
+}
+
+export async function fetchWithRetry(username: string, patPool: PatPool): Promise<FetchResult> {
+  const token = patPool.getNextToken();
+  try {
+    return await fetchGitHubData(username, token);
+  } catch (err) {
+    if (err instanceof GitHubRateLimitError) {
+      patPool.markExhausted(token);
+      return await fetchGitHubData(username, patPool.getNextToken());
+    }
+    throw err;
+  }
 }
 
 function extractStats(user: GitHubUser, username: string): GitHubStats {
