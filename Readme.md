@@ -303,7 +303,7 @@ Request -> CDN (Cloudflare) -> VPS (Docker -> Node.js + Hono)
 pnpm check
 ```
 
-The project uses Oxlint (not ESLint) and Oxfmt (not Prettier). If your editor supports the [Oxc VS Code extension](https://marketplace.visualstudio.com/items?itemName=oxc.oxc-vscode), enable it for inline lint + format-on-save.
+The project uses Oxlint and Oxfmt. If your editor supports the [Oxc VS Code extension](https://marketplace.visualstudio.com/items?itemName=oxc.oxc-vscode), enable it for inline lint + format-on-save.
 
 ---
 
