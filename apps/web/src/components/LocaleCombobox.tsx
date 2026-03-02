@@ -33,7 +33,6 @@ export function LocaleCombobox({ value, onValueChange }: LocaleComboboxProps) {
           role="combobox"
           aria-expanded={open}
           className="w-full justify-between font-normal"
-          size="sm"
         >
           <div className="flex items-center gap-2 min-w-0">
             <span className="shrink-0">{current.flag}</span>
