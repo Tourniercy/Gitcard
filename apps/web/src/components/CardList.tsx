@@ -9,11 +9,12 @@ interface CardListProps {
   data: GitHubData;
   options: CardOptions;
   buildSrc: (card: CardType) => string;
+  gridClassName?: string;
 }
 
-export function CardList({ cards, data, options, buildSrc }: CardListProps) {
+export function CardList({ cards, data, options, buildSrc, gridClassName }: CardListProps) {
   return (
-    <div className="flex flex-col gap-4">
+    <div className={gridClassName ?? 'flex flex-col gap-4'}>
       {cards.map((card) => (
         <div
           key={card}
