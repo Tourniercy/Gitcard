@@ -14,10 +14,10 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@primer/octicons": "^19.22.0"
+    "@primer/octicons": "^19.23.1"
   },
   "devDependencies": {
     "@types/primer__octicons": "^19.21.0",
-    "vitest": "^4.0.18"
+    "vitest": "^4.1.3"
   }
 }
