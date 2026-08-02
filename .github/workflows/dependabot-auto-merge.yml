@@ -1,0 +1,64 @@
+name: Dependabot auto-merge
+
+# The gate lives inside this job rather than in branch protection.
+# Required status checks need GitHub Pro on private repos, so most of this
+# account cannot use them -- and GitHub's own auto-merge, with no required
+# checks to wait on, merges the moment a PR opens without verifying anything.
+# Here the merge step is the last step, so it only runs once the build above
+# it has already passed.
+
+on: pull_request
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  verify-and-merge:
+    if: github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Dependabot metadata
+        id: meta
+        uses: dependabot/fetch-metadata@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      # Major bumps change APIs, so they stay open for a human to look at.
+      - name: Hold major bumps
+        if: steps.meta.outputs.update-type == 'version-update:semver-major'
+        run: |
+          echo "::notice::${{ steps.meta.outputs.dependency-names }} is a major bump - left open for review"
+
+      - uses: actions/checkout@v4
+        if: steps.meta.outputs.update-type != 'version-update:semver-major'
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - uses: pnpm/action-setup@v4
+        if: steps.meta.outputs.update-type != 'version-update:semver-major'
+        with:
+          version: 10
+
+      # Node 24 to match use-node-version in .npmrc.
+      - uses: actions/setup-node@v4
+        if: steps.meta.outputs.update-type != 'version-update:semver-major'
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install
+        if: steps.meta.outputs.update-type != 'version-update:semver-major'
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        if: steps.meta.outputs.update-type != 'version-update:semver-major'
+        run: pnpm build
+
+      # Reached only when the build above succeeded.
+      - name: Merge
+        if: steps.meta.outputs.update-type != 'version-update:semver-major'
+        run: gh pr merge --squash --delete-branch "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
