@@ -28,7 +28,7 @@ importers:
         version: link:../../packages/svg-renderer
       '@hono/node-server':
         specifier: ^1.19.13
-        version: 1.19.13(hono@4.12.27)
+        version: 1.19.13(hono@4.12.34)
       '@keyv/redis':
         specifier: ^5.1.6
         version: 5.1.6(keyv@5.6.0)
@@ -42,21 +42,21 @@ importers:
         specifier: ^2.3.4
         version: 2.3.4
       hono:
-        specifier: ^4.12.27
-        version: 4.12.27
+        specifier: ^4.12.34
+        version: 4.12.34
       hono-rate-limiter:
         specifier: ^0.5.3
-        version: 0.5.3(hono@4.12.27)
+        version: 0.5.3(hono@4.12.34)
       zod:
         specifier: ^4.3.6
         version: 4.3.6
     devDependencies:
       '@hono/vite-build':
         specifier: ^1.11.1
-        version: 1.11.1(hono@4.12.27)
+        version: 1.11.1(hono@4.12.34)
       '@hono/vite-dev-server':
         specifier: ^0.25.1
-        version: 0.25.1(hono@4.12.27)
+        version: 0.25.1(hono@4.12.34)
       '@types/node':
         specifier: ^25.5.2
         version: 25.5.2
@@ -94,8 +94,8 @@ importers:
         specifier: ^1.1.1
         version: 1.1.1(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       hono:
-        specifier: ^4.12.27
-        version: 4.12.27
+        specifier: ^4.12.34
+        version: 4.12.34
       html-react-parser:
         specifier: ^6.0.0
         version: 6.0.0(@types/react@19.2.14)(react@19.2.4)
@@ -2143,8 +2143,8 @@ packages:
       unstorage:
         optional: true
 
-  hono@4.12.27:
-    resolution: {integrity: sha512-1yrb/+w6HWQJrUCLkJ2IF5jNIPvvFkblV5RNOYl6bV+OA6p9GLcMpHFFGTosSvHvcAUibuUukRqhlYI4z32C7Q==}
+  hono@4.12.34:
+    resolution: {integrity: sha512-GqXJqY/xJkJmuloTrnV1ZEXG3fqte+VjkUqoRNZXcrUidiUOP4fMSIHHY4tsqZBK++kVyWmt/AAfSUuy57/eSA==}
     engines: {node: '>=16.9.0'}
 
   hookified@1.15.1:
@@ -2841,18 +2841,18 @@ snapshots:
 
   '@floating-ui/utils@0.2.11': {}
 
-  '@hono/node-server@1.19.13(hono@4.12.27)':
+  '@hono/node-server@1.19.13(hono@4.12.34)':
     dependencies:
-      hono: 4.12.27
+      hono: 4.12.34
 
-  '@hono/vite-build@1.11.1(hono@4.12.27)':
+  '@hono/vite-build@1.11.1(hono@4.12.34)':
     dependencies:
-      hono: 4.12.27
+      hono: 4.12.34
 
-  '@hono/vite-dev-server@0.25.1(hono@4.12.27)':
+  '@hono/vite-dev-server@0.25.1(hono@4.12.34)':
     dependencies:
-      '@hono/node-server': 1.19.13(hono@4.12.27)
-      hono: 4.12.27
+      '@hono/node-server': 1.19.13(hono@4.12.34)
+      hono: 4.12.34
       minimatch: 9.0.9
 
   '@jridgewell/gen-mapping@0.3.13':
@@ -4544,11 +4544,11 @@ snapshots:
     dependencies:
       hookified: 1.15.1
 
-  hono-rate-limiter@0.5.3(hono@4.12.27):
+  hono-rate-limiter@0.5.3(hono@4.12.34):
     dependencies:
-      hono: 4.12.27
+      hono: 4.12.34
 
-  hono@4.12.27: {}
+  hono@4.12.34: {}
 
   hookified@1.15.1: {}
 
