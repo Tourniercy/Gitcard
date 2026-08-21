@@ -27,8 +27,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/svg-renderer
       '@hono/node-server':
-        specifier: ^1.19.13
-        version: 1.19.13(hono@4.12.34)
+        specifier: ^2.0.10
+        version: 2.0.10(hono@4.12.34)
       '@keyv/redis':
         specifier: ^5.1.6
         version: 5.1.6(keyv@5.6.0)
@@ -349,9 +349,15 @@ packages:
   '@floating-ui/utils@0.2.11':
     resolution: {integrity: sha512-RiB/yIh78pcIxl6lLMG0CgBXAZ2Y0eVHqMPYugu+9U0AeT6YBeiJpf7lbdJNIugFP5SIjwNRgo4DhR1Qxi26Gg==}
 
-  '@hono/node-server@1.19.13':
-    resolution: {integrity: sha512-TsQLe4i2gvoTtrHje625ngThGBySOgSK3Xo2XRYOdqGN1teR8+I7vchQC46uLJi8OF62YTYA3AhSpumtkhsaKQ==}
+  '@hono/node-server@1.19.17':
+    resolution: {integrity: sha512-dSneS5qhiauZWGDCeK4o695Xd9nUNjviSZCMQrj10eetr8Uln1ucn6bbphOM6UynAMMtNIzZNSpL9vnASJwrPQ==}
     engines: {node: '>=18.14.1'}
+    peerDependencies:
+      hono: ^4
+
+  '@hono/node-server@2.0.10':
+    resolution: {integrity: sha512-ZcnNVhKTmyDJeg0UlnZjvM73JBsTAuhrH/J4fjwGOw59PwOW51r4J+p6CsKZWXdKSme4MFqU62CZMOsdDrU4CA==}
+    engines: {node: '>=20'}
     peerDependencies:
       hono: ^4
 
@@ -2841,7 +2847,11 @@ snapshots:
 
   '@floating-ui/utils@0.2.11': {}
 
-  '@hono/node-server@1.19.13(hono@4.12.34)':
+  '@hono/node-server@1.19.17(hono@4.12.34)':
+    dependencies:
+      hono: 4.12.34
+
+  '@hono/node-server@2.0.10(hono@4.12.34)':
     dependencies:
       hono: 4.12.34
 
@@ -2851,7 +2861,7 @@ snapshots:
 
   '@hono/vite-dev-server@0.25.1(hono@4.12.34)':
     dependencies:
-      '@hono/node-server': 1.19.13(hono@4.12.34)
+      '@hono/node-server': 1.19.17(hono@4.12.34)
       hono: 4.12.34
       minimatch: 9.0.9
 
