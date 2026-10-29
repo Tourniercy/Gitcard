@@ -27,7 +27,7 @@
   "devEngines": {
     "runtime": {
       "name": "node",
-      "version": "24.13.1"
+      "version": "26.13.0"
     }
   },
   "pnpm": {

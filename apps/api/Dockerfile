@@ -1,5 +1,5 @@
 # Build stage
-FROM node:24.22.1-alpine AS builder
+FROM node:26.13.0-alpine AS builder
 
 RUN corepack enable && corepack prepare pnpm@10.5.2 --activate
 
@@ -17,7 +17,7 @@ COPY apps/api/ apps/api/
 RUN pnpm --filter api build
 
 # Production stage
-FROM node:24.22.1-alpine AS runner
+FROM node:26.13.0-alpine AS runner
 
 RUN corepack enable && corepack prepare pnpm@10.5.2 --activate
 
