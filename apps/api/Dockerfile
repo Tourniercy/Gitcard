@@ -1,7 +1,7 @@
 # Build stage
 FROM node:26.13.0-alpine AS builder
 
-RUN corepack enable && corepack prepare pnpm@10.5.2 --activate
+RUN npm install -g corepack && corepack enable && corepack prepare pnpm@10.5.2 --activate
 
 WORKDIR /app
 
@@ -19,7 +19,7 @@ RUN pnpm --filter api build
 # Production stage
 FROM node:26.13.0-alpine AS runner
 
-RUN corepack enable && corepack prepare pnpm@10.5.2 --activate
+RUN npm install -g corepack && corepack enable && corepack prepare pnpm@10.5.2 --activate
 
 RUN addgroup -g 1001 -S app && adduser -S app -u 1001
 
