@@ -1,5 +1,5 @@
 # Build stage
-FROM node:26.13.0-alpine AS builder
+FROM node:26.13.1-alpine AS builder
 
 RUN npm install -g corepack && corepack enable && corepack prepare pnpm@10.34.9 --activate
 
@@ -17,7 +17,12 @@ COPY apps/api/ apps/api/
 RUN pnpm --filter api build
 
 # Production stage
-FROM node:26.13.0-alpine AS runner
+FROM node:26.13.1-alpine AS runner
+
+# zlib 1.3.2-r1 shipped in the node:26.13.1-alpine rootfs is vulnerable to
+# CVE-2026-4738; the alpine v3.24 repos carry the fix (1.4-r0). Upgrade until
+# the base image itself is rebuilt.
+RUN apk upgrade --no-cache zlib
 
 RUN npm install -g corepack && corepack enable && corepack prepare pnpm@10.34.9 --activate
 
