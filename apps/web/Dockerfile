@@ -1,5 +1,5 @@
 # Build stage
-FROM node:26.13.0-alpine AS builder
+FROM node:26.13.1-alpine AS builder
 
 RUN npm install -g corepack && corepack enable && corepack prepare pnpm@10.34.9 --activate
 
@@ -24,6 +24,9 @@ RUN pnpm --filter web build
 
 # Production stage — serve static files with nginx
 FROM nginx:alpine AS runner
+
+# apk upgrade: paquets OS patchés à chaque build (brotli 1.2.1-r0 KEV, libxslt 1.1.43-r4 KEV — sweep CVE 11/2026)
+RUN apk upgrade --no-cache
 
 COPY apps/web/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /app/apps/web/dist /usr/share/nginx/html
