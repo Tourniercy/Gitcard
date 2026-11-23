@@ -1,0 +1,53 @@
+<svg width="495" height="195" viewBox="0 0 495 195"
+     xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <clipPath id="clip-293">
+      <rect width="495" height="195" rx="8" ry="8" />
+    </clipPath>
+  </defs>
+
+  <style>
+    * { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+    .title { font-size: 14px; font-weight: 600; fill: #ff79c6; }
+    .stat-label { font-size: 12px; fill: #e6e6e6; }
+    .stat-value { font-size: 14px; font-weight: 700; fill: #e6e6e6; }
+    .muted { font-size: 11px; fill: #6b7280; }
+  </style>
+
+  <g clip-path="url(#clip-293)">
+    <rect width="495" height="195" rx="8" ry="8"
+          fill="#1a1b27" />
+    <rect width="495" height="195" rx="8" ry="8" fill="none" stroke="#6272a4" stroke-width="1" />
+
+    
+    <text x="25" y="30" class="title">Most Used Languages</text>
+    <path d="M 91.09992666813332 55.01099963333822 A 55 55 0 0 1 115.94452559407446 158.4962018275495 L 105.56671535644467 139.0977210965297 A 33 33 0 0 0 90.65995600088 77.00659978000294 Z" fill="#f1e05a" /><path d="M 113.98444191920333 159.4949143430349 A 55 55 0 0 1 38.18552500597568 128.44614271585328 L 58.9113150035854 121.06768562951198 A 33 33 0 0 0 104.390665151522 139.69694860582095 Z" fill="#3178c6" /><path d="M 37.489322093869724 126.35936141292325 A 55 55 0 0 1 50.942564707023024 71.27640579265767 L 66.56553882421382 86.7658434755946 A 33 33 0 0 0 58.49359325632184 119.81561684775394 Z" fill="#000080" /><path d="M 52.52233723901816 69.74549970532345 A 55 55 0 0 1 88.9000733318667 55.01099963333822 L 89.34004399912001 77.00659978000294 A 33 33 0 0 0 67.51340234341089 85.84729982319406 Z" fill="#858585" />
+    
+        <g>
+          <circle cx="185" cy="56" r="5" fill="#f1e05a" />
+          <text x="199" y="60" class="stat-label">JavaScript</text>
+          <text x="470" y="60" class="stat-value" text-anchor="end">42.5%</text>
+        </g>
+      
+        <g>
+          <circle cx="185" cy="80" r="5" fill="#3178c6" />
+          <text x="199" y="84" class="stat-label">TypeScript</text>
+          <text x="470" y="84" class="stat-value" text-anchor="end">27.4%</text>
+        </g>
+      
+        <g>
+          <circle cx="185" cy="104" r="5" fill="#000080" />
+          <text x="199" y="108" class="stat-label">Lua</text>
+          <text x="470" y="108" class="stat-value" text-anchor="end">17.9%</text>
+        </g>
+      
+        <g>
+          <circle cx="185" cy="128" r="5" fill="#858585" />
+          <text x="199" y="132" class="stat-label">Nix</text>
+          <text x="470" y="132" class="stat-value" text-anchor="end">12.3%</text>
+        </g>
+      
+    
+  
+  </g>
+</svg>

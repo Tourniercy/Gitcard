@@ -1,0 +1,59 @@
+<svg width="495" height="195" viewBox="0 0 495 195"
+     xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <clipPath id="clip-356">
+      <rect width="495" height="195" rx="8" ry="8" />
+    </clipPath>
+  </defs>
+
+  <style>
+    * { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+    .title { font-size: 14px; font-weight: 600; fill: #f8f8f2; }
+    .stat-label { font-size: 12px; fill: #6272a4; }
+    .stat-value { font-size: 14px; font-weight: 700; fill: #f8f8f2; }
+    .muted { font-size: 11px; fill: #6272a4; }
+  </style>
+
+  <g clip-path="url(#clip-356)">
+    <rect width="495" height="195" rx="8" ry="8"
+          fill="rgba(40, 42, 54, 0.8)" />
+    <rect width="495" height="195" rx="8" ry="8" fill="none" stroke="rgba(98, 114, 164, 0.3)" stroke-width="1" />
+
+    
+    <text x="25" y="30" class="title">Most Used Languages</text>
+    <path d="M 91.09992666813332 55.01099963333822 A 55 55 0 0 1 136.65582341425716 139.12445950636086 L 117.9934940485543 127.47467570381652 A 33 33 0 0 0 90.65995600088 77.00659978000294 Z" fill="#3178c6" /><path d="M 135.45383598767654 140.96689835946444 A 55 55 0 0 1 53.159250974623426 150.83820773796538 L 67.89555058477406 134.50292464277922 A 33 33 0 0 0 117.27230159260593 128.58013901567867 Z" fill="#dea584" /><path d="M 51.55562690755673 149.33230450315648 A 55 55 0 0 1 37.77981598333188 92.73580638241916 L 58.66788958999913 99.64148382945149 A 33 33 0 0 0 66.93337614453404 133.5993827018939 Z" fill="#00ADD8" /><path d="M 38.5119701687255 90.66136550596741 A 55 55 0 0 1 64.51368584491955 61.261434255935 L 74.70821150695173 80.756860553561 A 33 33 0 0 0 59.107182101235296 98.39681930358044 Z" fill="#3572A5" /><path d="M 66.48309497116503 60.28123917609413 A 55 55 0 0 1 88.9000733318667 55.01099963333822 L 89.34004399912001 77.00659978000294 A 33 33 0 0 0 75.88985698269903 80.16874350565648 Z" fill="#89e051" />
+    
+        <g>
+          <circle cx="185" cy="56" r="5" fill="#3178c6" />
+          <text x="199" y="60" class="stat-label">TypeScript</text>
+          <text x="470" y="60" class="stat-value" text-anchor="end">34.2%</text>
+        </g>
+      
+        <g>
+          <circle cx="185" cy="80" r="5" fill="#dea584" />
+          <text x="199" y="84" class="stat-label">Rust</text>
+          <text x="470" y="84" class="stat-value" text-anchor="end">27.8%</text>
+        </g>
+      
+        <g>
+          <circle cx="185" cy="104" r="5" fill="#00ADD8" />
+          <text x="199" y="108" class="stat-label">Go</text>
+          <text x="470" y="108" class="stat-value" text-anchor="end">18.4%</text>
+        </g>
+      
+        <g>
+          <circle cx="185" cy="128" r="5" fill="#3572A5" />
+          <text x="199" y="132" class="stat-label">Python</text>
+          <text x="470" y="132" class="stat-value" text-anchor="end">12.3%</text>
+        </g>
+      
+        <g>
+          <circle cx="185" cy="152" r="5" fill="#89e051" />
+          <text x="199" y="156" class="stat-label">Shell</text>
+          <text x="470" y="156" class="stat-value" text-anchor="end">7.3%</text>
+        </g>
+      
+    
+  
+  </g>
+</svg>

@@ -1,0 +1,119 @@
+{
+  "id": "escape-user",
+  "description": "Username et name avec <>&\"' + langues à caractères spéciaux, couleur #858585",
+  "stats": {
+    "username": "u<script>&\"'",
+    "name": "R&D <Tools> \"Quotes\" 'Single'",
+    "totalStars": 74,
+    "totalForks": 13,
+    "totalCommits": 214,
+    "totalPRs": 19,
+    "totalIssues": 7,
+    "contributedTo": 11
+  },
+  "streak": {
+    "username": "u<script>&\"'",
+    "totalContributions": 74,
+    "currentStreak": 4,
+    "longestStreak": 14,
+    "currentStreakStart": "2026-11-19",
+    "currentStreakEnd": "2026-11-22",
+    "longestStreakStart": "2026-02-01",
+    "longestStreakEnd": "2026-02-14"
+  },
+  "langs": {
+    "username": "u<script>&\"'",
+    "languages": [
+      {
+        "name": "Objective-C",
+        "percentage": 38.2,
+        "color": "#438eff",
+        "size": 3820
+      },
+      {
+        "name": "Visual Basic .NET",
+        "percentage": 30.1,
+        "color": "#945db7",
+        "size": 3010
+      },
+      {
+        "name": "C#",
+        "percentage": 19.0,
+        "color": "#178600",
+        "size": 1900
+      },
+      {
+        "name": "Emacs Lisp",
+        "percentage": 12.7,
+        "color": "#858585",
+        "size": 1270
+      }
+    ]
+  },
+  "profile": {
+    "username": "u<script>&\"'",
+    "name": "R&D <Tools> \"Quotes\" 'Single'",
+    "contributionsThisYear": 74,
+    "publicRepos": 11,
+    "createdAt": "2018-12-24T23:59:59Z",
+    "email": null,
+    "contributionCalendar": [
+      {
+        "date": "2026-11-09",
+        "count": 0
+      },
+      {
+        "date": "2026-11-10",
+        "count": 1
+      },
+      {
+        "date": "2026-11-11",
+        "count": 2
+      },
+      {
+        "date": "2026-11-12",
+        "count": 0
+      },
+      {
+        "date": "2026-11-13",
+        "count": 0
+      },
+      {
+        "date": "2026-11-14",
+        "count": 1
+      },
+      {
+        "date": "2026-11-15",
+        "count": 0
+      },
+      {
+        "date": "2026-11-16",
+        "count": 0
+      },
+      {
+        "date": "2026-11-17",
+        "count": 0
+      },
+      {
+        "date": "2026-11-18",
+        "count": 1
+      },
+      {
+        "date": "2026-11-19",
+        "count": 2
+      },
+      {
+        "date": "2026-11-20",
+        "count": 1
+      },
+      {
+        "date": "2026-11-21",
+        "count": 0
+      },
+      {
+        "date": "2026-11-22",
+        "count": 1
+      }
+    ]
+  }
+}

@@ -1,0 +1,62 @@
+<svg width="300" height="134" viewBox="0 0 300 134"
+     xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <clipPath id="clip-145">
+      <rect width="300" height="134" rx="8" ry="8" />
+    </clipPath>
+  </defs>
+
+  <style>
+    * { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+    .title { font-size: 14px; font-weight: 600; fill: #1f2937; }
+    .stat-label { font-size: 12px; fill: #6b7280; }
+    .stat-value { font-size: 14px; font-weight: 700; fill: #374151; }
+    .muted { font-size: 11px; fill: #6b7280; }
+  </style>
+
+  <g clip-path="url(#clip-145)">
+    <rect width="300" height="134" rx="8" ry="8"
+          fill="rgba(255, 255, 255, 0.7)" />
+    
+
+    
+    <defs><clipPath id="compact-bar-clip"><rect x="25" y="48" width="250" height="8" rx="5" ry="5" /></clipPath></defs>
+    <text x="25" y="30" class="title">Most Used Languages</text>
+    <g clip-path="url(#compact-bar-clip)"><rect x="25" y="48" width="95.5" height="8" fill="#438eff">
+        <animate attributeName="width" from="0" to="95.5" dur="0.6s" fill="freeze" />
+      </rect><rect x="120.5" y="48" width="75.25" height="8" fill="#945db7">
+        <animate attributeName="width" from="0" to="75.25" dur="0.6s" fill="freeze" />
+      </rect><rect x="195.75" y="48" width="47.5" height="8" fill="#178600">
+        <animate attributeName="width" from="0" to="47.5" dur="0.6s" fill="freeze" />
+      </rect><rect x="243.25" y="48" width="31.75" height="8" fill="#858585">
+        <animate attributeName="width" from="0" to="31.75" dur="0.6s" fill="freeze" />
+      </rect></g>
+    
+        <g opacity="0">
+          <circle cx="25" cy="70" r="5" fill="#438eff" />
+          <text x="39" y="74" class="lang-name" font-size="11" fill="#374151">Objective-C 38.20%</text>
+          <animate attributeName="opacity" from="0" to="1" dur="0.3s" begin="450ms" fill="freeze" />
+        </g>
+      
+        <g opacity="0">
+          <circle cx="150" cy="70" r="5" fill="#945db7" />
+          <text x="164" y="74" class="lang-name" font-size="11" fill="#374151">Visual Basic .NET 30.10%</text>
+          <animate attributeName="opacity" from="0" to="1" dur="0.3s" begin="600ms" fill="freeze" />
+        </g>
+      
+        <g opacity="0">
+          <circle cx="25" cy="95" r="5" fill="#178600" />
+          <text x="39" y="99" class="lang-name" font-size="11" fill="#374151">C# 19.00%</text>
+          <animate attributeName="opacity" from="0" to="1" dur="0.3s" begin="750ms" fill="freeze" />
+        </g>
+      
+        <g opacity="0">
+          <circle cx="150" cy="95" r="5" fill="#858585" />
+          <text x="164" y="99" class="lang-name" font-size="11" fill="#374151">Emacs Lisp 12.70%</text>
+          <animate attributeName="opacity" from="0" to="1" dur="0.3s" begin="900ms" fill="freeze" />
+        </g>
+      
+    
+  
+  </g>
+</svg>

@@ -1,0 +1,30 @@
+<svg width="300" height="84" viewBox="0 0 300 84"
+     xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <clipPath id="clip-92">
+      <rect width="300" height="84" rx="8" ry="8" />
+    </clipPath>
+  </defs>
+
+  <style>
+    * { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+    .title { font-size: 14px; font-weight: 600; fill: #1f2937; }
+    .stat-label { font-size: 12px; fill: #6b7280; }
+    .stat-value { font-size: 14px; font-weight: 700; fill: #374151; }
+    .muted { font-size: 11px; fill: #6b7280; }
+  </style>
+
+  <g clip-path="url(#clip-92)">
+    <rect width="300" height="84" rx="8" ry="8"
+          fill="rgba(255, 255, 255, 0.7)" />
+    
+
+    
+    <defs><clipPath id="compact-bar-clip"><rect x="25" y="48" width="250" height="8" rx="5" ry="5" /></clipPath></defs>
+    <text x="25" y="30" class="title">Most Used Languages</text>
+    <g clip-path="url(#compact-bar-clip)"></g>
+    
+    <text x="150" y="42" text-anchor="middle" class="muted">No language data available</text>
+  
+  </g>
+</svg>

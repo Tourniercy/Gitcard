@@ -1,0 +1,73 @@
+{
+  "id": "single-lang",
+  "description": "Une seule langue à 100%, calendrier réduit à 1 semaine",
+  "stats": {
+    "username": "rustacean",
+    "name": "Ferris Crabman",
+    "totalStars": 512,
+    "totalForks": 64,
+    "totalCommits": 2048,
+    "totalPRs": 128,
+    "totalIssues": 32,
+    "contributedTo": 16
+  },
+  "streak": {
+    "username": "rustacean",
+    "totalContributions": 16,
+    "currentStreak": 7,
+    "longestStreak": 7,
+    "currentStreakStart": "2026-11-16",
+    "currentStreakEnd": "2026-11-22",
+    "longestStreakStart": "2026-11-16",
+    "longestStreakEnd": "2026-11-22"
+  },
+  "langs": {
+    "username": "rustacean",
+    "languages": [
+      {
+        "name": "Rust",
+        "percentage": 100.0,
+        "color": "#dea584",
+        "size": 1234567
+      }
+    ]
+  },
+  "profile": {
+    "username": "rustacean",
+    "name": "Ferris Crabman",
+    "contributionsThisYear": 16,
+    "publicRepos": 5,
+    "createdAt": "2021-06-15T12:00:00Z",
+    "email": null,
+    "contributionCalendar": [
+      {
+        "date": "2026-11-16",
+        "count": 3
+      },
+      {
+        "date": "2026-11-17",
+        "count": 1
+      },
+      {
+        "date": "2026-11-18",
+        "count": 0
+      },
+      {
+        "date": "2026-11-19",
+        "count": 4
+      },
+      {
+        "date": "2026-11-20",
+        "count": 2
+      },
+      {
+        "date": "2026-11-21",
+        "count": 5
+      },
+      {
+        "date": "2026-11-22",
+        "count": 1
+      }
+    ]
+  }
+}

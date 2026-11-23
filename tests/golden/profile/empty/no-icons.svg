@@ -1,0 +1,47 @@
+<svg width="700" height="200" viewBox="0 0 700 200"
+     xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <clipPath id="clip-96">
+      <rect width="700" height="200" rx="8" ry="8" />
+    </clipPath>
+  </defs>
+
+  <style>
+    * { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+    .title { font-size: 14px; font-weight: 600; fill: #1f2937; }
+    .stat-label { font-size: 12px; fill: #6b7280; }
+    .stat-value { font-size: 14px; font-weight: 700; fill: #374151; }
+    .muted { font-size: 11px; fill: #6b7280; }
+  </style>
+
+  <g clip-path="url(#clip-96)">
+    <rect width="700" height="200" rx="8" ry="8"
+          fill="rgba(255, 255, 255, 0.7)" />
+    <rect width="700" height="200" rx="8" ry="8" fill="none" stroke="rgba(0, 0, 0, 0.1)" stroke-width="1" />
+
+    
+    <text x="25" y="30" class="title">ghost-account</text>
+    
+        <g>
+          
+          <text x="25" y="55" class="stat-label">Contributions</text>
+          <text x="290" y="55" class="stat-value" text-anchor="end">0</text>
+        </g>
+      
+        <g>
+          
+          <text x="25" y="81" class="stat-label">Public Repos</text>
+          <text x="290" y="81" class="stat-value" text-anchor="end">0</text>
+        </g>
+      
+        <g>
+          
+          <text x="25" y="107" class="stat-label">Account Age</text>
+          <text x="290" y="107" class="stat-value" text-anchor="end">12y</text>
+        </g>
+      
+    <line x1="305" y1="15" x2="305" y2="185" stroke="rgba(0, 0, 0, 0.1)" stroke-width="1" />
+    
+  
+  </g>
+</svg>
