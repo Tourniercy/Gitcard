@@ -1,0 +1,9 @@
+[package]
+name = "gitcard-p0"
+version = "0.1.0"
+edition = "2021"
+description = "P0 gitcard-api : primitives numériques JS + tables Intl + octicons + parité corpus golden"
+
+[dependencies]
+serde_json = "1"
+md-5 = "0.10"
