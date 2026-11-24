@@ -113,7 +113,16 @@ async fn run<L2: L2Cache>(cache: AppCache<L2>, pool: PatPool, config: Config) {
         }
     };
     let app = build_router(state);
-    if let Err(e) = axum::serve(listener, app).await {
+    // P5 : `getConnInfo` hono (clé du rate-limiter = adresse remote) — le
+    // make-service injecte `ConnectInfo<SocketAddr>` dans les extensions de
+    // requête, lu par `rate_limit_middleware` (sans lui : clé 'unknown'
+    // globale = toutes les IP dans le même bucket, divergent du legacy).
+    if let Err(e) = axum::serve(
+        listener,
+        app.into_make_service_with_connect_info::<std::net::SocketAddr>(),
+    )
+    .await
+    {
         eprintln!("Error: {e}");
         std::process::exit(1);
     }

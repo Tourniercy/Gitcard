@@ -53,7 +53,12 @@ async fn spawn_server(state: AppState<NoopL2>) -> SocketAddr {
     let addr = listener.local_addr().expect("addr");
     let app = build_router(state);
     tokio::spawn(async move {
-        axum::serve(listener, app).await.expect("serve");
+        axum::serve(
+            listener,
+            app.into_make_service_with_connect_info::<SocketAddr>(),
+        )
+        .await
+        .expect("serve");
     });
     addr
 }
@@ -407,7 +412,12 @@ mod cache_suite {
         let addr = listener.local_addr().expect("addr");
         let app = build_router(state);
         tokio::spawn(async move {
-            axum::serve(listener, app).await.expect("serve");
+            axum::serve(
+                listener,
+                app.into_make_service_with_connect_info::<SocketAddr>(),
+            )
+            .await
+            .expect("serve");
         });
         addr
     }

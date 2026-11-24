@@ -827,7 +827,12 @@ async fn route_erreur_svg_jamais_en_l2_et_succes_ecrit_en_l2() {
     let addr = listener.local_addr().expect("addr");
     let app = build_router(state);
     tokio::spawn(async move {
-        axum::serve(listener, app).await.expect("serve");
+        axum::serve(
+            listener,
+            app.into_make_service_with_connect_info::<std::net::SocketAddr>(),
+        )
+        .await
+        .expect("serve");
     });
 
     let raw = http_get(addr, "/stats/ghost-user").await;
@@ -868,7 +873,12 @@ async fn route_erreur_svg_jamais_en_l2_et_succes_ecrit_en_l2() {
     let addr2 = listener2.local_addr().expect("addr");
     let app2 = build_router(state2);
     tokio::spawn(async move {
-        axum::serve(listener2, app2).await.expect("serve");
+        axum::serve(
+            listener2,
+            app2.into_make_service_with_connect_info::<std::net::SocketAddr>(),
+        )
+        .await
+        .expect("serve");
     });
 
     let raw2 = http_get(addr2, "/stats/probe-user").await;

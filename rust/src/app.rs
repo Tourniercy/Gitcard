@@ -64,6 +64,9 @@ pub struct AppState<L2: crate::cache::L2Cache> {
     pub cache_ttl: f64,
     /// `CORS_ORIGIN` (absent → cors `*`).
     pub cors_origin: Option<String>,
+    /// Rate-limiter `/api/data/*` (P5 — hono-rate-limiter 0.5.3, oracle
+    /// `tests/golden/ratelimit/`) : horloge injectable pour les tests.
+    pub limiter: Arc<crate::ratelimit::RateLimiter>,
 }
 
 impl<L2: crate::cache::L2Cache> Clone for AppState<L2> {
@@ -75,6 +78,7 @@ impl<L2: crate::cache::L2Cache> Clone for AppState<L2> {
             github_url: self.github_url.clone(),
             cache_ttl: self.cache_ttl,
             cors_origin: self.cors_origin.clone(),
+            limiter: self.limiter.clone(),
         }
     }
 }
@@ -287,6 +291,98 @@ async fn cors_middleware<L2: crate::cache::L2Cache>(
     }
     set_date_header(&mut headers);
     (res_parts.status, headers, Body::from(body_bytes)).into_response()
+}
+
+// ------------------------------------------------------------ rate-limiter
+
+/// Rate-limiter `/api/data/*` (P5) — port du `use('/api/data/*', rateLimiter(
+/// {windowMs: 60_000, limit: 30, keyGenerator}))` de data.ts:20-27. Oracle :
+/// `tests/golden/ratelimit/`. En-têtes draft-6 sur TOUTE réponse du chemin,
+/// 429 texte hono au-delà de 30 hits/fenêtre/clé. Position dans le pipeline :
+/// INSIDE cors (comme hono : cors est le premier `app.use`, le limiter vit
+/// dans la sous-app data) — OPTIONS préemptées en 204 n'atteignent jamais ce
+/// middleware, HEAD arrive déjà converti en GET (compté comme hono : skip =
+/// false pour toute méthode).
+async fn rate_limit_middleware<L2: crate::cache::L2Cache>(
+    State(state): State<AppState<L2>>,
+    req: Request<Body>,
+    next: Next,
+) -> Response {
+    let path = req.uri().path();
+    // glob hono `/api/data/*` : le chemin NU est matché (oracle boot `paths`,
+    // sonde bare → rem=29) ainsi que tout suffixe, vide (`/api/data/`) ou
+    // profond (`/api/data/deep/a/b`).
+    if path != "/api/data" && !path.starts_with("/api/data/") {
+        return next.run(req).await;
+    }
+    // keyGenerator (data.ts:22-31) : cf-connecting-ip, sinon adresse remote
+    // (`getConnInfo().remote.address ?? 'unknown'`, catch → 'unknown').
+    let key = req
+        .headers()
+        .get("cf-connecting-ip")
+        .and_then(|v| v.to_str().ok())
+        .map(|s| s.to_string())
+        .or_else(|| {
+            req.extensions()
+                .get::<axum::extract::ConnectInfo<std::net::SocketAddr>>()
+                .map(|c| c.0.ip().to_string())
+        })
+        .unwrap_or_else(|| "unknown".to_string());
+
+    let info = state.limiter.check(&key);
+    if info.total_hits > crate::ratelimit::LIMIT {
+        // handler hono par défaut : c.status(429) ; c.text(message) —
+        // en-têtes déjà posés (draft-6) + Retry-After (setRetryAfterHeader).
+        // ORDRE = émission hono via @hono/node-server : alphabétique
+        // (content-type < ratelimit-* < retry-after) — cf. capture hit_31.
+        let mut headers = HeaderMap::new();
+        headers.insert(
+            header::CONTENT_TYPE,
+            HeaderValue::from_static("text/plain; charset=UTF-8"),
+        );
+        draft6_headers(&mut headers, &info);
+        headers.insert(
+            header::RETRY_AFTER,
+            HeaderValue::from_str(&info.reset_seconds.to_string()).expect("retry-after ASCII"),
+        );
+        let res = (
+            StatusCode::TOO_MANY_REQUESTS,
+            headers,
+            Body::from(crate::ratelimit::BLOCKED_MESSAGE),
+        )
+            .into_response();
+        // `Date`/`content-length`/ACAO sont posés par la couche cors externe
+        // (comme hono : cors enveloppe le limiter) — rien à ajouter ici.
+        return res;
+    }
+
+    let mut res = next.run(req).await;
+    // draft-6 APRÈS les en-têtes du handler : position alphabétique
+    // (content-type du handler < ratelimit-* < vary/content-length/Date de la
+    // couche cors) — identique à l'insertion hono avant finalisation.
+    draft6_headers(res.headers_mut(), &info);
+    res
+}
+
+/// `setDraft6Headers` hono : Policy `30;w=60`, Limit, Remaining, Reset
+/// (ABSENT si 0 — `if (resetSeconds)`). `w` = ceil(windowMs/1000).
+/// ORDRE D'ÉMISSION = alphabétique (@hono/node-server itère les en-têtes de
+/// la Response triés) : limit < policy < remaining < reset — capture hit_1.
+fn draft6_headers(headers: &mut HeaderMap, info: &crate::ratelimit::RequestInfo) {
+    let mut set = |name: &'static str, value: String| {
+        if let Ok(v) = HeaderValue::from_str(&value) {
+            headers.insert(HeaderName::from_static(name), v);
+        }
+    };
+    set("ratelimit-limit", crate::ratelimit::LIMIT.to_string());
+    set(
+        "ratelimit-policy",
+        format!("{};w=60", crate::ratelimit::LIMIT),
+    );
+    set("ratelimit-remaining", info.remaining.to_string());
+    if info.reset_seconds > 0 {
+        set("ratelimit-reset", info.reset_seconds.to_string());
+    }
 }
 
 // ------------------------------------------------------------ utilitaires date
@@ -677,6 +773,16 @@ pub fn build_router<L2: crate::cache::L2Cache>(state: AppState<L2>) -> Router {
         .route("/stats/{username}/top-langs", any(langs_gate))
         .route("/stats/{username}/profile", any(profile_gate))
         .fallback(not_found)
+        // P5 : pipeline hono — cors (premier app.use) ENVELOPPE le limiter
+        // (sous-app data) ; ordre axum = inverse de ServiceBuilder (le
+        // DERNIER .layer est le plus externe) : head → cors → rate → router.
+        // OPTIONS (préemptées 204 par cors) et /health /stats /api/themes
+        // n'atteignent jamais le limiteur — oracle boot window30_31
+        // (40 cartes + themes + health : aucun ratelimit-*).
+        .layer(axum::middleware::from_fn_with_state(
+            state.clone(),
+            rate_limit_middleware::<L2>,
+        ))
         .layer(axum::middleware::from_fn_with_state(
             state.clone(),
             cors_middleware::<L2>,
@@ -701,5 +807,6 @@ pub fn prod_state<L2: crate::cache::L2Cache>(
         github_url: GITHUB_GRAPHQL_URL.to_string(),
         cache_ttl,
         cors_origin,
+        limiter: Arc::new(crate::ratelimit::RateLimiter::new(Arc::new(now_unix_ms))),
     }
 }
