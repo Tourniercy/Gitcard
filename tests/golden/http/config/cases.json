@@ -1,0 +1,247 @@
+{
+ "node": "v26.13.1",
+ "results": [
+  {
+   "name": "ok-default",
+   "env": {
+    "PAT_1": "fake-token-1"
+   },
+   "exitCode": 0,
+   "signal": null,
+   "ok": true,
+   "expectOk": true,
+   "match": true,
+   "messageBlock": ""
+  },
+  {
+   "name": "no-pat1",
+   "env": {},
+   "exitCode": 1,
+   "signal": null,
+   "ok": false,
+   "expectOk": false,
+   "match": true,
+   "messageBlock": "❌ Invalid environment variables: [\n  {\n    expected: 'string',\n    code: 'invalid_type',\n    path: [ 'PAT_1' ],\n    message: 'Invalid input: expected string, received undefined'\n  }\n]\nfile:///w/node_modules/.pnpm/@t3-oss+env-core@0.13.11_typescript@6.0.2_zod@4.6.6/node_modules/@t3-oss/env-core/dist/index.js:32\n\n\t\t      ^\n\nError: Invalid environment variables\n\nNode.js v26.13.1"
+  },
+  {
+   "name": "pat1-empty",
+   "env": {
+    "PAT_1": ""
+   },
+   "exitCode": 1,
+   "signal": null,
+   "ok": false,
+   "expectOk": false,
+   "match": true,
+   "messageBlock": "❌ Invalid environment variables: [\n  {\n    expected: 'string',\n    code: 'invalid_type',\n    path: [ 'PAT_1' ],\n    message: 'Invalid input: expected string, received undefined'\n  }\n]\nfile:///w/node_modules/.pnpm/@t3-oss+env-core@0.13.11_typescript@6.0.2_zod@4.6.6/node_modules/@t3-oss/env-core/dist/index.js:32\n\n\t\t      ^\n\nError: Invalid environment variables\n\nNode.js v26.13.1"
+  },
+  {
+   "name": "port-abc",
+   "env": {
+    "PAT_1": "fake-token-1",
+    "PORT": "abc"
+   },
+   "exitCode": 1,
+   "signal": null,
+   "ok": false,
+   "expectOk": false,
+   "match": true,
+   "messageBlock": "❌ Invalid environment variables: [\n  {\n    expected: 'number',\n    code: 'invalid_type',\n    received: 'NaN',\n    path: [ 'PORT' ],\n    message: 'Invalid input: expected number, received NaN'\n  }\n]\nfile:///w/node_modules/.pnpm/@t3-oss+env-core@0.13.11_typescript@6.0.2_zod@4.6.6/node_modules/@t3-oss/env-core/dist/index.js:32\n\n\t\t      ^\n\nError: Invalid environment variables\n\nNode.js v26.13.1"
+  },
+  {
+   "name": "port-0",
+   "env": {
+    "PAT_1": "fake-token-1",
+    "PORT": "0"
+   },
+   "exitCode": 1,
+   "signal": null,
+   "ok": false,
+   "expectOk": false,
+   "match": true,
+   "messageBlock": "❌ Invalid environment variables: [\n  {\n    origin: 'number',\n    code: 'too_small',\n    minimum: 1,\n    inclusive: true,\n    path: [ 'PORT' ],\n    message: 'Too small: expected number to be >=1'\n  }\n]\nfile:///w/node_modules/.pnpm/@t3-oss+env-core@0.13.11_typescript@6.0.2_zod@4.6.6/node_modules/@t3-oss/env-core/dist/index.js:32\n\n\t\t      ^\n\nError: Invalid environment variables\n\nNode.js v26.13.1"
+  },
+  {
+   "name": "port-70000",
+   "env": {
+    "PAT_1": "fake-token-1",
+    "PORT": "70000"
+   },
+   "exitCode": 1,
+   "signal": null,
+   "ok": false,
+   "expectOk": false,
+   "match": true,
+   "messageBlock": "❌ Invalid environment variables: [\n  {\n    origin: 'number',\n    code: 'too_big',\n    maximum: 65535,\n    inclusive: true,\n    path: [ 'PORT' ],\n    message: 'Too big: expected number to be <=65535'\n  }\n]\nfile:///w/node_modules/.pnpm/@t3-oss+env-core@0.13.11_typescript@6.0.2_zod@4.6.6/node_modules/@t3-oss/env-core/dist/index.js:32\n\n\t\t      ^\n\nError: Invalid environment variables\n\nNode.js v26.13.1"
+  },
+  {
+   "name": "port-empty",
+   "env": {
+    "PAT_1": "fake-token-1",
+    "PORT": ""
+   },
+   "exitCode": 0,
+   "signal": null,
+   "ok": true,
+   "expectOk": true,
+   "match": true,
+   "messageBlock": ""
+  },
+  {
+   "name": "loglevel-bad",
+   "env": {
+    "PAT_1": "fake-token-1",
+    "LOG_LEVEL": "trace"
+   },
+   "exitCode": 1,
+   "signal": null,
+   "ok": false,
+   "expectOk": false,
+   "match": true,
+   "messageBlock": "❌ Invalid environment variables: [\n  {\n    code: 'invalid_value',\n    values: [ 'debug', 'info', 'warn', 'error' ],\n    path: [ 'LOG_LEVEL' ],\n    message: 'Invalid option: expected one of \"debug\"|\"info\"|\"warn\"|\"error\"'\n  }\n]\nfile:///w/node_modules/.pnpm/@t3-oss+env-core@0.13.11_typescript@6.0.2_zod@4.6.6/node_modules/@t3-oss/env-core/dist/index.js:32\n\n\t\t      ^\n\nError: Invalid environment variables\n\nNode.js v26.13.1"
+  },
+  {
+   "name": "loglevel-empty",
+   "env": {
+    "PAT_1": "fake-token-1",
+    "LOG_LEVEL": ""
+   },
+   "exitCode": 0,
+   "signal": null,
+   "ok": true,
+   "expectOk": true,
+   "match": true,
+   "messageBlock": ""
+  },
+  {
+   "name": "cache_ttl-low",
+   "env": {
+    "PAT_1": "fake-token-1",
+    "CACHE_TTL": "30"
+   },
+   "exitCode": 1,
+   "signal": null,
+   "ok": false,
+   "expectOk": false,
+   "match": true,
+   "messageBlock": "❌ Invalid environment variables: [\n  {\n    origin: 'number',\n    code: 'too_small',\n    minimum: 60,\n    inclusive: true,\n    path: [ 'CACHE_TTL' ],\n    message: 'Too small: expected number to be >=60'\n  }\n]\nfile:///w/node_modules/.pnpm/@t3-oss+env-core@0.13.11_typescript@6.0.2_zod@4.6.6/node_modules/@t3-oss/env-core/dist/index.js:32\n\n\t\t      ^\n\nError: Invalid environment variables\n\nNode.js v26.13.1"
+  },
+  {
+   "name": "cache_ttl-empty",
+   "env": {
+    "PAT_1": "fake-token-1",
+    "CACHE_TTL": ""
+   },
+   "exitCode": 0,
+   "signal": null,
+   "ok": true,
+   "expectOk": true,
+   "match": true,
+   "messageBlock": ""
+  },
+  {
+   "name": "redis-bad",
+   "env": {
+    "PAT_1": "fake-token-1",
+    "REDIS_URL": "notaurl"
+   },
+   "exitCode": 1,
+   "signal": null,
+   "ok": false,
+   "expectOk": false,
+   "match": true,
+   "messageBlock": "❌ Invalid environment variables: [\n  {\n    code: 'invalid_format',\n    format: 'url',\n    path: [ 'REDIS_URL' ],\n    message: 'Invalid URL'\n  }\n]\nfile:///w/node_modules/.pnpm/@t3-oss+env-core@0.13.11_typescript@6.0.2_zod@4.6.6/node_modules/@t3-oss/env-core/dist/index.js:32\n\n\t\t      ^\n\nError: Invalid environment variables\n\nNode.js v26.13.1"
+  },
+  {
+   "name": "redis-empty",
+   "env": {
+    "PAT_1": "fake-token-1",
+    "REDIS_URL": ""
+   },
+   "exitCode": 0,
+   "signal": null,
+   "ok": true,
+   "expectOk": true,
+   "match": true,
+   "messageBlock": ""
+  },
+  {
+   "name": "cors-empty",
+   "env": {
+    "PAT_1": "fake-token-1",
+    "CORS_ORIGIN": ""
+   },
+   "exitCode": 0,
+   "signal": null,
+   "ok": true,
+   "expectOk": true,
+   "match": true,
+   "messageBlock": ""
+  },
+  {
+   "name": "sentry-dsn-bad",
+   "env": {
+    "PAT_1": "fake-token-1",
+    "SENTRY_DSN": "bad-dsn"
+   },
+   "exitCode": 1,
+   "signal": null,
+   "ok": false,
+   "expectOk": false,
+   "match": true,
+   "messageBlock": "❌ Invalid environment variables: [\n  {\n    code: 'invalid_format',\n    format: 'url',\n    path: [ 'SENTRY_DSN' ],\n    message: 'Invalid URL'\n  }\n]\nfile:///w/node_modules/.pnpm/@t3-oss+env-core@0.13.11_typescript@6.0.2_zod@4.6.6/node_modules/@t3-oss/env-core/dist/index.js:32\n\n\t\t      ^\n\nError: Invalid environment variables\n\nNode.js v26.13.1"
+  },
+  {
+   "name": "sentry-rate-high",
+   "env": {
+    "PAT_1": "fake-token-1",
+    "SENTRY_TRACES_SAMPLE_RATE": "2"
+   },
+   "exitCode": 1,
+   "signal": null,
+   "ok": false,
+   "expectOk": false,
+   "match": true,
+   "messageBlock": "❌ Invalid environment variables: [\n  {\n    origin: 'number',\n    code: 'too_big',\n    maximum: 1,\n    inclusive: true,\n    path: [ 'SENTRY_TRACES_SAMPLE_RATE' ],\n    message: 'Too big: expected number to be <=1'\n  }\n]\nfile:///w/node_modules/.pnpm/@t3-oss+env-core@0.13.11_typescript@6.0.2_zod@4.6.6/node_modules/@t3-oss/env-core/dist/index.js:32\n\n\t\t      ^\n\nError: Invalid environment variables\n\nNode.js v26.13.1"
+  },
+  {
+   "name": "sentry-rate-nan",
+   "env": {
+    "PAT_1": "fake-token-1",
+    "SENTRY_TRACES_SAMPLE_RATE": "abc"
+   },
+   "exitCode": 1,
+   "signal": null,
+   "ok": false,
+   "expectOk": false,
+   "match": true,
+   "messageBlock": "❌ Invalid environment variables: [\n  {\n    expected: 'number',\n    code: 'invalid_type',\n    received: 'NaN',\n    path: [ 'SENTRY_TRACES_SAMPLE_RATE' ],\n    message: 'Invalid input: expected number, received NaN'\n  }\n]\nfile:///w/node_modules/.pnpm/@t3-oss+env-core@0.13.11_typescript@6.0.2_zod@4.6.6/node_modules/@t3-oss/env-core/dist/index.js:32\n\n\t\t      ^\n\nError: Invalid environment variables\n\nNode.js v26.13.1"
+  },
+  {
+   "name": "sentry-rate-empty",
+   "env": {
+    "PAT_1": "fake-token-1",
+    "SENTRY_TRACES_SAMPLE_RATE": ""
+   },
+   "exitCode": 0,
+   "signal": null,
+   "ok": true,
+   "expectOk": true,
+   "match": true,
+   "messageBlock": ""
+  },
+  {
+   "name": "sentry-env-empty",
+   "env": {
+    "PAT_1": "fake-token-1",
+    "SENTRY_ENVIRONMENT": ""
+   },
+   "exitCode": 0,
+   "signal": null,
+   "ok": true,
+   "expectOk": true,
+   "match": true,
+   "messageBlock": ""
+  }
+ ]
+}

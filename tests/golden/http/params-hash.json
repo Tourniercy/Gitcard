@@ -1,0 +1,188 @@
+{
+ "node": "v26.13.1",
+ "params": [
+  {
+   "label": "no-query",
+   "query": {},
+   "stringified": "{\"theme\":\"default\",\"hide\":[],\"showIcons\":true,\"hideBorder\":false,\"hideTitle\":false,\"cacheSeconds\":14400,\"locale\":\"en\"}",
+   "paramsHash": "289b4511"
+  },
+  {
+   "label": "theme",
+   "query": {
+    "theme": "dracula"
+   },
+   "stringified": "{\"theme\":\"dracula\",\"hide\":[],\"showIcons\":true,\"hideBorder\":false,\"hideTitle\":false,\"cacheSeconds\":14400,\"locale\":\"en\"}",
+   "paramsHash": "022f6ef2"
+  },
+  {
+   "label": "theme-empty",
+   "query": {
+    "theme": ""
+   },
+   "stringified": "{\"theme\":\"\",\"hide\":[],\"showIcons\":true,\"hideBorder\":false,\"hideTitle\":false,\"cacheSeconds\":14400,\"locale\":\"en\"}",
+   "paramsHash": "37f1444a"
+  },
+  {
+   "label": "hide-two",
+   "query": {
+    "hide": "stars,commits"
+   },
+   "stringified": "{\"theme\":\"default\",\"hide\":[\"stars\",\"commits\"],\"showIcons\":true,\"hideBorder\":false,\"hideTitle\":false,\"cacheSeconds\":14400,\"locale\":\"en\"}",
+   "paramsHash": "368382c7"
+  },
+  {
+   "label": "hide-empty",
+   "query": {
+    "hide": ""
+   },
+   "stringified": "{\"theme\":\"default\",\"hide\":[],\"showIcons\":true,\"hideBorder\":false,\"hideTitle\":false,\"cacheSeconds\":14400,\"locale\":\"en\"}",
+   "paramsHash": "289b4511"
+  },
+  {
+   "label": "hide-holes",
+   "query": {
+    "hide": "a,,b"
+   },
+   "stringified": "{\"theme\":\"default\",\"hide\":[\"a\",\"\",\"b\"],\"showIcons\":true,\"hideBorder\":false,\"hideTitle\":false,\"cacheSeconds\":14400,\"locale\":\"en\"}",
+   "paramsHash": "a1f43ada"
+  },
+  {
+   "label": "show-icons-empty",
+   "query": {
+    "show_icons": ""
+   },
+   "stringified": "{\"theme\":\"default\",\"hide\":[],\"showIcons\":false,\"hideBorder\":false,\"hideTitle\":false,\"cacheSeconds\":14400,\"locale\":\"en\"}",
+   "paramsHash": "6ae62e0a"
+  },
+  {
+   "label": "show-icons-0",
+   "query": {
+    "show_icons": "0"
+   },
+   "stringified": "{\"theme\":\"default\",\"hide\":[],\"showIcons\":false,\"hideBorder\":false,\"hideTitle\":false,\"cacheSeconds\":14400,\"locale\":\"en\"}",
+   "paramsHash": "6ae62e0a"
+  },
+  {
+   "label": "show-icons-1",
+   "query": {
+    "show_icons": "1"
+   },
+   "stringified": "{\"theme\":\"default\",\"hide\":[],\"showIcons\":true,\"hideBorder\":false,\"hideTitle\":false,\"cacheSeconds\":14400,\"locale\":\"en\"}",
+   "paramsHash": "289b4511"
+  },
+  {
+   "label": "cache-1800",
+   "query": {
+    "cache_seconds": "1800"
+   },
+   "stringified": "{\"theme\":\"default\",\"hide\":[],\"showIcons\":true,\"hideBorder\":false,\"hideTitle\":false,\"cacheSeconds\":1800,\"locale\":\"en\"}",
+   "paramsHash": "93733064"
+  },
+  {
+   "label": "cache-empty",
+   "query": {
+    "cache_seconds": ""
+   },
+   "stringified": "{\"theme\":\"default\",\"hide\":[],\"showIcons\":true,\"hideBorder\":false,\"hideTitle\":false,\"cacheSeconds\":1800,\"locale\":\"en\"}",
+   "paramsHash": "93733064"
+  },
+  {
+   "label": "cache-abc",
+   "query": {
+    "cache_seconds": "abc"
+   },
+   "stringified": "{\"theme\":\"default\",\"hide\":[],\"showIcons\":true,\"hideBorder\":false,\"hideTitle\":false,\"cacheSeconds\":14400,\"locale\":\"en\"}",
+   "paramsHash": "289b4511"
+  },
+  {
+   "label": "cache-0x10",
+   "query": {
+    "cache_seconds": "0x10"
+   },
+   "stringified": "{\"theme\":\"default\",\"hide\":[],\"showIcons\":true,\"hideBorder\":false,\"hideTitle\":false,\"cacheSeconds\":1800,\"locale\":\"en\"}",
+   "paramsHash": "93733064"
+  },
+  {
+   "label": "cache-neg",
+   "query": {
+    "cache_seconds": "-5"
+   },
+   "stringified": "{\"theme\":\"default\",\"hide\":[],\"showIcons\":true,\"hideBorder\":false,\"hideTitle\":false,\"cacheSeconds\":1800,\"locale\":\"en\"}",
+   "paramsHash": "93733064"
+  },
+  {
+   "label": "cache-inf",
+   "query": {
+    "cache_seconds": "Infinity"
+   },
+   "stringified": "{\"theme\":\"default\",\"hide\":[],\"showIcons\":true,\"hideBorder\":false,\"hideTitle\":false,\"cacheSeconds\":14400,\"locale\":\"en\"}",
+   "paramsHash": "289b4511"
+  },
+  {
+   "label": "bg-empty",
+   "query": {
+    "bg_color": ""
+   },
+   "stringified": "{\"theme\":\"default\",\"hide\":[],\"showIcons\":true,\"hideBorder\":false,\"hideTitle\":false,\"bgColor\":\"\",\"cacheSeconds\":14400,\"locale\":\"en\"}",
+   "paramsHash": "0594a12e"
+  },
+  {
+   "label": "colors",
+   "query": {
+    "bg_color": "1a1b27",
+    "title_color": "ff79c6"
+   },
+   "stringified": "{\"theme\":\"default\",\"hide\":[],\"showIcons\":true,\"hideBorder\":false,\"hideTitle\":false,\"bgColor\":\"1a1b27\",\"titleColor\":\"ff79c6\",\"cacheSeconds\":14400,\"locale\":\"en\"}",
+   "paramsHash": "d8b685ce"
+  },
+  {
+   "label": "locale-fr",
+   "query": {
+    "locale": "fr"
+   },
+   "stringified": "{\"theme\":\"default\",\"hide\":[],\"showIcons\":true,\"hideBorder\":false,\"hideTitle\":false,\"cacheSeconds\":14400,\"locale\":\"fr\"}",
+   "paramsHash": "e3002170"
+  },
+  {
+   "label": "locale-unknown",
+   "query": {
+    "locale": "xx"
+   },
+   "stringified": "{\"theme\":\"default\",\"hide\":[],\"showIcons\":true,\"hideBorder\":false,\"hideTitle\":false,\"cacheSeconds\":14400,\"locale\":\"en\"}",
+   "paramsHash": "289b4511"
+  },
+  {
+   "label": "locale-pt-BR",
+   "query": {
+    "locale": "pt-BR"
+   },
+   "stringified": "{\"theme\":\"default\",\"hide\":[],\"showIcons\":true,\"hideBorder\":false,\"hideTitle\":false,\"cacheSeconds\":14400,\"locale\":\"pt-BR\"}",
+   "paramsHash": "947076a0"
+  },
+  {
+   "label": "layout-compact",
+   "query": {
+    "layout": "compact"
+   },
+   "stringified": "{\"theme\":\"default\",\"hide\":[],\"showIcons\":true,\"hideBorder\":false,\"hideTitle\":false,\"cacheSeconds\":14400,\"locale\":\"en\",\"layout\":\"compact\"}",
+   "paramsHash": "5cb5c5e2"
+  },
+  {
+   "label": "unknown-stripped",
+   "query": {
+    "unknown": "x"
+   },
+   "stringified": "{\"theme\":\"default\",\"hide\":[],\"showIcons\":true,\"hideBorder\":false,\"hideTitle\":false,\"cacheSeconds\":14400,\"locale\":\"en\"}",
+   "paramsHash": "289b4511"
+  },
+  {
+   "label": "dupe-first-wins",
+   "query": {
+    "show_icons": "true"
+   },
+   "stringified": "{\"theme\":\"default\",\"hide\":[],\"showIcons\":true,\"hideBorder\":false,\"hideTitle\":false,\"cacheSeconds\":14400,\"locale\":\"en\"}",
+   "paramsHash": "289b4511"
+  }
+ ]
+}

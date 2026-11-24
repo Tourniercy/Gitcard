@@ -1,0 +1,54 @@
+{
+ "generator": {
+  "node": "v26.13.1",
+  "entry": "node scripts/gen-http-golden.mjs (jamais via pnpm) — errorSvg de apps/api/src/routes/card-response.ts",
+  "uidRule": "uid = suite du corpus global (manifest.json : 0..511) ; errorSvg ne consomme pas le compteur cardIdCounter"
+ },
+ "entries": [
+  {
+   "file": "errors/404-user-not-found.svg",
+   "uid": 512,
+   "md5": "3afccfd105c9991a5d62354475958ee7",
+   "message": "User not found: probe-user",
+   "status": 404,
+   "cacheSeconds": 300,
+   "contentType": "image/svg+xml; charset=utf-8"
+  },
+  {
+   "file": "errors/404-user-not-found-escape.svg",
+   "uid": 513,
+   "md5": "5c94155da61990a9cd6079d87f22a054",
+   "message": "User not found: a<b&c\"d'e",
+   "status": 404,
+   "cacheSeconds": 300,
+   "contentType": "image/svg+xml; charset=utf-8"
+  },
+  {
+   "file": "errors/429-rate-limit.svg",
+   "uid": 514,
+   "md5": "29827365e2c0148a3aadaa162f07891f",
+   "message": "GitHub API rate limit exceeded. Please try again later.",
+   "status": 429,
+   "cacheSeconds": 60,
+   "contentType": "image/svg+xml; charset=utf-8"
+  },
+  {
+   "file": "errors/429-all-pat.svg",
+   "uid": 515,
+   "md5": "19c50f9548226fd302923efc0ef8b953",
+   "message": "All API tokens are rate-limited. Please try again later.",
+   "status": 429,
+   "cacheSeconds": 60,
+   "contentType": "image/svg+xml; charset=utf-8"
+  },
+  {
+   "file": "errors/502-generic.svg",
+   "uid": 516,
+   "md5": "6eee1630e48cc05d4a0d5a949ea4c0a5",
+   "message": "An error occurred while generating the card.",
+   "status": 502,
+   "cacheSeconds": 60,
+   "contentType": "image/svg+xml; charset=utf-8"
+  }
+ ]
+}

@@ -1,0 +1,524 @@
+{
+ "generator": {
+  "node": "v26.13.1",
+  "entry": "node scripts/gen-http-golden.mjs (jamais via pnpm) — apps/api/src/index.ts servi par @hono/node-server",
+  "hono": "4.13.16",
+  "nodeServer": "2.1.6",
+  "corsOrigin": "https://example.com",
+  "note": "captures par socket brute (HTTP/1.1, Connection: close) ; en-tête Date et timestamp /health : dynamiques (format vérifié par le test, valeur non)",
+  "pat": "PAT_1=fake-token-1 (jeton fictif) ; REDIS_URL/SENTRY_DSN absents"
+ },
+ "probes": [
+  {
+   "name": "get_health",
+   "method": "GET",
+   "path": "/health",
+   "request": "GET /health HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+   "statusLine": "HTTP/1.1 200 OK",
+   "status": 200,
+   "headers": [
+    "content-type: application/json",
+    "vary: Origin",
+    "content-length: 54",
+    "Date: Tue, 24 Nov 2026 14:27:17 GMT",
+    "Connection: close"
+   ],
+   "bodyFile": "get_health.body",
+   "bodyBytes": 54,
+   "bodyMd5": "6b2b1f7c92e76beb7714702baf4a84c0"
+  },
+  {
+   "name": "post_health",
+   "method": "POST",
+   "path": "/health",
+   "request": "POST /health HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nContent-Length: 0\r\nConnection: close\r\n\r\n",
+   "statusLine": "HTTP/1.1 404 Not Found",
+   "status": 404,
+   "headers": [
+    "content-type: application/json",
+    "vary: Origin",
+    "content-length: 21",
+    "Date: Tue, 24 Nov 2026 14:27:17 GMT",
+    "Connection: close"
+   ],
+   "bodyFile": "post_health.body",
+   "bodyBytes": 21,
+   "bodyMd5": "2efae0e06cfdc3eacc743546ff595d74"
+  },
+  {
+   "name": "get_healthz",
+   "method": "GET",
+   "path": "/healthz",
+   "request": "GET /healthz HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+   "statusLine": "HTTP/1.1 200 OK",
+   "status": 200,
+   "headers": [
+    "content-type: application/json",
+    "vary: Origin",
+    "content-length: 54",
+    "Date: Tue, 24 Nov 2026 14:27:17 GMT",
+    "Connection: close"
+   ],
+   "bodyFile": "get_healthz.body",
+   "bodyBytes": 54,
+   "bodyMd5": "3e6890e887ef26502d34d2161f5c4f66"
+  },
+  {
+   "name": "post_healthz",
+   "method": "POST",
+   "path": "/healthz",
+   "request": "POST /healthz HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nContent-Length: 0\r\nConnection: close\r\n\r\n",
+   "statusLine": "HTTP/1.1 404 Not Found",
+   "status": 404,
+   "headers": [
+    "content-type: application/json",
+    "vary: Origin",
+    "content-length: 21",
+    "Date: Tue, 24 Nov 2026 14:27:17 GMT",
+    "Connection: close"
+   ],
+   "bodyFile": "post_healthz.body",
+   "bodyBytes": 21,
+   "bodyMd5": "2efae0e06cfdc3eacc743546ff595d74"
+  },
+  {
+   "name": "get_themes",
+   "method": "GET",
+   "path": "/api/themes",
+   "request": "GET /api/themes HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+   "statusLine": "HTTP/1.1 200 OK",
+   "status": 200,
+   "headers": [
+    "content-type: application/json",
+    "vary: Origin",
+    "content-length: 371",
+    "Date: Tue, 24 Nov 2026 14:27:17 GMT",
+    "Connection: close"
+   ],
+   "bodyFile": "get_themes.body",
+   "bodyBytes": 371,
+   "bodyMd5": "55b7c98acfc174b2d31473dc37fe605d"
+  },
+  {
+   "name": "post_themes",
+   "method": "POST",
+   "path": "/api/themes",
+   "request": "POST /api/themes HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nContent-Length: 0\r\nConnection: close\r\n\r\n",
+   "statusLine": "HTTP/1.1 404 Not Found",
+   "status": 404,
+   "headers": [
+    "content-type: application/json",
+    "vary: Origin",
+    "content-length: 21",
+    "Date: Tue, 24 Nov 2026 14:27:17 GMT",
+    "Connection: close"
+   ],
+   "bodyFile": "post_themes.body",
+   "bodyBytes": 21,
+   "bodyMd5": "2efae0e06cfdc3eacc743546ff595d74"
+  },
+  {
+   "name": "get_stats",
+   "method": "GET",
+   "path": "/stats/probe-user",
+   "request": "GET /stats/probe-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+   "statusLine": "HTTP/1.1 502 Bad Gateway",
+   "status": 502,
+   "headers": [
+    "cache-control: public, max-age=60, s-maxage=60, stale-while-revalidate=86400",
+    "content-type: image/svg+xml; charset=utf-8",
+    "etag: \"6eee1630e48cc05d4a0d5a949ea4c0a5\"",
+    "vary: Origin",
+    "content-length: 389",
+    "Date: Tue, 24 Nov 2026 14:27:17 GMT",
+    "Connection: close"
+   ],
+   "bodyFile": "get_stats.body",
+   "bodyBytes": 389,
+   "bodyMd5": "6eee1630e48cc05d4a0d5a949ea4c0a5"
+  },
+  {
+   "name": "get_stats_streak",
+   "method": "GET",
+   "path": "/stats/probe-user/streak",
+   "request": "GET /stats/probe-user/streak HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+   "statusLine": "HTTP/1.1 502 Bad Gateway",
+   "status": 502,
+   "headers": [
+    "cache-control: public, max-age=60, s-maxage=60, stale-while-revalidate=86400",
+    "content-type: image/svg+xml; charset=utf-8",
+    "etag: \"6eee1630e48cc05d4a0d5a949ea4c0a5\"",
+    "vary: Origin",
+    "content-length: 389",
+    "Date: Tue, 24 Nov 2026 14:27:17 GMT",
+    "Connection: close"
+   ],
+   "bodyFile": "get_stats_streak.body",
+   "bodyBytes": 389,
+   "bodyMd5": "6eee1630e48cc05d4a0d5a949ea4c0a5"
+  },
+  {
+   "name": "get_stats_langs",
+   "method": "GET",
+   "path": "/stats/probe-user/top-langs",
+   "request": "GET /stats/probe-user/top-langs HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+   "statusLine": "HTTP/1.1 502 Bad Gateway",
+   "status": 502,
+   "headers": [
+    "cache-control: public, max-age=60, s-maxage=60, stale-while-revalidate=86400",
+    "content-type: image/svg+xml; charset=utf-8",
+    "etag: \"6eee1630e48cc05d4a0d5a949ea4c0a5\"",
+    "vary: Origin",
+    "content-length: 389",
+    "Date: Tue, 24 Nov 2026 14:27:17 GMT",
+    "Connection: close"
+   ],
+   "bodyFile": "get_stats_langs.body",
+   "bodyBytes": 389,
+   "bodyMd5": "6eee1630e48cc05d4a0d5a949ea4c0a5"
+  },
+  {
+   "name": "get_stats_profile",
+   "method": "GET",
+   "path": "/stats/probe-user/profile",
+   "request": "GET /stats/probe-user/profile HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+   "statusLine": "HTTP/1.1 502 Bad Gateway",
+   "status": 502,
+   "headers": [
+    "cache-control: public, max-age=60, s-maxage=60, stale-while-revalidate=86400",
+    "content-type: image/svg+xml; charset=utf-8",
+    "etag: \"6eee1630e48cc05d4a0d5a949ea4c0a5\"",
+    "vary: Origin",
+    "content-length: 389",
+    "Date: Tue, 24 Nov 2026 14:27:17 GMT",
+    "Connection: close"
+   ],
+   "bodyFile": "get_stats_profile.body",
+   "bodyBytes": 389,
+   "bodyMd5": "6eee1630e48cc05d4a0d5a949ea4c0a5"
+  },
+  {
+   "name": "get_data",
+   "method": "GET",
+   "path": "/api/data/probe-user",
+   "request": "GET /api/data/probe-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+   "statusLine": "HTTP/1.1 500 Internal Server Error",
+   "status": 500,
+   "headers": [
+    "content-type: application/json",
+    "ratelimit-limit: 30",
+    "ratelimit-policy: 30;w=60",
+    "ratelimit-remaining: 29",
+    "ratelimit-reset: 60",
+    "vary: Origin",
+    "content-length: 33",
+    "Date: Tue, 24 Nov 2026 14:27:17 GMT",
+    "Connection: close"
+   ],
+   "bodyFile": "get_data.body",
+   "bodyBytes": 33,
+   "bodyMd5": "6506126cdb270ee2b77b3c4a23c156e2"
+  },
+  {
+   "name": "get_stats_bad_q",
+   "method": "GET",
+   "path": "/stats/probe-user?show_icons=peut-etre",
+   "request": "GET /stats/probe-user?show_icons=peut-etre HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+   "statusLine": "HTTP/1.1 500 Internal Server Error",
+   "status": 500,
+   "headers": [
+    "content-type: application/json",
+    "vary: Origin",
+    "content-length: 33",
+    "Date: Tue, 24 Nov 2026 14:27:17 GMT",
+    "Connection: close"
+   ],
+   "bodyFile": "get_stats_bad_q.body",
+   "bodyBytes": 33,
+   "bodyMd5": "6506126cdb270ee2b77b3c4a23c156e2"
+  },
+  {
+   "name": "get_stats_q_dupe1",
+   "method": "GET",
+   "path": "/stats/probe-user?show_icons=peut-etre&show_icons=true",
+   "request": "GET /stats/probe-user?show_icons=peut-etre&show_icons=true HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+   "statusLine": "HTTP/1.1 500 Internal Server Error",
+   "status": 500,
+   "headers": [
+    "content-type: application/json",
+    "vary: Origin",
+    "content-length: 33",
+    "Date: Tue, 24 Nov 2026 14:27:17 GMT",
+    "Connection: close"
+   ],
+   "bodyFile": "get_stats_q_dupe1.body",
+   "bodyBytes": 33,
+   "bodyMd5": "6506126cdb270ee2b77b3c4a23c156e2"
+  },
+  {
+   "name": "get_stats_q_dupe2",
+   "method": "GET",
+   "path": "/stats/probe-user?show_icons=true&show_icons=peut-etre",
+   "request": "GET /stats/probe-user?show_icons=true&show_icons=peut-etre HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+   "statusLine": "HTTP/1.1 502 Bad Gateway",
+   "status": 502,
+   "headers": [
+    "cache-control: public, max-age=60, s-maxage=60, stale-while-revalidate=86400",
+    "content-type: image/svg+xml; charset=utf-8",
+    "etag: \"6eee1630e48cc05d4a0d5a949ea4c0a5\"",
+    "vary: Origin",
+    "content-length: 389",
+    "Date: Tue, 24 Nov 2026 14:27:17 GMT",
+    "Connection: close"
+   ],
+   "bodyFile": "get_stats_q_dupe2.body",
+   "bodyBytes": 389,
+   "bodyMd5": "6eee1630e48cc05d4a0d5a949ea4c0a5"
+  },
+  {
+   "name": "get_stats_cs_empty",
+   "method": "GET",
+   "path": "/stats/probe-user?cache_seconds=",
+   "request": "GET /stats/probe-user?cache_seconds= HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+   "statusLine": "HTTP/1.1 502 Bad Gateway",
+   "status": 502,
+   "headers": [
+    "cache-control: public, max-age=60, s-maxage=60, stale-while-revalidate=86400",
+    "content-type: image/svg+xml; charset=utf-8",
+    "etag: \"6eee1630e48cc05d4a0d5a949ea4c0a5\"",
+    "vary: Origin",
+    "content-length: 389",
+    "Date: Tue, 24 Nov 2026 14:27:17 GMT",
+    "Connection: close"
+   ],
+   "bodyFile": "get_stats_cs_empty.body",
+   "bodyBytes": 389,
+   "bodyMd5": "6eee1630e48cc05d4a0d5a949ea4c0a5"
+  },
+  {
+   "name": "get_stats_cs_inf",
+   "method": "GET",
+   "path": "/stats/probe-user?cache_seconds=Infinity",
+   "request": "GET /stats/probe-user?cache_seconds=Infinity HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+   "statusLine": "HTTP/1.1 502 Bad Gateway",
+   "status": 502,
+   "headers": [
+    "cache-control: public, max-age=60, s-maxage=60, stale-while-revalidate=86400",
+    "content-type: image/svg+xml; charset=utf-8",
+    "etag: \"6eee1630e48cc05d4a0d5a949ea4c0a5\"",
+    "vary: Origin",
+    "content-length: 389",
+    "Date: Tue, 24 Nov 2026 14:27:17 GMT",
+    "Connection: close"
+   ],
+   "bodyFile": "get_stats_cs_inf.body",
+   "bodyBytes": 389,
+   "bodyMd5": "6eee1630e48cc05d4a0d5a949ea4c0a5"
+  },
+  {
+   "name": "get_data_bad_q",
+   "method": "GET",
+   "path": "/api/data/probe-user?show_icons=peut-etre",
+   "request": "GET /api/data/probe-user?show_icons=peut-etre HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+   "statusLine": "HTTP/1.1 500 Internal Server Error",
+   "status": 500,
+   "headers": [
+    "content-type: application/json",
+    "ratelimit-limit: 30",
+    "ratelimit-policy: 30;w=60",
+    "ratelimit-remaining: 28",
+    "ratelimit-reset: 60",
+    "vary: Origin",
+    "content-length: 33",
+    "Date: Tue, 24 Nov 2026 14:27:17 GMT",
+    "Connection: close"
+   ],
+   "bodyFile": "get_data_bad_q.body",
+   "bodyBytes": 33,
+   "bodyMd5": "6506126cdb270ee2b77b3c4a23c156e2"
+  },
+  {
+   "name": "get_nope",
+   "method": "GET",
+   "path": "/nope",
+   "request": "GET /nope HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+   "statusLine": "HTTP/1.1 404 Not Found",
+   "status": 404,
+   "headers": [
+    "content-type: application/json",
+    "vary: Origin",
+    "content-length: 21",
+    "Date: Tue, 24 Nov 2026 14:27:17 GMT",
+    "Connection: close"
+   ],
+   "bodyFile": "get_nope.body",
+   "bodyBytes": 21,
+   "bodyMd5": "2efae0e06cfdc3eacc743546ff595d74"
+  },
+  {
+   "name": "post_nope",
+   "method": "POST",
+   "path": "/nope",
+   "request": "POST /nope HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nContent-Length: 0\r\nConnection: close\r\n\r\n",
+   "statusLine": "HTTP/1.1 404 Not Found",
+   "status": 404,
+   "headers": [
+    "content-type: application/json",
+    "vary: Origin",
+    "content-length: 21",
+    "Date: Tue, 24 Nov 2026 14:27:17 GMT",
+    "Connection: close"
+   ],
+   "bodyFile": "post_nope.body",
+   "bodyBytes": 21,
+   "bodyMd5": "2efae0e06cfdc3eacc743546ff595d74"
+  },
+  {
+   "name": "get_root",
+   "method": "GET",
+   "path": "/",
+   "request": "GET / HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+   "statusLine": "HTTP/1.1 404 Not Found",
+   "status": 404,
+   "headers": [
+    "content-type: application/json",
+    "vary: Origin",
+    "content-length: 21",
+    "Date: Tue, 24 Nov 2026 14:27:17 GMT",
+    "Connection: close"
+   ],
+   "bodyFile": "get_root.body",
+   "bodyBytes": 21,
+   "bodyMd5": "2efae0e06cfdc3eacc743546ff595d74"
+  },
+  {
+   "name": "get_origin",
+   "method": "GET",
+   "path": "/health",
+   "request": "GET /health HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nOrigin: https://example.com\r\nConnection: close\r\n\r\n",
+   "statusLine": "HTTP/1.1 200 OK",
+   "status": 200,
+   "headers": [
+    "access-control-allow-origin: https://example.com",
+    "content-type: application/json",
+    "vary: Origin",
+    "content-length: 54",
+    "Date: Tue, 24 Nov 2026 14:27:17 GMT",
+    "Connection: close"
+   ],
+   "bodyFile": "get_origin.body",
+   "bodyBytes": 54,
+   "bodyMd5": "5d235fb9f8adf439366a31a90f029245"
+  },
+  {
+   "name": "options_preflight",
+   "method": "OPTIONS",
+   "path": "/stats/probe-user",
+   "request": "OPTIONS /stats/probe-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nOrigin: https://example.com\r\nAccess-Control-Request-Method: GET\r\nConnection: close\r\n\r\n",
+   "statusLine": "HTTP/1.1 204 No Content",
+   "status": 204,
+   "headers": [
+    "access-control-allow-methods: GET",
+    "access-control-allow-origin: https://example.com",
+    "access-control-max-age: 86400",
+    "vary: Origin",
+    "Date: Tue, 24 Nov 2026 14:27:17 GMT",
+    "Connection: close"
+   ],
+   "bodyFile": "options_preflight.body",
+   "bodyBytes": 0,
+   "bodyMd5": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  {
+   "name": "options_preflight_ach",
+   "method": "OPTIONS",
+   "path": "/stats/probe-user",
+   "request": "OPTIONS /stats/probe-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nOrigin: https://example.com\r\nAccess-Control-Request-Method: GET\r\nAccess-Control-Request-Headers: x-custom, content-type\r\nConnection: close\r\n\r\n",
+   "statusLine": "HTTP/1.1 204 No Content",
+   "status": 204,
+   "headers": [
+    "access-control-allow-headers: x-custom,content-type",
+    "access-control-allow-methods: GET",
+    "access-control-allow-origin: https://example.com",
+    "access-control-max-age: 86400",
+    "vary: Origin, Access-Control-Request-Headers",
+    "Date: Tue, 24 Nov 2026 14:27:17 GMT",
+    "Connection: close"
+   ],
+   "bodyFile": "options_preflight_ach.body",
+   "bodyBytes": 0,
+   "bodyMd5": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  {
+   "name": "options_preflight_nope",
+   "method": "OPTIONS",
+   "path": "/nope",
+   "request": "OPTIONS /nope HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nOrigin: https://example.com\r\nAccess-Control-Request-Method: GET\r\nConnection: close\r\n\r\n",
+   "statusLine": "HTTP/1.1 204 No Content",
+   "status": 204,
+   "headers": [
+    "access-control-allow-methods: GET",
+    "access-control-allow-origin: https://example.com",
+    "access-control-max-age: 86400",
+    "vary: Origin",
+    "Date: Tue, 24 Nov 2026 14:27:17 GMT",
+    "Connection: close"
+   ],
+   "bodyFile": "options_preflight_nope.body",
+   "bodyBytes": 0,
+   "bodyMd5": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  {
+   "name": "options_bare",
+   "method": "OPTIONS",
+   "path": "/health",
+   "request": "OPTIONS /health HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+   "statusLine": "HTTP/1.1 204 No Content",
+   "status": 204,
+   "headers": [
+    "access-control-allow-methods: GET",
+    "access-control-max-age: 86400",
+    "vary: Origin",
+    "Date: Tue, 24 Nov 2026 14:27:17 GMT",
+    "Connection: close"
+   ],
+   "bodyFile": "options_bare.body",
+   "bodyBytes": 0,
+   "bodyMd5": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  {
+   "name": "head_health",
+   "method": "HEAD",
+   "path": "/health",
+   "request": "HEAD /health HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+   "statusLine": "HTTP/1.1 200 OK",
+   "status": 200,
+   "headers": [
+    "content-type: application/json",
+    "vary: Origin",
+    "Date: Tue, 24 Nov 2026 14:27:17 GMT",
+    "Connection: close"
+   ],
+   "bodyFile": "head_health.body",
+   "bodyBytes": 0,
+   "bodyMd5": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  {
+   "name": "head_nope",
+   "method": "HEAD",
+   "path": "/nope",
+   "request": "HEAD /nope HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+   "statusLine": "HTTP/1.1 404 Not Found",
+   "status": 404,
+   "headers": [
+    "content-type: application/json",
+    "vary: Origin",
+    "Date: Tue, 24 Nov 2026 14:27:17 GMT",
+    "Connection: close"
+   ],
+   "bodyFile": "head_nope.body",
+   "bodyBytes": 0,
+   "bodyMd5": "d41d8cd98f00b204e9800998ecf8427e"
+  }
+ ]
+}
