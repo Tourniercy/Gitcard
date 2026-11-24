@@ -391,11 +391,13 @@ async function getAndParse(port, target, timeoutMs) {
 }
 
 // ========================= normalisation hexlog/txt ===========================
-// Normalisation UNIQUE : "expires":<digits> → "expires":N (epoch Date.now()
-// dynamique par construction ; la clé et l'enveloppe restent byte-exactes).
+// Normalisation UNIQUE, à LONGUEUR CONSERVÉE : "expires":<digits> →
+// "expires":<zéros> (epoch Date.now() dynamique par construction ; remplacer
+// chaque chiffre par '0' garde les longueurs bulk RESP valides → les hexlog
+// restent re-parsables, et stables d'une régénération à l'autre).
 function normalizeRaw(buf) {
   let s = buf.toString('latin1');
-  s = s.replace(/"expires":\d+/g, '"expires":N');
+  s = s.replace(/"expires":(\d+)/g, (_m, digits) => `"expires":${'0'.repeat(digits.length)}`);
   return s;
 }
 function hexlog(records) {
@@ -594,7 +596,7 @@ if (!process.env.GEN_REDIS_MODE || process.env.GEN_REDIS_MODE === 'capture') {
     store_after_boot_flush_with_keys: observations.e_storeAfterFlush,
     first_get_miss: { command: segments.a_req1_get_svg.map((r) => `${r.name} ${JSON.stringify(r.args[0])}`)[0] ?? null, get_count_req1: segments.a_req1_get_svg.length + segments.a_req1_get_data.length },
     set: { command: `${setSvg.name} … PX ${setSvg.args[3] ?? null}`, key_example: setSvg.args[0], ttl_args: setSvg.args.slice(2) },
-    envelope: { value_type: typeof envelope.value, expires_present: 'expires' in envelope, expires_type: typeof envelope.expires, expires_note: 'epoch ms (Date.now()+ttl) ; normalisé N dans les hexlog' },
+    envelope: { value_type: typeof envelope.value, expires_present: 'expires' in envelope, expires_type: typeof envelope.expires, expires_note: 'epoch ms (Date.now()+ttl) ; chaque chiffre masqué par 0 dans les hexlog (longueur conservée)' },
     expired_get: { commands: [...segments.c_get_svg_expired, ...segments.c_unlink_svg].map((r) => r.name), note: 'enveloppe expires < now → UNLINK puis miss (keyv 5.6.0 getRaw)' },
     prefix: { observed: setSvg.args[0].slice(0, setSvg.args[0].length - 'svg:stats:probe-user:289b4511'.length), full_key_example: setSvg.args[0], separator_note: 'namespace KeyvRedis (::) + préfixe Keyv (keyv:) → clé logique svg:/data: préfixée keyv::keyv:' },
     store_choice: { identical_requests: 2, get_count_req1: segments.a_req1_get_svg.length + segments.a_req1_get_data.length, get_count_req2: segments.a_req2_all.filter((r) => r.name === 'GET').length, conclusion: 'GETs uniquement sur la 1re requête → L1 mémoire DEVANT Redis (cacheable secondary) = l1_plus_l2' },
@@ -608,7 +610,7 @@ if (!process.env.GEN_REDIS_MODE || process.env.GEN_REDIS_MODE === 'capture') {
       github: 'stub fetch en process (réponse GraphQL déterministe, /stats/probe-user)',
       pat: 'PAT_1=fake-token-1 (jeton fictif)',
       libs: LIB_VERSIONS,
-      normalization: 'hexlog : octets de chaque commande (RESP), hexadécimal, une ligne par commande ; "expires":<digits> → "expires":N (epoch dynamique). Les commandes CLIENT (SETINFO LIB-VER/LIB-NAME) sont du transport node-redis, hors sémantique cache',
+      normalization: 'hexlog : octets de chaque commande (RESP), hexadécimal, une ligne par commande ; chaque CHIFFRE de "expires":<epoch> remplacé par 0 (longueur conservée → hexlog re-parsable comme RESP). Les commandes CLIENT SETINFO LIB-VER/LIB-NAME (transport du client, node-redis côté legacy, redis-rs côté port) sont hors sémantique cache et filtrées des deux côtés dans les tests',
       files,
     },
     facts,

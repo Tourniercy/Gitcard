@@ -9,7 +9,7 @@
    "keyv": "5.6.0",
    "@keyv/redis": "5.1.6"
   },
-  "normalization": "hexlog : octets de chaque commande (RESP), hexadécimal, une ligne par commande ; \"expires\":<digits> → \"expires\":N (epoch dynamique). Les commandes CLIENT (SETINFO LIB-VER/LIB-NAME) sont du transport node-redis, hors sémantique cache",
+  "normalization": "hexlog : octets de chaque commande (RESP), hexadécimal, une ligne par commande ; chaque CHIFFRE de \"expires\":<epoch> remplacé par 0 (longueur conservée → hexlog re-parsable comme RESP). Les commandes CLIENT SETINFO LIB-VER/LIB-NAME (transport du client, node-redis côté legacy, redis-rs côté port) sont hors sémantique cache et filtrées des deux côtés dans les tests",
   "files": [
    {
     "segment": "a_boot",
@@ -46,8 +46,8 @@
      "SET"
     ],
     "count": 1,
-    "hexlogMd5": "1ed6c31bd8890a8e06d1cdaea6cd3920",
-    "txtMd5": "bc74d6fa49c4de61f15021ebca059094"
+    "hexlogMd5": "023f9fee7fc3ccc3d57df66974b3aa08",
+    "txtMd5": "e70fb908eb4cc315fde86e4d1e031451"
    },
    {
     "segment": "a_req1_set_svg",
@@ -55,8 +55,8 @@
      "SET"
     ],
     "count": 1,
-    "hexlogMd5": "99d827c78af634ba061d577b341ff1f6",
-    "txtMd5": "e2105a6a75267fa27c3b3636cd756e8c"
+    "hexlogMd5": "6473da639a611d890da1800cb70179f8",
+    "txtMd5": "d750d30dfde5f42f88ebc7cfcd9669e9"
    },
    {
     "segment": "a_req1_other",
@@ -87,8 +87,8 @@
      "SET"
     ],
     "count": 1,
-    "hexlogMd5": "5ffe6e612c8880dd1ddffdea8d3d2b26",
-    "txtMd5": "bba2836f739057d7a81599a08b9e40cf"
+    "hexlogMd5": "f1e304fe9bf713fd31818a16dcc2b1ba",
+    "txtMd5": "353b6417c8792d01b86d4dffc1e95a33"
    },
    {
     "segment": "a_req3_other",
@@ -187,8 +187,8 @@
      "SET"
     ],
     "count": 1,
-    "hexlogMd5": "1ed6c31bd8890a8e06d1cdaea6cd3920",
-    "txtMd5": "911b2bbb28c38ac80a8c069cdfede3f2"
+    "hexlogMd5": "023f9fee7fc3ccc3d57df66974b3aa08",
+    "txtMd5": "01047b82bca1d565e718776d5765143e"
    },
    {
     "segment": "c_set_svg",
@@ -196,8 +196,8 @@
      "SET"
     ],
     "count": 1,
-    "hexlogMd5": "99d827c78af634ba061d577b341ff1f6",
-    "txtMd5": "e2a2d5a3ef80ca53595a70f065b85c8f"
+    "hexlogMd5": "6473da639a611d890da1800cb70179f8",
+    "txtMd5": "21925448d3b4fabcee6abefc4f33ed61"
    },
    {
     "segment": "c_other",
@@ -234,7 +234,7 @@
    "value_type": "string",
    "expires_present": true,
    "expires_type": "number",
-   "expires_note": "epoch ms (Date.now()+ttl) ; normalisé N dans les hexlog"
+   "expires_note": "epoch ms (Date.now()+ttl) ; chaque chiffre masqué par 0 dans les hexlog (longueur conservée)"
   },
   "expired_get": {
    "commands": [
