@@ -23,7 +23,9 @@
 
 use crate::js_json::{JsJson, JsJson::*};
 use crate::jsval::number_as_f64;
+use reqwest::header::HeaderValue;
 use serde_json::Value;
+use std::fmt;
 
 pub const GITHUB_GRAPHQL_URL: &str = "https://api.github.com/graphql";
 /// Requête GraphQL VERBATIM du legacy (extraite du corps capturé par
@@ -52,6 +54,15 @@ pub enum GitHubError {
         message: String,
         status: Option<u16>,
     },
+    /// Échec total du pool (`getNextToken` jette « All PAT tokens are
+    /// rate-limited », pat-pool.ts:26-27). Le legacy le PROPAGE hors du `try`
+    /// de `fetchWithRetry` (github.ts:168 — l'appel est AVANT le try) jusqu'au
+    /// handler de carte, qui l'attrape PAR MESSAGE (card-factory.ts:81-85)
+    /// → 429 + SVG « All API tokens are rate-limited. Please try again later. »,
+    /// max-age=60 ; sur `/api/data` aucune branche du catch (data.ts:50-59) ne
+    /// le reconnaît → 500 JSON. Variante dédiée (revue P3 M-B) : la phase 4
+    /// câble ces deux statuts au lieu d'un 502 générique.
+    AllPatTokensRateLimited,
 }
 
 impl GitHubError {
@@ -61,6 +72,9 @@ impl GitHubError {
             GitHubError::NotFound { .. } => "GitHubNotFoundError",
             GitHubError::RateLimit { .. } => "GitHubRateLimitError",
             GitHubError::Api { .. } => "GitHubApiError",
+            // classe legacy réelle : `new Error(...)` (pat-pool.ts:26), pas une
+            // sous-classe → `err.constructor.name` = « Error »
+            GitHubError::AllPatTokensRateLimited => "Error",
         }
     }
 
@@ -69,6 +83,8 @@ impl GitHubError {
             GitHubError::NotFound { .. } => Some(404),
             GitHubError::RateLimit { .. } => Some(429),
             GitHubError::Api { status, .. } => *status,
+            // `new Error('All PAT tokens are rate-limited')` n'a pas de .status
+            GitHubError::AllPatTokensRateLimited => None,
         }
     }
 }
@@ -81,13 +97,25 @@ impl fmt::Display for GitHubError {
                 write!(f, "GitHub API rate limit exceeded")
             }
             GitHubError::Api { message, .. } => write!(f, "{message}"),
+            GitHubError::AllPatTokensRateLimited => {
+                write!(f, "All PAT tokens are rate-limited")
+            }
         }
     }
 }
 
 impl std::error::Error for GitHubError {}
 
-use std::fmt;
+/// `Number(header)` JS : présent mais VIDE → `Number("")` = 0 (revue P3 M-A) ;
+/// non numérique → NaN ; octets non UTF-8 → undici produit une chaîne décodée
+/// non numérique → NaN (reqwest `to_str()` échoue : même issue).
+fn number_header(h: &HeaderValue) -> f64 {
+    match h.to_str() {
+        Ok("") => 0.0,
+        Ok(s) => s.parse::<f64>().unwrap_or(f64::NAN),
+        Err(_) => f64::NAN,
+    }
+}
 
 /// `fetchGitHubData(username, token)` : un POST, mapping d'erreurs, agrégations.
 pub async fn fetch_github_data(
@@ -128,21 +156,19 @@ pub async fn fetch_github_data_at(
     if !status.is_success() {
         let code = status.as_u16();
         if code == 403 || code == 429 {
+            // remaining = `Number(header ?? 0)` : absent → 0 ; vide → Number("") = 0
+            // (revue M-A) ; non numérique → NaN (revue M-D).
             let remaining = match response.headers().get("x-ratelimit-remaining") {
-                Some(v) => v
-                    .to_str()
-                    .ok()
-                    .and_then(|s| s.parse::<f64>().ok())
-                    .unwrap_or(f64::NAN), // Number(header) non numérique → NaN
-                None => 0.0, // Number(header ?? 0)
+                None => 0.0,
+                Some(h) => number_header(h),
             };
-            let reset_at_ms = response.headers().get("x-ratelimit-reset").map(|v| {
-                v.to_str()
-                    .ok()
-                    .and_then(|s| s.parse::<f64>().ok())
-                    .map(|epoch| epoch * 1000.0)
-                    .unwrap_or(f64::NAN)
-            });
+            // resetAt = `resetEpoch ? new Date(Number(resetEpoch) * 1000) : undefined` :
+            // absent OU vide (falsy) → undefined ; non numérique → NaN (Invalid Date).
+            let reset_at_ms = response
+                .headers()
+                .get("x-ratelimit-reset")
+                .filter(|h| !h.is_empty())
+                .map(|h| number_header(h) * 1000.0);
             return Err(GitHubError::RateLimit {
                 remaining,
                 reset_at_ms,
@@ -228,21 +254,30 @@ pub async fn fetch_with_retry_at(
     url: &str,
     username: &str,
 ) -> Result<FetchResult, GitHubError> {
-    let token = pool.get_next_token().map_err(|e| GitHubError::Api {
-        message: e.to_string(),
-        status: None,
-    })?;
+    // Le legacy : `const token = patPool.getNextToken()` HORS try (github.ts:168)
+    // → l'échec du pool se propage BRUT (revue M-B) ; variante dédiée pour que
+    // les routes distinguent 429 (cartes) / 500 (/api/data) d'un 502 générique.
+    let token = pool.get_next_token().map_err(pool_error_to_github)?;
     match fetch_github_data_at(http, url, username, &token).await {
         Ok(result) => Ok(result),
         Err(GitHubError::RateLimit { .. }) => {
             pool.mark_exhausted(&token);
-            let token2 = pool.get_next_token().map_err(|e| GitHubError::Api {
-                message: e.to_string(),
-                status: None,
-            })?;
+            let token2 = pool.get_next_token().map_err(pool_error_to_github)?;
             fetch_github_data_at(http, url, username, &token2).await
         }
         Err(err) => Err(err),
+    }
+}
+
+/// Échec du pool → [`GitHubError`] : `AllRateLimited` garde sa CLASSE (revue M-B) ;
+/// `Empty` est impossible ici (pool construit non vide) — conservé par exhaustivité.
+fn pool_error_to_github(e: crate::pat_pool::PatPoolError) -> GitHubError {
+    match e {
+        crate::pat_pool::PatPoolError::AllRateLimited => GitHubError::AllPatTokensRateLimited,
+        other => GitHubError::Api {
+            message: other.to_string(),
+            status: None,
+        },
     }
 }
 
@@ -273,6 +308,9 @@ fn str_or(v: &Value, k: &str, fallback: &str) -> String {
 /// `extractStats` — ordre de clés : username,name,totalStars,totalForks,
 /// totalCommits,totalPRs,totalIssues,contributedTo.
 fn extract_stats(user: &Value, username: &str) -> JsJson {
+    // Structure garantie par le schéma GraphQL (champs non-null) — divergence
+    // défensive assumée (revue M-Eb) : sur structure inattendue le legacy lèverait
+    // TypeError (`nodes.reduce` sur undefined), le port rend des totaux 0.
     let nodes = user["repositories"]["nodes"]
         .as_array()
         .cloned()
@@ -312,6 +350,9 @@ fn extract_stats(user: &Value, username: &str) -> JsJson {
 /// `extractStreak` — scan avant (longest) puis arrière (current, break au 1er
 /// jour à 0 APRÈS avoir compté) ; dates `''` si aucun jour.
 fn extract_streak(user: &Value, username: &str) -> JsJson {
+    // Structure garantie par le schéma GraphQL (champs non-null) — divergence
+    // défensive assumée (revue M-Eb) : le legacy lèverait TypeError, le port
+    // rend un calendrier vide.
     let weeks = user["contributionsCollection"]["contributionCalendar"]["weeks"]
         .as_array()
         .cloned()
@@ -387,6 +428,9 @@ fn extract_streak(user: &Value, username: &str) -> JsJson {
 /// `percentage = (size/totalSize)*100` (0 si totalSize 0), tri STABLE descendant
 /// par size, top 5.
 fn extract_languages(user: &Value, username: &str) -> JsJson {
+    // Structure garantie par le schéma GraphQL (champs non-null) — divergence
+    // défensive assumée (revue M-Eb) : le legacy lèverait TypeError
+    // (`nodes.reduce`/`edges` sur undefined), le port rend 0 langue.
     let nodes = user["repositories"]["nodes"]
         .as_array()
         .cloned()
@@ -452,6 +496,9 @@ fn extract_languages(user: &Value, username: &str) -> JsJson {
 /// `extractProfile` — calendrier aplati {date, count}, `createdAt` brut,
 /// `email: null` fixe, `name ?? login`.
 fn extract_profile(user: &Value, username: &str) -> JsJson {
+    // Structure garantie par le schéma GraphQL (champs non-null) — divergence
+    // défensive assumée (revue M-Eb) : le legacy lèverait TypeError
+    // (`weeks.flatMap` sur undefined), le port rend un calendrier vide.
     let weeks = user["contributionsCollection"]["contributionCalendar"]["weeks"]
         .as_array()
         .cloned()

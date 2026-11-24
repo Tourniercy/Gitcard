@@ -307,6 +307,86 @@ async fn retry_second_echec_se_propage() {
     assert_eq!(err.class_name(), "GitHubRateLimitError");
 }
 
+#[tokio::test]
+async fn limite_403_en_tetes_vides_zero_et_reset_undefined() {
+    // Revue P3 M-A : `Number("")` = 0 (header présent mais VIDE) ; côté reset,
+    // `"" ? … : undefined` (falsy) → undefined — le port donnait NaN/Some(NaN).
+    let server = MockServer::start().await;
+    server
+        .register(
+            Mock::given(method("POST")).respond_with(
+                ResponseTemplate::new(403)
+                    .insert_header("x-ratelimit-remaining", "")
+                    .insert_header("x-ratelimit-reset", ""),
+            ),
+        )
+        .await;
+    let err = fetch_github_data_at(&client(), &server.uri(), "u", T1)
+        .await
+        .expect_err("RateLimit");
+    match &err {
+        gitcard_p0::github::GitHubError::RateLimit {
+            remaining,
+            reset_at_ms,
+        } => {
+            assert_eq!(*remaining, 0.0, "Number(\"\") = 0");
+            assert_eq!(*reset_at_ms, None, "reset vide (falsy) → undefined");
+        }
+        other => panic!("attendu RateLimit, obtenu {other:?}"),
+    }
+}
+
+#[tokio::test]
+async fn limite_403_en_tete_non_numerique_nan() {
+    // Revue P3 M-D : `Number("abc")` = NaN (Invalid Date côté reset) — branche
+    // codée mais jusque-là sans test.
+    let server = MockServer::start().await;
+    server
+        .register(
+            Mock::given(method("POST")).respond_with(
+                ResponseTemplate::new(403)
+                    .insert_header("x-ratelimit-remaining", "abc")
+                    .insert_header("x-ratelimit-reset", "abc"),
+            ),
+        )
+        .await;
+    let err = fetch_github_data_at(&client(), &server.uri(), "u", T1)
+        .await
+        .expect_err("RateLimit");
+    match &err {
+        gitcard_p0::github::GitHubError::RateLimit {
+            remaining,
+            reset_at_ms,
+        } => {
+            assert!(remaining.is_nan(), "Number(\"abc\") = NaN");
+            assert!(
+                reset_at_ms.is_some_and(|ms| ms.is_nan()),
+                "Invalid Date → NaN"
+            );
+        }
+        other => panic!("attendu RateLimit, obtenu {other:?}"),
+    }
+}
+
+#[tokio::test]
+async fn echec_pool_se_propage_en_variante_dediee() {
+    // Revue P3 M-B : l'appel `getNextToken` du legacy est HORS try
+    // (github.ts:168) → l'erreur du pool se propage BRUTE, pas encapsulée en
+    // GitHubApiError. La variante dédiée laisse les routes de la phase 4
+    // produire 429 (cartes, card-factory.ts:81-85) / 500 (/api/data,
+    // data.ts:50-59) au lieu d'un 502 générique.
+    let server = MockServer::start().await;
+    let (_, now) = clock_zero();
+    let mut pool = PatPool::new(vec![T1.into()], now).expect("pool");
+    pool.mark_exhausted(T1);
+    let err = fetch_with_retry_at(&client(), &mut pool, &server.uri(), "u")
+        .await
+        .expect_err("pool épuisé doit lever");
+    assert_eq!(err.class_name(), "Error", "classe legacy = Error nu");
+    assert_eq!(err.status(), None);
+    assert_eq!(err.to_string(), "All PAT tokens are rate-limited");
+}
+
 fn clock_zero() -> (Arc<AtomicU64>, Arc<dyn Fn() -> u64 + Send + Sync>) {
     let cell = Arc::new(AtomicU64::new(0));
     let read = {

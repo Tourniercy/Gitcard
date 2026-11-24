@@ -119,14 +119,19 @@ fn collect_pats_sequentiels_depuis_1_arret_au_premier_absent() {
         vec!["t1"],
         "arrêt au premier absent"
     );
-    let with_empty = |k: &str| {
-        if k == "PAT_1" {
-            Some("t1".into())
-        } else {
-            None
-        }
+    // Revue P3 M-C : le test « with_empty » d'origine était une copie de
+    // only_one — il teste maintenant ce que son nom annonce : collect_pats
+    // quand PAT_1 est DÉFINI MAIS VIDE (config.ts `!pat` → break immédiat).
+    let pat1_empty = |k: &str| match k {
+        "PAT_1" => Some(String::new()),
+        "PAT_2" => Some("t2".into()),
+        _ => None,
     };
-    assert_eq!(collect_pats(with_empty), vec!["t1"]);
+    assert_eq!(
+        collect_pats(pat1_empty),
+        Vec::<String>::new(),
+        "PAT_1 vide → liste vide (break au premier vide)"
+    );
     let empty_then = |k: &str| match k {
         "PAT_1" => Some("t1".into()),
         "PAT_2" => Some(String::new()), // vide = absent
