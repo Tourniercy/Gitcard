@@ -105,10 +105,14 @@ fn corpus_byte_parity_g2() {
         set_card_id_counter(uid);
 
         let rendered = match card {
-            "stats" => render_stats_card(&GitHubStats::from_value(data), &options),
-            "streak" => render_streak_card(&StreakData::from_value(data), &options),
-            "langs" => render_langs_card(&TopLangsData::from_value(data), &options),
-            "profile" => render_profile_card(&ProfileData::from_value(data), &options),
+            "stats" => render_stats_card(&GitHubStats::from_value(data), &options)
+                .unwrap_or_else(|e| panic!("{file}: le fixture typé doit rendre : {e}")),
+            "streak" => render_streak_card(&StreakData::from_value(data), &options)
+                .unwrap_or_else(|e| panic!("{file}: le fixture typé doit rendre : {e}")),
+            "langs" => render_langs_card(&TopLangsData::from_value(data), &options)
+                .unwrap_or_else(|e| panic!("{file}: le fixture typé doit rendre : {e}")),
+            "profile" => render_profile_card(&ProfileData::from_value(data), &options)
+                .unwrap_or_else(|e| panic!("{file}: le fixture typé doit rendre : {e}")),
             other => panic!("carte inconnue dans le manifeste: {other}"),
         };
 

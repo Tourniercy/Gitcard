@@ -25,6 +25,21 @@ pub fn encode_html(s: &str) -> String {
     out
 }
 
+/// `encodeHTML(x)` sur toute valeur (fix2 R2) : le legacy appelle `.replace(...)`
+/// sur l'argument brut — `null`/`undefined` → TypeError « Cannot read properties …
+/// (reading 'replace') », tout autre non-string → TypeError « … is not a function ».
+/// Le Rust retourne [`crate::cards::RenderError::TypeError`] au lieu de paniquer.
+pub fn encode_html_js(v: &crate::jsval::JsVal) -> Result<String, crate::cards::RenderError> {
+    match v {
+        crate::jsval::JsVal::Str(s) => Ok(encode_html(s)),
+        other => Err(crate::cards::RenderError::TypeError(format!(
+            "encodeHTML({}) : le legacy appellerait .replace sur un {}",
+            other.type_name(),
+            other.type_name()
+        ))),
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

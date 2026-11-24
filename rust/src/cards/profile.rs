@@ -1,9 +1,21 @@
 //! Port littéral de `packages/svg-renderer/src/cards/profile-card.ts` (211 lignes) :
 //! agrégation hebdo, interpolation cubique monotone (Fritsch-Carlson), `accountAge`
 //! avec horloge injectable (corpus figé au 2026-11-24 UTC).
+//!
+//! Fix2 :
+//! - R1 : ticks X via `crate::jsdate` — `Err(RangeError)` au lieu de `panic!` sur
+//!   label de tranche invalide (le legacy lève « Invalid time value ») ;
+//! - R2 : compteurs `JsVal` — somme `0 + count` avec concaténation string (oracle :
+//!   `0 + "42"` → `"042"`), `Math.max` absorbant NaN, `email` truthy puis
+//!   `encodeHTML` (TypeError capturable si non-string) ;
+//! - R5 : `js_round` = `Math.round` exact (0,49999999999999994 → 0, -0,5 → -0).
 
-use super::base::{create_card_wrapper, encode_html, format_number, js, octicon_svg, pick};
+use super::base::{create_card_wrapper, format_number, js, octicon_svg, pick};
+use crate::cards::RenderError;
 use crate::intl;
+use crate::jsdate;
+use crate::jsval::{self, JsVal};
+use crate::sanitize::encode_html_js;
 use crate::themes::get_theme;
 use crate::types::{CardOptions, ContributionDay, ProfileData};
 use std::sync::Mutex;
@@ -25,55 +37,58 @@ static CLOCK: Mutex<Option<(i64, u32)>> = Mutex::new(None);
 
 /// Injecte l'horloge (équivalent `now = new Date(...)`) — utilisé par les tests.
 pub fn set_clock(year: i64, month: u32) {
-    *CLOCK.lock().expect("horloge profile") = Some((year, month));
+    *lock() = Some((year, month));
 }
 
 /// Restaure l'horloge système UTC.
 pub fn clear_clock() {
-    *CLOCK.lock().expect("horloge profile") = None;
+    *lock() = None;
+}
+
+fn lock() -> std::sync::MutexGuard<'static, Option<(i64, u32)>> {
+    // pas de panic en cas de lock empoisonné (donnée de test uniquement)
+    CLOCK.lock().unwrap_or_else(|e| e.into_inner())
 }
 
 fn now_ym() -> (i64, u32) {
-    if let Some(ym) = *CLOCK.lock().expect("horloge profile") {
+    if let Some(ym) = *lock() {
         return ym;
     }
     let secs = std::time::SystemTime::now()
         .duration_since(std::time::UNIX_EPOCH)
         .map(|d| d.as_secs() as i64)
         .unwrap_or(0);
-    civil_from_days(secs.div_euclid(86_400))
-}
-
-/// Jour epoch → (année, mois) UTC (algorithme civil de Howard Hinnant).
-fn civil_from_days(z: i64) -> (i64, u32) {
-    let z = z + 719_468;
-    let era = z.div_euclid(146_097);
-    let doe = z.rem_euclid(146_097);
-    let yoe = (doe - doe / 1460 + doe / 36_524 - doe / 146_096) / 365;
-    let y = yoe + era * 400;
-    let doy = doe - (365 * yoe + yoe / 4 - yoe / 100);
-    let mp = (5 * doy + 2) / 153;
-    let m = if mp < 10 { mp + 3 } else { mp - 9 };
-    (if m <= 2 { y + 1 } else { y }, m as u32)
+    let (y, m, _) = jsdate::civil_from_days_full(secs.div_euclid(86_400));
+    (y, m)
 }
 
 // ------------------------------------------------------------------- agrégation
 
 struct WeekBucket {
-    label: String,
-    count: u64,
+    label: JsVal,
+    count: JsVal,
 }
 
-/// `aggregateWeekly` : tranches de 7 jours, label = jour médian (index 3 sur 7).
+/// `aggregateWeekly` : tranches de 7 jours, label = jour médian (index 3 sur 7),
+/// `mid?.date ?? ''` (null/absent → ''), total = `reduce((s, d) => s + d.count, 0)`
+/// avec la sémantique `+` JS (oracle : `0 + "42"` → `"042"`, `0 + null` → 0,
+/// `0 + undefined` → NaN).
 fn aggregate_weekly(days: &[ContributionDay]) -> Vec<WeekBucket> {
     let mut buckets: Vec<WeekBucket> = Vec::new();
     let mut i = 0;
     while i < days.len() {
         let week = &days[i..(i + 7).min(days.len())];
-        let total: u64 = week.iter().map(|d| d.count).sum();
+        let mut total = JsVal::Number(0.0);
+        for d in week {
+            total = jsval::js_add(&total, &d.count);
+        }
         let mid = &week[week.len() / 2];
+        let label = match &mid.date {
+            JsVal::Undefined | JsVal::Null => JsVal::Str(String::new()),
+            other => other.clone(),
+        };
         buckets.push(WeekBucket {
-            label: mid.date.clone(),
+            label,
             count: total,
         });
         i += 7;
@@ -139,25 +154,48 @@ fn monotone_cubic_path(points: &[(f64, f64)]) -> String {
     parts.join(" ")
 }
 
-/// `Math.round` JS (les moitiés vers +∞) — suffisant ici (valeurs ≥ 0).
+/// `Math.round` JS exact (fix2 R5) : plus proche entier, moitiés vers +∞.
+/// La formule naïve `(x + 0.5).floor()` diverge pour x = 0,49999999999999994
+/// (V8 → 0, naïf → 1) — corrigé par la garde `r - x > 0.5`.
 fn js_round(x: f64) -> f64 {
-    (x + 0.5).floor()
+    if x.is_nan() || x.is_infinite() || x == 0.0 {
+        return x;
+    }
+    let r = (x + 0.5).floor();
+    if r == 0.0 && x < 0.0 {
+        return -0.0; // Math.round(-0.4) === -0, Math.round(-0.5) === -0
+    }
+    // garde exacte : (x + 0.5) a pu être arrondi VERS LE HAUT au-delà du milieu
+    // (0,49999999999999994 → somme = 1.0) — les deux comparaisons couvrent les
+    // petites valeurs (soustraction r-x arrondit à 0.5) et les grandes (≥ 2^52).
+    if r - x > 0.5 || r - 0.5 > x {
+        r - 1.0 // 0,49999999999999994 → 0 (V8), pas 1
+    } else {
+        r
+    }
+}
+
+/// `Math.max(a, b)` JS : NaN dans UN argument → NaN (f64::max de Rust l'ignore).
+fn js_max(a: f64, b: f64) -> f64 {
+    if a.is_nan() || b.is_nan() {
+        f64::NAN
+    } else {
+        a.max(b)
+    }
 }
 
 /// `accountAge` : `now.getFullYear() - created.getFullYear()` ; si < 1 an,
 /// diff en mois `(y2-y1)*12 + m2-m1` → `${months}mo`, sinon `${years}y`.
-/// PAS de singulier/pluriel dans le legacy, PAS de troncature : années pleines
-/// par écart de composantes calendaires (heure locale = UTC dans le conteneur).
-pub fn account_age(created_at: &str) -> String {
-    let head = created_at.split('T').next().unwrap_or(created_at);
-    let mut it = head.split('-');
-    let cy: Option<i64> = it.next().and_then(|s| s.parse().ok());
-    let cm: Option<u32> = it.next().and_then(|s| s.parse().ok());
-    let (cy, cm) = match (cy, cm) {
-        (Some(y), Some(m)) if (1..=12).contains(&m) => (y, m),
-        // Date JS invalide : years = NaN, `NaN < 1` = false → `${NaN}y`
-        _ => return "NaNy".to_string(),
+/// `new Date(createdAt)` via `crate::jsdate` (R1) : date invalide → NaN →
+/// `NaN < 1` false → `"NaNy"`, comme le legacy (oracle). Accepte aussi
+/// null (epoch) et number (ms).
+pub fn account_age(created_at: &JsVal) -> String {
+    let ms = match jsdate::new_date(created_at) {
+        jsdate::JsDate::Valid(ms) => ms,
+        jsdate::JsDate::Invalid => return "NaNy".to_string(),
     };
+    let days = (ms / 86_400_000.0).floor() as i64;
+    let (cy, cm, _) = jsdate::civil_from_days_full(days);
     let (ny, nm) = now_ym();
     let years = ny - cy;
     if years < 1 {
@@ -173,12 +211,16 @@ fn render_area_chart(
     ring_color: &str,
     muted_color: &str,
     text_color: &str,
-) -> String {
+) -> Result<String, RenderError> {
     if weeks.is_empty() {
-        return String::new();
+        return Ok(String::new());
     }
 
-    let max_count = weeks.iter().map(|w| w.count as f64).fold(1.0f64, f64::max);
+    // Math.max(...counts, 1) — absorbant NaN comme V8 (oracle R2 : count absent → NaN)
+    let mut max_count = 1.0f64;
+    for w in weeks {
+        max_count = js_max(max_count, jsval::to_number(&w.count));
+    }
     let n = weeks.len();
 
     // points
@@ -188,7 +230,8 @@ fn render_area_chart(
         .map(|(i, w)| {
             (
                 CHART_LEFT + (i as f64 / (n - 1) as f64) * (CHART_RIGHT - CHART_LEFT),
-                CHART_BOTTOM - (w.count as f64 / max_count) * (CHART_BOTTOM - CHART_TOP),
+                CHART_BOTTOM
+                    - (jsval::to_number(&w.count) / max_count) * (CHART_BOTTOM - CHART_TOP),
             )
         })
         .collect();
@@ -217,8 +260,7 @@ fn render_area_chart(
     while i < n {
         let w = &weeks[i];
         let x = CHART_LEFT + (i as f64 / (n - 1) as f64) * (CHART_RIGHT - CHART_LEFT);
-        let month = intl::month_en(&w.label)
-            .unwrap_or_else(|| panic!("date de tick invalide: {}", w.label));
+        let month = intl::month_en_tick(&w.label);
         x_ticks.push(format!(
             "<text x=\"{}\" y=\"{}\" text-anchor=\"middle\" font-size=\"9\" fill=\"{muted_color}\">{month}</text>",
             js(x),
@@ -263,17 +305,20 @@ fn render_area_chart(
         })
         .collect();
 
-    format!(
+    Ok(format!(
         "\n    {grid}\n    <path d=\"{area_path}\" fill=\"{ring_color}\" fill-opacity=\"0.15\" />\n    <path d=\"{line_path}\" fill=\"none\" stroke=\"{ring_color}\" stroke-width=\"1.5\" />\n    {xt}\n    {yt}\n    <text x=\"{x_mid}\" y=\"{y_lab}\" text-anchor=\"middle\" font-size=\"10\" fill=\"{text_color}\">contributions in the last year</text>\n  ",
         grid = grid_lines.join(""),
         xt = x_ticks.join(""),
         yt = y_tick_svg.join(""),
         x_mid = js((CHART_LEFT + CHART_RIGHT) / 2.0),
         y_lab = js(CHART_BOTTOM + 28.0),
-    )
+    ))
 }
 
-pub fn render_profile_card(data: &ProfileData, options: &CardOptions) -> String {
+pub fn render_profile_card(
+    data: &ProfileData,
+    options: &CardOptions,
+) -> Result<String, RenderError> {
     let theme = get_theme(&options.theme);
     let icon_color = match pick(&options.icon_color) {
         Some(c) => format!("#{c}"),
@@ -287,35 +332,45 @@ pub fn render_profile_card(data: &ProfileData, options: &CardOptions) -> String 
     let title_section = if options.hide_title {
         String::new()
     } else {
-        // `data.name || data.username` : '' ou null → username
-        let shown = if data.name.is_empty() {
-            data.username.as_str()
+        // `data.name || data.username` JS : falsy (''/null/0/absent) → username
+        let shown = if jsval::truthy(&data.name) {
+            data.name.clone()
         } else {
-            data.name.as_str()
+            data.username.clone()
         };
         format!(
             "<text x=\"25\" y=\"30\" class=\"title\">{}</text>",
-            encode_html(shown)
+            encode_html_js(&shown)?
         )
     };
     let title_offset: f64 = if options.hide_title { -10.0 } else { 0.0 };
 
-    let mut rows: Vec<(&'static str, &'static str, String)> = vec![
+    let mut rows: Vec<(&'static str, &'static str, JsVal)> = vec![
         (
             "history",
             "Contributions",
-            format_number(data.contributions_this_year, &options.locale),
+            JsVal::Str(format_number(
+                &data.contributions_this_year,
+                &options.locale,
+            )),
         ),
         (
             "repo",
             "Public Repos",
-            format_number(data.public_repos, &options.locale),
+            JsVal::Str(format_number(&data.public_repos, &options.locale)),
         ),
-        ("calendar", "Account Age", account_age(&data.created_at)),
+        (
+            "calendar",
+            "Account Age",
+            JsVal::Str(account_age(&data.created_at)),
+        ),
     ];
 
-    if let Some(email) = &data.email {
-        rows.push(("mail", "Email", email.clone()));
+    // `if (data.email)` JS : truthy uniquement — la valeur brute part dans
+    // `encodeHTML(row.value)` : TypeError capturable si non-string (oracle R2 :
+    // email: 0 → truthy → legacy lève ; null/''/absent → pas de rangée).
+    if jsval::truthy(&data.email) {
+        rows.push(("mail", "Email", data.email.clone()));
     }
 
     let row_height = 26.0;
@@ -325,7 +380,7 @@ pub fn render_profile_card(data: &ProfileData, options: &CardOptions) -> String 
     for (i, (icon, label, value)) in rows.iter().enumerate() {
         let y = start_y + i as f64 * row_height;
         let icon_part = if options.show_icons {
-            octicon_svg(icon, 25.0, y - 13.0, 16, &icon_color)
+            octicon_svg(icon, 25.0, y - 13.0, 16, &icon_color)?
         } else {
             String::new()
         };
@@ -334,9 +389,9 @@ pub fn render_profile_card(data: &ProfileData, options: &CardOptions) -> String 
             "\n        <g>\n          {icon_part}\n          <text x=\"{}\" y=\"{}\" class=\"stat-label\">{}</text>\n          <text x=\"290\" y=\"{}\" class=\"stat-value\" text-anchor=\"end\">{}</text>\n        </g>\n      ",
             js(label_x),
             js(y),
-            encode_html(label),
+            crate::sanitize::encode_html(label),
             js(y),
-            encode_html(value)
+            encode_html_js(value)?
         ));
     }
 
@@ -348,11 +403,17 @@ pub fn render_profile_card(data: &ProfileData, options: &CardOptions) -> String 
 
     // graphique d'aire des contributions
     let weeks = aggregate_weekly(&data.contribution_calendar);
-    let chart = render_area_chart(&weeks, theme.ring, theme.muted, &text_color);
+    let chart = render_area_chart(&weeks, theme.ring, theme.muted, &text_color)?;
 
     let content = format!("\n    {title_section}\n    {rows_svg}\n    {divider}\n    {chart}\n  ");
 
-    create_card_wrapper(CARD_WIDTH, CARD_HEIGHT, &content, theme, options)
+    Ok(create_card_wrapper(
+        CARD_WIDTH,
+        CARD_HEIGHT,
+        &content,
+        theme,
+        options,
+    ))
 }
 
 #[cfg(test)]
@@ -363,41 +424,106 @@ mod tests {
     fn account_age_formules_du_legacy() {
         // PAS de pluriel, PAS de troncature : écart de composantes calendaires.
         set_clock(2026, 11); // corpus figé au 2026-11-24 UTC
-        assert_eq!(account_age("2026-11-01T00:00:00Z"), "0mo"); // même mois
-        assert_eq!(account_age("2026-11-24T23:59:59Z"), "0mo");
-        assert_eq!(account_age("2026-05-01T00:00:00Z"), "6mo");
+        assert_eq!(
+            account_age(&JsVal::Str("2026-11-01T00:00:00Z".into())),
+            "0mo"
+        ); // même mois
+        assert_eq!(
+            account_age(&JsVal::Str("2026-11-24T23:59:59Z".into())),
+            "0mo"
+        );
+        assert_eq!(
+            account_age(&JsVal::Str("2026-05-01T00:00:00Z".into())),
+            "6mo"
+        );
         // années >= 1 → `${years}y` : le legacy ne rend JAMAIS un reste en mois
-        assert_eq!(account_age("2025-12-31T00:00:00Z"), "1y");
+        assert_eq!(
+            account_age(&JsVal::Str("2025-12-31T00:00:00Z".into())),
+            "1y"
+        );
         // dernier palier du branchement `mo` : janvier → 10mo (mois 0-indexés)
-        assert_eq!(account_age("2026-01-15T00:00:00Z"), "10mo");
+        assert_eq!(
+            account_age(&JsVal::Str("2026-01-15T00:00:00Z".into())),
+            "10mo"
+        );
         // 1 an exact (écart d'année calendaire ≥ 1 → 'y', même à 1 jour près)
-        assert_eq!(account_age("2025-11-24T00:00:00Z"), "1y");
-        assert_eq!(account_age("2025-12-01T00:00:00Z"), "1y");
-        assert_eq!(account_age("2020-01-15T12:00:00Z"), "6y");
-        assert_eq!(account_age("2013-04-01T00:00:00Z"), "13y");
+        assert_eq!(
+            account_age(&JsVal::Str("2025-11-24T00:00:00Z".into())),
+            "1y"
+        );
+        assert_eq!(
+            account_age(&JsVal::Str("2025-12-01T00:00:00Z".into())),
+            "1y"
+        );
+        assert_eq!(
+            account_age(&JsVal::Str("2020-01-15T12:00:00Z".into())),
+            "6y"
+        );
+        assert_eq!(
+            account_age(&JsVal::Str("2013-04-01T00:00:00Z".into())),
+            "13y"
+        );
+        // R1 : non-strings via new Date (oracle) — null → epoch 1970 ; absent → NaNy
+        assert_eq!(account_age(&JsVal::Null), "56y");
+        assert_eq!(account_age(&JsVal::Undefined), "NaNy");
+        assert_eq!(account_age(&JsVal::Number(-86_400_000.0)), "57y");
+        assert_eq!(account_age(&JsVal::Str("garbage".into())), "NaNy");
         clear_clock();
     }
 
     #[test]
-    fn js_round_moities_vers_plus_infini() {
+    fn js_round_math_round_exact_r5() {
+        // Oracle Node v26.13.1 : Math.round(0.49999999999999994) === 0
+        assert_eq!(js_round(0.499_999_999_999_999_94), 0.0);
+        assert_eq!(js_round(0.5), 1.0);
         assert_eq!(js_round(2.5), 3.0);
         assert_eq!(js_round(2.4), 2.0);
-        assert_eq!(js_round(0.5), 1.0);
+        assert_eq!(js_round(-0.5), 0.0); // String(-0) → "0" à l'interpolation
+        assert!(js_round(-0.5).is_sign_negative());
+        assert_eq!(js_round(-0.4), 0.0);
+        assert!(js_round(-0.4).is_sign_negative()); // Math.round(-0.4) === -0
+        assert!(js_round(f64::NAN).is_nan());
+        assert_eq!(js_round(f64::INFINITY), f64::INFINITY);
+    }
+
+    #[test]
+    fn js_max_absorbe_nan_comme_math_max() {
+        assert!(js_max(f64::NAN, 1.0).is_nan());
+        assert!(js_max(1.0, f64::NAN).is_nan());
+        assert_eq!(js_max(-5.0, 1.0), 1.0);
+        assert_eq!(js_max(42.0, 1.0), 42.0);
     }
 
     #[test]
     fn aggregate_weekly_tranches_de_7() {
         let days: Vec<ContributionDay> = (0..10)
             .map(|i| ContributionDay {
-                date: format!("2026-11-{i:02}"),
-                count: 1,
+                date: JsVal::Str(format!("2026-11-{i:02}")),
+                count: JsVal::Number(1.0),
             })
             .collect();
         let weeks = aggregate_weekly(&days);
         assert_eq!(weeks.len(), 2);
-        assert_eq!(weeks[0].count, 7);
-        assert_eq!(weeks[1].count, 3);
-        assert_eq!(weeks[0].label, "2026-11-03"); // index 3/7
-        assert_eq!(weeks[1].label, "2026-11-08"); // index 1/3
+        assert_eq!(weeks[0].count, JsVal::Number(7.0));
+        assert_eq!(weeks[1].count, JsVal::Number(3.0));
+        assert_eq!(weeks[0].label, JsVal::Str("2026-11-03".into())); // index 3/7
+        assert_eq!(weeks[1].label, JsVal::Str("2026-11-08".into())); // index 1/3
+    }
+
+    #[test]
+    fn somme_semantique_js_sur_compteurs() {
+        // oracle R2 : 0 + "42" → "042" (concat), 0 + null → 0, 0 + undefined → NaN
+        let mk = |c: JsVal| ContributionDay {
+            date: JsVal::Str("2026-11-01".into()),
+            count: c,
+        };
+        let w = aggregate_weekly(&[mk(JsVal::Str("42".into()))]);
+        assert_eq!(w[0].count, JsVal::Str("042".into()));
+        let w = aggregate_weekly(&[mk(JsVal::Null)]);
+        assert_eq!(w[0].count, JsVal::Number(0.0));
+        let w = aggregate_weekly(&[mk(JsVal::Undefined)]);
+        assert!(matches!(w[0].count, JsVal::Number(n) if n.is_nan()));
+        let w = aggregate_weekly(&[mk(JsVal::Number(-5.0))]);
+        assert_eq!(w[0].count, JsVal::Number(-5.0));
     }
 }

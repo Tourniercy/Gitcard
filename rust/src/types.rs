@@ -1,9 +1,13 @@
 //! Port littéral de `packages/svg-renderer/src/types.ts` (99 lignes) : structures
 //! `serde` des fixtures `FetchResult` (agrégées), options de carte, locales supportées.
 //!
-//! Les nombres entiers des fixtures (compteurs) sont portés en `u64` ; `percentage`
-//! reste `f64` (divisions flottantes côté agrégation, P3).
+//! Fix2 R2 : les champs sont typés [`JsVal`] (sémantique V8 — `undefined`/`null`/
+//! booléen/number f64/string) au lieu d'une coercion silencieuse en `u64`/`String`.
+//! Le legacy n'a aucun typage à l'exécution : `formatNumber(null)` → `"0"`,
+//! champ absent → `"NaN"`, `${currentStreak}` sur `1e21` → `"1e+21"`, etc.
+//! Oracle : `tests/golden/meta/counters-extract.json`.
 
+use crate::jsval::JsVal;
 use serde_json::Value;
 
 /// `LOCALE_ENTRIES` (ordre d'insertion : 20 entrées, types.ts).
@@ -31,10 +35,18 @@ pub const LOCALE_ENTRIES: [(&str, &str); 20] = [
 ];
 
 /// `countryToFlag` : indicatifs régionaux U+1F1E6.. (Regional Indicator Symbols).
+///
+/// Invariant statique (R3) : appelé uniquement sur les 20 indicatifs `A-Z` de
+/// `LOCALE_ENTRIES` (données incluses dans le binaire, jamais sur donnée de
+/// requête). Hors domaine, `charCodeAt` UTF-16 et l'itération `char` Rust
+/// divergeraient et le legacy lèverait une RangeError (`fromCodePoint`) —
+/// l'`expect` ci-dessous est l'équivalent capturable de cette RangeError.
 pub fn country_to_flag(country: &str) -> String {
     country
         .chars()
-        .map(|c| char::from_u32(0x1f1e6 - 65 + u32::from(c)).expect("lettre A-Z"))
+        .map(|c| {
+            char::from_u32(0x1f1e6 - 65 + u32::from(c)).expect("lettre A-Z (invariant statique)")
+        })
         .collect()
 }
 
@@ -56,6 +68,10 @@ pub fn locale_codes() -> Vec<&'static str> {
 
 /// `CardOptions` (types.ts) — produits par `parseCardOptions` côté API (P3) ;
 /// ici reconstruits depuis le manifeste golden pour la parité de rendu.
+///
+/// Invariant (R4) : `locale` ∈ `LOCALE_CODES` — `parseCardOptions` (zod, ligne
+/// `LOCALE_CODES.includes(v) ? v : 'en'`) rejette tout autre code vers `'en'`.
+/// Le repli de [`crate::intl::format_js_number`] n'est donc jamais atteint via l'API.
 #[derive(Debug, Clone)]
 pub struct CardOptions {
     pub theme: String,
@@ -124,97 +140,94 @@ impl CardOptions {
     }
 }
 
-/// `GitHubStats` (types.ts).
-#[derive(Debug, Clone, Default)]
+/// `GitHubStats` (types.ts) — compteurs = `JsVal` (fix2 R2).
+#[derive(Debug, Clone)]
 pub struct GitHubStats {
-    pub username: String,
-    pub name: String,
-    pub total_stars: u64,
-    pub total_forks: u64,
-    pub total_commits: u64,
-    pub total_prs: u64,
-    pub total_issues: u64,
-    pub contributed_to: u64,
+    pub username: JsVal,
+    pub name: JsVal,
+    pub total_stars: JsVal,
+    pub total_forks: JsVal,
+    pub total_commits: JsVal,
+    pub total_prs: JsVal,
+    pub total_issues: JsVal,
+    pub contributed_to: JsVal,
 }
 
 /// `StreakData` (types.ts).
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone)]
 pub struct StreakData {
-    pub username: String,
-    pub total_contributions: u64,
-    pub current_streak: u64,
-    pub longest_streak: u64,
-    pub current_streak_start: String,
-    pub current_streak_end: String,
-    pub longest_streak_start: String,
-    pub longest_streak_end: String,
+    pub username: JsVal,
+    pub total_contributions: JsVal,
+    pub current_streak: JsVal,
+    pub longest_streak: JsVal,
+    pub current_streak_start: JsVal,
+    pub current_streak_end: JsVal,
+    pub longest_streak_start: JsVal,
+    pub longest_streak_end: JsVal,
 }
 
 /// `LanguageData` (types.ts).
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone)]
 pub struct LanguageData {
-    pub name: String,
-    pub percentage: f64,
-    pub color: String,
-    pub size: u64,
+    pub name: JsVal,
+    pub percentage: JsVal,
+    pub color: JsVal,
+    pub size: JsVal,
 }
 
 /// `TopLangsData` (types.ts).
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone)]
 pub struct TopLangsData {
-    pub username: String,
+    pub username: JsVal,
     pub languages: Vec<LanguageData>,
 }
 
 /// `ContributionDay` (types.ts).
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone)]
 pub struct ContributionDay {
-    pub date: String,
-    pub count: u64,
+    pub date: JsVal,
+    pub count: JsVal,
 }
 
 /// `ProfileData` (types.ts).
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone)]
 pub struct ProfileData {
-    pub username: String,
-    pub name: String,
-    pub contributions_this_year: u64,
-    pub public_repos: u64,
-    pub created_at: String,
-    pub email: Option<String>,
+    pub username: JsVal,
+    pub name: JsVal,
+    pub contributions_this_year: JsVal,
+    pub public_repos: JsVal,
+    pub created_at: JsVal,
+    pub email: JsVal,
     pub contribution_calendar: Vec<ContributionDay>,
 }
 
 // ---------------------------------------------------------------- fixtures (JSON)
 
-fn str_field(v: &Value, k: &str) -> String {
+fn arr_field(v: &Value, k: &str) -> Vec<ContributionDay> {
     v.get(k)
-        .and_then(Value::as_str)
+        .and_then(Value::as_array)
+        .map(|a| {
+            a.iter()
+                .map(|d| ContributionDay {
+                    date: JsVal::field(d, "date"),
+                    count: JsVal::field(d, "count"),
+                })
+                .collect()
+        })
         .unwrap_or_default()
-        .to_string()
-}
-
-fn u64_field(v: &Value, k: &str) -> u64 {
-    v.get(k).and_then(Value::as_u64).unwrap_or_default()
 }
 
 impl GitHubStats {
     pub fn from_value(v: &Value) -> GitHubStats {
         GitHubStats {
-            username: str_field(v, "username"),
-            // `name` peut être null dans les fixtures (newcomer) → String vide ;
-            // la sémantique JS `stats.name` devient "" (utilisé tel quel par le titre).
-            name: v
-                .get("name")
-                .and_then(Value::as_str)
-                .unwrap_or_default()
-                .to_string(),
-            total_stars: u64_field(v, "totalStars"),
-            total_forks: u64_field(v, "totalForks"),
-            total_commits: u64_field(v, "totalCommits"),
-            total_prs: u64_field(v, "totalPRs"),
-            total_issues: u64_field(v, "totalIssues"),
-            contributed_to: u64_field(v, "contributedTo"),
+            username: JsVal::field(v, "username"),
+            name: JsVal::field(v, "name"),
+            total_stars: JsVal::field(v, "totalStars"),
+            total_forks: JsVal::field(v, "totalForks"),
+            total_commits: JsVal::field(v, "totalCommits"),
+            total_prs: JsVal::field(v, "totalPRs"),
+            total_issues: JsVal::field(v, "totalIssues"),
+            contributed_to: JsVal::field(v, "contributedTo"),
         }
     }
 }
@@ -222,14 +235,14 @@ impl GitHubStats {
 impl StreakData {
     pub fn from_value(v: &Value) -> StreakData {
         StreakData {
-            username: str_field(v, "username"),
-            total_contributions: u64_field(v, "totalContributions"),
-            current_streak: u64_field(v, "currentStreak"),
-            longest_streak: u64_field(v, "longestStreak"),
-            current_streak_start: str_field(v, "currentStreakStart"),
-            current_streak_end: str_field(v, "currentStreakEnd"),
-            longest_streak_start: str_field(v, "longestStreakStart"),
-            longest_streak_end: str_field(v, "longestStreakEnd"),
+            username: JsVal::field(v, "username"),
+            total_contributions: JsVal::field(v, "totalContributions"),
+            current_streak: JsVal::field(v, "currentStreak"),
+            longest_streak: JsVal::field(v, "longestStreak"),
+            current_streak_start: JsVal::field(v, "currentStreakStart"),
+            current_streak_end: JsVal::field(v, "currentStreakEnd"),
+            longest_streak_start: JsVal::field(v, "longestStreakStart"),
+            longest_streak_end: JsVal::field(v, "longestStreakEnd"),
         }
     }
 }
@@ -242,19 +255,16 @@ impl TopLangsData {
             .map(|a| {
                 a.iter()
                     .map(|l| LanguageData {
-                        name: str_field(l, "name"),
-                        percentage: l
-                            .get("percentage")
-                            .and_then(Value::as_f64)
-                            .unwrap_or_default(),
-                        color: str_field(l, "color"),
-                        size: u64_field(l, "size"),
+                        name: JsVal::field(l, "name"),
+                        percentage: JsVal::field(l, "percentage"),
+                        color: JsVal::field(l, "color"),
+                        size: JsVal::field(l, "size"),
                     })
                     .collect()
             })
             .unwrap_or_default();
         TopLangsData {
-            username: str_field(v, "username"),
+            username: JsVal::field(v, "username"),
             languages: langs,
         }
     }
@@ -263,33 +273,14 @@ impl TopLangsData {
 impl ProfileData {
     pub fn from_value(v: &Value) -> ProfileData {
         ProfileData {
-            username: str_field(v, "username"),
-            name: v
-                .get("name")
-                .and_then(Value::as_str)
-                .unwrap_or_default()
-                .to_string(),
-            contributions_this_year: u64_field(v, "contributionsThisYear"),
-            public_repos: u64_field(v, "publicRepos"),
-            created_at: str_field(v, "createdAt"),
-            // email: null (JSON) ou "" (falsy JS) → pas de ligne Email
-            email: v
-                .get("email")
-                .and_then(Value::as_str)
-                .filter(|e| !e.is_empty())
-                .map(str::to_string),
-            contribution_calendar: v
-                .get("contributionCalendar")
-                .and_then(Value::as_array)
-                .map(|a| {
-                    a.iter()
-                        .map(|d| ContributionDay {
-                            date: str_field(d, "date"),
-                            count: u64_field(d, "count"),
-                        })
-                        .collect()
-                })
-                .unwrap_or_default(),
+            username: JsVal::field(v, "username"),
+            name: JsVal::field(v, "name"),
+            contributions_this_year: JsVal::field(v, "contributionsThisYear"),
+            public_repos: JsVal::field(v, "publicRepos"),
+            created_at: JsVal::field(v, "createdAt"),
+            // `if (data.email)` JS : truthy uniquement (null/''/absent → pas de ligne)
+            email: JsVal::field(v, "email"),
+            contribution_calendar: arr_field(v, "contributionCalendar"),
         }
     }
 }
@@ -297,6 +288,7 @@ impl ProfileData {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use serde_json::json;
 
     #[test]
     fn drapeaux_et_labels_locales() {
@@ -310,5 +302,18 @@ mod tests {
         assert_eq!(sup[1].1, "français");
         assert_eq!(locale_codes()[13], "ar");
         assert_eq!(locale_codes().len(), 20);
+    }
+
+    #[test]
+    fn champs_absents_null_et_hors_domaine() {
+        // R2 : plus aucune coercion silencieuse — les valeurs restent JsVal.
+        let v = json!({"username": "u", "totalStars": "42", "contributedTo": null});
+        let s = GitHubStats::from_value(&v);
+        assert_eq!(s.total_stars, JsVal::Str("42".into()));
+        assert_eq!(s.contributed_to, JsVal::Null);
+        assert_eq!(s.total_commits, JsVal::Undefined); // champ absent
+        let p = ProfileData::from_value(&json!({"createdAt": 1735689600000u64}));
+        assert_eq!(p.created_at, JsVal::Number(1735689600000.0));
+        assert_eq!(p.email, JsVal::Undefined);
     }
 }

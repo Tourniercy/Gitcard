@@ -114,11 +114,11 @@ fn rem_pio2(x: f64) -> (i32, f64, f64, bool) {
         };
         return (-1, y0, y1, false);
     }
-    // Medium : |x| ~<= 2^19*(pi/2)
-    debug_assert!(
-        ix <= 0x4139_21FB,
-        "réduction « large path » non portée (|x| ≥ 2^19·π/2)"
-    );
+    // Large : |x| > 2^19·π/2 → réduction exacte par entiers (Payne–Hanek borné)
+    if ix > 0x4139_21FB {
+        let (n, y0, y1) = rem_pio2_large(x);
+        return (n, y0, y1, false);
+    }
     let t = x.abs();
     let n = (t * INV_PIO2 + 0.5) as i32;
     let f_n = f64::from(n);
@@ -226,6 +226,292 @@ pub fn cos(x: f64) -> f64 {
         2 => -kernel_cos(y0, y1),
         _ => kernel_sin(y0, y1, iy),
     }
+}
+
+// ----------------------------------------------------- réduction « large path »
+
+/// Constantes exactes (générées par entiers, formule de Machin de π ; vérifiées
+/// contre les décimales) : ⌊π/2·2^1240⌋ et ⌊2/π·2^1240⌋, little-endian u64.
+const PI2_LIMBS: [u64; 20] = [
+    0xac410aa5773daa52,
+    0x47b9475b2c38c5e6,
+    0x51fa499ebf06caba,
+    0x6c38aba734d22c7f,
+    0x7142c77e0b31b490,
+    0xa3d9c8b67b8400f9,
+    0x22f8963fcc9250cc,
+    0xf6b5133f4b5d3e48,
+    0x6de80d6fdbdc70d7,
+    0xd34c6fdad617feb9,
+    0xecc4bcfd8de89885,
+    0xdadaa3848bc90b6a,
+    0xdbe4be286e9fc26a,
+    0x679a748636605614,
+    0xf31c6809bbdf2a33,
+    0x4c76273644a29410,
+    0x1114cf98e804177d,
+    0x1701b839a252049c,
+    0x4442d18469898cc5,
+    0x0000000001921fb5,
+];
+
+const TWO_OVER_PI_LIMBS: [u64; 20] = [
+    0x46fc7b6babf0cfbc,
+    0xb11f8d5d08560330,
+    0xf78a5292ea6bfb5f,
+    0xc7ebe5f17b3d0739,
+    0x669e5fea2d7527ba,
+    0xcf27cb09b74f463f,
+    0x8b5a0a6d1f6d367e,
+    0xffde05980fef2f11,
+    0x8bbdf9283b1ff897,
+    0x39835339f49c845f,
+    0x26b45f7e413991d6,
+    0xf52ebb4484e99c70,
+    0x1cb129a73ee88235,
+    0xea09d1921cfe1deb,
+    0x3a424dd2e006492e,
+    0xabdebbc561b7246e,
+    0x993c439041fe5163,
+    0xd1f534ddc0db6295,
+    0x6e4e441529fc2757,
+    0x0000000000a2f983,
+];
+
+const NL: usize = 36; // 2304 bits ≥ 2·e_max + 105 (e_max = 971 pour un f64 fini)
+
+fn big_bitlen(a: &[u64; NL]) -> usize {
+    for i in (0..NL).rev() {
+        if a[i] != 0 {
+            return 64 * i + (64 - a[i].leading_zeros() as usize);
+        }
+    }
+    0
+}
+
+/// a + value·2^bit (value < 2^64 ; retenu propagé, buffers surdimensionnés).
+fn big_add_value(a: &mut [u64; NL], bit: usize, value: u64) {
+    let lo = bit / 64;
+    let off = bit % 64;
+    let mut carry: u128 = u128::from(value) << off;
+    let mut i = lo;
+    while carry != 0 && i < NL {
+        let cur = u128::from(a[i]) + (carry & 0xFFFF_FFFF_FFFF_FFFF);
+        a[i] = cur as u64;
+        carry = (carry >> 64) + (cur >> 64);
+        i += 1;
+    }
+}
+
+/// a >> shift (shift < 1240) depuis un tableau 20 limbes.
+fn big_shr19(a: &[u64; 20], shift: usize) -> [u64; NL] {
+    let mut out = [0u64; NL];
+    let limbs = shift / 64;
+    let bits = shift % 64;
+    for (i, item) in out.iter_mut().enumerate() {
+        let src = i + limbs;
+        if src >= 20 {
+            break;
+        }
+        let mut v = a[src] >> bits;
+        if bits > 0 && src + 1 < 20 {
+            v |= a[src + 1] << (64 - bits);
+        }
+        *item = v;
+    }
+    out
+}
+
+fn big_shr19_full(a: &[u64; NL], shift: usize) -> [u64; NL] {
+    let mut out = [0u64; NL];
+    let limbs = shift / 64;
+    let bits = shift % 64;
+    for (i, item) in out.iter_mut().enumerate() {
+        let src = i + limbs;
+        if src >= NL {
+            break;
+        }
+        let mut v = a[src] >> bits;
+        if bits > 0 && src + 1 < NL {
+            v |= a[src + 1] << (64 - bits);
+        }
+        *item = v;
+    }
+    out
+}
+
+fn big_mul(a: &[u64; NL], b: &[u64; NL]) -> [u64; NL] {
+    let mut out = [0u64; NL];
+    for i in 0..NL {
+        if a[i] == 0 {
+            continue;
+        }
+        let mut carry: u128 = 0;
+        for j in 0..(NL - i) {
+            let cur = u128::from(out[i + j]) + u128::from(a[i]) * u128::from(b[j]) + carry;
+            out[i + j] = cur as u64;
+            carry = cur >> 64;
+        }
+    }
+    out
+}
+
+/// |a − b| et le signe (true = a < b).
+fn big_sub(a: &[u64; NL], b: &[u64; NL]) -> ([u64; NL], bool) {
+    let mut cmp = false;
+    for i in (0..NL).rev() {
+        if a[i] != b[i] {
+            cmp = a[i] > b[i];
+            break;
+        }
+    }
+    let (x, y) = if cmp { (a, b) } else { (b, a) };
+    let mut mag = [0u64; NL];
+    let mut borrow: u64 = 0;
+    for i in 0..NL {
+        let (d1, b1) = x[i].overflowing_sub(y[i]);
+        let (d2, b2) = d1.overflowing_sub(borrow);
+        mag[i] = d2;
+        borrow = u64::from(b1 || b2);
+    }
+    (mag, !cmp)
+}
+
+/// Décalage gauche générique.
+fn big_shl(a: &[u64; NL], sh: usize) -> [u64; NL] {
+    let mut out = [0u64; NL];
+    let limbs = sh / 64;
+    let bits = sh % 64;
+    for i in (limbs..NL).rev() {
+        let src = i - limbs;
+        let mut v = a[src] << bits;
+        if bits > 0 && src > 0 {
+            v |= a[src - 1] >> (64 - bits);
+        }
+        out[i] = v;
+    }
+    out
+}
+
+/// a + 1 (retenue propagée).
+fn big_add_one(a: &mut [u64; NL]) {
+    for item in a.iter_mut() {
+        let (v, ov) = item.overflowing_add(1);
+        *item = v;
+        if !ov {
+            break;
+        }
+    }
+}
+
+/// V >> sh arrondi au plus proche, égalités → pair.
+fn big_shr_round_even(v: &[u64; NL], sh: usize) -> [u64; NL] {
+    if sh == 0 {
+        return *v;
+    }
+    let mut q = big_shr19_full(v, sh);
+    let back = big_shl(&q, sh);
+    let (dropped, _) = big_sub(v, &back);
+    let dl = big_bitlen(&dropped);
+    let round_up = if dl > sh {
+        true
+    } else if dl == sh {
+        // dropped == 2^(sh−1) exactement ?
+        let hi = sh / 64;
+        let exact_half = dropped[hi] == 1u64 << (sh % 64)
+            && dropped.iter().enumerate().all(|(i, x)| i == hi || *x == 0);
+        !exact_half || (q[0] & 1 == 1)
+    } else {
+        false
+    };
+    if round_up {
+        big_add_one(&mut q);
+    }
+    q
+}
+
+/// Représentation double-double de V·2^scale façon fdlibm (rem_pio2 large) :
+/// V est arrondi à 24 bits AU-DELÀ du double (77 bits significatifs), puis
+/// y0 = arrondi double de cette valeur et y1 = résidu arrondi à 24 bits.
+fn big_double_double(v: &[u64; NL], scale: i32) -> (f64, f64) {
+    let l = big_bitlen(v);
+    if l == 0 {
+        return (0.0, 0.0);
+    }
+    if l <= 53 {
+        return ((v[0] as f64) * 2f64.powi(scale), 0.0);
+    }
+    let v77 = big_shr_round_even(v, l - 77);
+    let l77 = big_bitlen(&v77);
+    let sh0 = l77 - 53;
+    let q0 = big_shr_round_even(&v77, sh0);
+    let l0 = big_bitlen(&q0);
+    // y0 = q0·2^(scale + (l−77) + (l77−l0)) — (l−77) est la position du mot de
+    // 77 bits dans V ; la retenue d'arrondi est couverte par l77−l0.
+    let y0 = (q0[0] as f64) * 2f64.powi(scale + (l - 77) as i32 + (l77 - l0) as i32);
+    let mut back = [0u64; NL];
+    big_add_value(&mut back, sh0, q0[0]);
+    let (res, _) = big_sub(v, &back);
+    let lr = big_bitlen(&res);
+    let y1 = if lr == 0 {
+        0.0
+    } else if lr <= 24 {
+        (res[0] as f64) * 2f64.powi(scale)
+    } else {
+        let shr = lr - 24;
+        let q1 = big_shr_round_even(&res, shr);
+        let l1 = big_bitlen(&q1);
+        (q1[0] as f64) * 2f64.powi(scale + (l1 - 24) as i32)
+    };
+    (y0, y1)
+}
+
+fn rem_pio2_large(x: f64) -> (i32, f64, f64) {
+    let bits = x.to_bits();
+    let neg = (bits >> 63) != 0;
+    let e = (((bits >> 52) & 0x7ff) as i32) - 1075; // x = m·2^e, m ∈ [2^52, 2^53)
+    let m = (bits & ((1u64 << 52) - 1)) | (1u64 << 52);
+
+    // n = round(x·2/π) = round((m·W) / 2^240) avec W = ⌊2/π·2^(e+240)⌋
+    // (erreur < m·2^−240 = 2^−187 : l'arrondi est exact)
+    let w = big_shr19(&TWO_OVER_PI_LIMBS, (1240 - (e + 240)) as usize);
+    let mut q = big_mul_u64_small(m, &w);
+    big_add_value(&mut q, 239, 1);
+    let n_big = big_shr19_full(&q, 240);
+    let n4 = (n_big[0] & 3) as i32;
+
+    // f = y·2^1240 = m·2^(e+1240) − n·⌊π/2·2^1240⌋ — π/2 NON arrondi (l'erreur
+    // de troncature, ≤ n·2^−1174, est négligeable ; un P arrondi à l'entier
+    // près donnerait n·0,5 ≈ 8 ulp d'erreur sur y — mesuré avant correction).
+    let pi2_big = big_shr19(&PI2_LIMBS, 0);
+    let np = big_mul(&n_big, &pi2_big);
+    let mut a = [0u64; NL];
+    big_add_value(&mut a, (e + 1240) as usize, m);
+    let (f_mag, f_neg) = big_sub(&a, &np);
+
+    let (y0_mag, y1_mag) = big_double_double(&f_mag, -1240);
+    let (mut y0, mut y1) = (y0_mag, y1_mag);
+    if f_neg {
+        y0 = -y0;
+        y1 = -y1;
+    }
+    if neg {
+        // x < 0 : n' = −n, y' = −y (mod 4 : (4 − n4) & 3)
+        return ((4 - n4) & 3, -y0, -y1);
+    }
+    (n4, y0, y1)
+}
+
+fn big_mul_u64_small(m: u64, w: &[u64; NL]) -> [u64; NL] {
+    let mut out = [0u64; NL];
+    let mut carry: u128 = 0;
+    for i in 0..NL {
+        let cur = carry + u128::from(m) * u128::from(w[i]);
+        out[i] = cur as u64;
+        carry = cur >> 64;
+    }
+    debug_assert_eq!(carry, 0);
+    out
 }
 
 #[cfg(test)]

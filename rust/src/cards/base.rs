@@ -7,9 +7,11 @@
 //! - C1 : `fdlibm::cos/sin` partout (jamais `f64::cos/sin`, verrouillé par clippy.toml) ;
 //! - C2 : toute valeur f64 interpolée passe par `js_f64_to_string` (= `${x}` JS).
 
+use crate::cards::RenderError;
 use crate::fdlibm;
 use crate::intl;
 use crate::jsnum::{js_f64_to_string, js_to_fixed};
+use crate::jsval::{self, JsVal};
 use crate::octicons;
 use crate::themes::Theme;
 use crate::types::CardOptions;
@@ -51,20 +53,33 @@ pub(crate) fn js(x: f64) -> String {
 }
 
 /// `octiconSvg(name, x, y, size, fill)` — variante 16 px de `@primer/octicons`.
-pub fn octicon_svg(name: &str, x: f64, y: f64, size: u32, fill: &str) -> String {
-    let (width, path) =
-        octicons::icon_16(name).unwrap_or_else(|| panic!("octicon manquant: {name}"));
-    format!(
+/// Fix2 R3 : `Err(TypeError)` au lieu de `panic!` si l'icône statique manque
+/// (équivalent capturable du `TypeError` legacy `octicons[name].heights[size]`).
+pub fn octicon_svg(
+    name: &str,
+    x: f64,
+    y: f64,
+    size: u32,
+    fill: &str,
+) -> Result<String, RenderError> {
+    let (width, path) = octicons::icon_16(name).ok_or_else(|| {
+        RenderError::TypeError(format!(
+            "octicon « {name} » absent de l'extraction statique (octicons.json)"
+        ))
+    })?;
+    Ok(format!(
         "<svg x=\"{}\" y=\"{}\" width=\"{size}\" height=\"{size}\" viewBox=\"0 0 {size} {width}\" fill=\"{fill}\">{path}</svg>",
         js(x),
         js(y)
-    )
+    ))
 }
 
-/// `formatNumber(n, locale)` = `new Intl.NumberFormat(locale).format(n)`
-/// (entiers ≥ 0 uniquement dans le legacy ; tables C3 extraites de Node).
-pub fn format_number(n: u64, locale: &str) -> String {
-    intl::format_int(n, locale).unwrap_or_else(|| js_f64_to_string(n as f64))
+/// `formatNumber(n, locale)` = `new Intl.NumberFormat(locale).format(n)` pour toute
+/// valeur (fix2 R2) : `ToNumber` JS puis format ICU ; locale hors table → locale
+/// par défaut « en » (oracle R4 : `Intl.NumberFormat('xx')` → grouping root).
+/// Ne lève jamais (Intl ne lève pas sur un number, même NaN).
+pub fn format_number(v: &JsVal, locale: &str) -> String {
+    intl::format_js_number(jsval::to_number(v), locale)
 }
 
 /// `createArcPath` — exporté par le legacy mais inutilisé par les cartes ;
@@ -259,10 +274,11 @@ fn polar_to_cartesian(cx: f64, cy: f64, radius: f64, angle: f64) -> (f64, f64) {
     )
 }
 
-/// `js_to_fixed` sur usage legacy borné (f ∈ {0, 1, 2}) — panic avec message
-/// (équivalent RangeError JS, inatteignable dans le corpus).
-pub(crate) fn to_fixed(x: f64, f: u32) -> String {
-    js_to_fixed(x, f).unwrap_or_else(|e| panic!("toFixed({x}, {f}): {e}"))
+/// `js_to_fixed` sur usage legacy borné (f ∈ {0, 1, 2}) — fix2 R3 : `Err(RangeError)`
+/// au lieu de `panic!` si f sort de la borne arithmétique (équivalent capturable du
+/// `RangeError` JS `toFixed() digits argument` ; inatteignable dans le legacy).
+pub(crate) fn to_fixed(x: f64, f: u32) -> Result<String, RenderError> {
+    js_to_fixed(x, f).map_err(RenderError::RangeError)
 }
 
 #[cfg(test)]
@@ -276,16 +292,22 @@ mod tests {
         let mut checked = 0u32;
         for code in crate::intl::locale_codes() {
             for n in samples {
-                let got = format_number(n, &code);
+                let got = format_number(&JsVal::Number(n as f64), &code);
                 let want = crate::intl::format_int(n, &code).expect("format table");
                 assert_eq!(got, want, "locale {code} entier {n}");
                 checked += 1;
             }
         }
         assert_eq!(checked, 100);
-        assert_eq!(format_number(1234567, "en"), "1,234,567");
-        assert_eq!(format_number(1234567, "fr"), "1\u{202f}234\u{202f}567");
-        assert_eq!(format_number(123456789, "hi"), "12,34,56,789");
+        assert_eq!(format_number(&JsVal::Number(1234567.0), "en"), "1,234,567");
+        assert_eq!(
+            format_number(&JsVal::Number(1234567.0), "fr"),
+            "1\u{202f}234\u{202f}567"
+        );
+        assert_eq!(
+            format_number(&JsVal::Number(123456789.0), "hi"),
+            "12,34,56,789"
+        );
     }
 
     #[test]

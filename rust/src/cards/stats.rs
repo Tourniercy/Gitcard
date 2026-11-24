@@ -1,29 +1,35 @@
 //! Port littéral de `packages/svg-renderer/src/cards/stats-card.ts` (101 lignes).
+//! Fix2 : `Result` (le legacy lève un TypeError sur `encodeHTML(stats.name)` si
+//! `name` n'est pas une string) + compteurs `JsVal` (R2).
 
 use super::base::{
     create_card_wrapper, create_ring_chart, encode_html, format_number, js, octicon_svg, pick,
 };
+use crate::cards::RenderError;
+use crate::jsval::{self, JsVal};
 use crate::themes::get_theme;
 use crate::types::{CardOptions, GitHubStats};
 
 const CARD_WIDTH: f64 = 495.0;
 const CARD_HEIGHT: f64 = 195.0;
 
-struct StatRow {
+struct StatRow<'a> {
     key: &'static str,
     label: &'static str,
-    value: u64,
+    value: &'a JsVal,
     icon: &'static str,
 }
 
 /// `calculateGrade` — score flottant (forks × 0.5), seuils décroissants.
+/// `ToNumber` JS : champ absent/null → NaN (score NaN → grade « C », comme le
+/// legacy où `score = undefined * 1 + …` = NaN).
 fn calculate_grade(stats: &GitHubStats) -> (&'static str, f64) {
-    let score = stats.total_commits as f64 * 1.0
-        + stats.total_prs as f64 * 3.0
-        + stats.total_issues as f64 * 2.0
-        + stats.total_stars as f64 * 1.0
-        + stats.total_forks as f64 * 0.5
-        + stats.contributed_to as f64 * 5.0;
+    let score = jsval::to_number(&stats.total_commits) * 1.0
+        + jsval::to_number(&stats.total_prs) * 3.0
+        + jsval::to_number(&stats.total_issues) * 2.0
+        + jsval::to_number(&stats.total_stars) * 1.0
+        + jsval::to_number(&stats.total_forks) * 0.5
+        + jsval::to_number(&stats.contributed_to) * 5.0;
 
     if score >= 5000.0 {
         ("A+", 100.0)
@@ -38,7 +44,10 @@ fn calculate_grade(stats: &GitHubStats) -> (&'static str, f64) {
     }
 }
 
-pub fn render_stats_card(stats: &GitHubStats, options: &CardOptions) -> String {
+pub fn render_stats_card(
+    stats: &GitHubStats,
+    options: &CardOptions,
+) -> Result<String, RenderError> {
     let theme = get_theme(&options.theme);
     let icon_color = match pick(&options.icon_color) {
         Some(c) => format!("#{c}"),
@@ -50,37 +59,37 @@ pub fn render_stats_card(stats: &GitHubStats, options: &CardOptions) -> String {
         StatRow {
             key: "stars",
             label: "Total Stars",
-            value: stats.total_stars,
+            value: &stats.total_stars,
             icon: "star",
         },
         StatRow {
             key: "forks",
             label: "Total Forks",
-            value: stats.total_forks,
+            value: &stats.total_forks,
             icon: "repo-forked",
         },
         StatRow {
             key: "commits",
             label: "Total Commits",
-            value: stats.total_commits,
+            value: &stats.total_commits,
             icon: "git-commit",
         },
         StatRow {
             key: "prs",
             label: "Total PRs",
-            value: stats.total_prs,
+            value: &stats.total_prs,
             icon: "git-pull-request",
         },
         StatRow {
             key: "issues",
             label: "Total Issues",
-            value: stats.total_issues,
+            value: &stats.total_issues,
             icon: "issue-opened",
         },
         StatRow {
             key: "contribs",
             label: "Contributed To",
-            value: stats.contributed_to,
+            value: &stats.contributed_to,
             icon: "repo",
         },
     ];
@@ -95,7 +104,7 @@ pub fn render_stats_card(stats: &GitHubStats, options: &CardOptions) -> String {
     } else {
         format!(
             "<text x=\"25\" y=\"30\" class=\"title\">{}&#39;s GitHub Stats</text>",
-            encode_html(&stats.name)
+            crate::sanitize::encode_html_js(&stats.name)?
         )
     };
 
@@ -122,7 +131,7 @@ pub fn render_stats_card(stats: &GitHubStats, options: &CardOptions) -> String {
     for (i, stat) in visible_stats.iter().enumerate() {
         let y = stats_start_y + i as f64 * row_height;
         let icon_part = if options.show_icons {
-            octicon_svg(stat.icon, stats_start_x, y - 13.0, 16, &icon_color)
+            octicon_svg(stat.icon, stats_start_x, y - 13.0, 16, &icon_color)?
         } else {
             String::new()
         };
@@ -144,5 +153,11 @@ pub fn render_stats_card(stats: &GitHubStats, options: &CardOptions) -> String {
 
     let content = format!("\n    {title_section}\n    {ring_section}\n    {stats_section}\n  ");
 
-    create_card_wrapper(CARD_WIDTH, CARD_HEIGHT, &content, theme, options)
+    Ok(create_card_wrapper(
+        CARD_WIDTH,
+        CARD_HEIGHT,
+        &content,
+        theme,
+        options,
+    ))
 }

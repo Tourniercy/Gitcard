@@ -1,8 +1,14 @@
 //! Port littéral de `packages/svg-renderer/src/cards/langs-card.ts` (141 lignes) :
 //! donut standard + variante `layout=compact` (barre empilée, légende 2 colonnes).
+//! Fix2 R2 : `percentage` est un `JsVal` — le legacy appelle la MÉTHODE
+//! `lang.percentage.toFixed(1)` : TypeError capturable si ce n'est pas un number ;
+//! `color` est interpolé brut (`${lang.color}`) sans échappement, comme le legacy.
 
-use super::base::{create_card_wrapper, create_donut_segment, encode_html, js, pick, to_fixed};
+use super::base::{create_card_wrapper, create_donut_segment, js, pick, to_fixed};
+use crate::cards::RenderError;
 use crate::fdlibm;
+use crate::jsval::{self, JsVal};
+use crate::sanitize::encode_html_js;
 use crate::themes::{get_theme, Theme};
 use crate::types::{CardOptions, TopLangsData};
 
@@ -11,7 +17,23 @@ const CARD_HEIGHT: f64 = 195.0;
 
 const COMPACT_WIDTH: f64 = 300.0;
 
-fn render_compact_langs_card(data: &TopLangsData, options: &CardOptions, theme: &Theme) -> String {
+/// `lang.percentage.toFixed(f)` : méthode JS — `Err(TypeError)` si `percentage`
+/// n'est pas un number (oracle : `"42".toFixed` → TypeError, le rendu legacy lève).
+fn pct_to_fixed(v: &JsVal, f: u32) -> Result<String, RenderError> {
+    match v {
+        JsVal::Number(n) => to_fixed(*n, f),
+        other => Err(RenderError::TypeError(format!(
+            "percentage({}).toFixed is not a function",
+            jsval::js_to_string(other)
+        ))),
+    }
+}
+
+fn render_compact_langs_card(
+    data: &TopLangsData,
+    options: &CardOptions,
+    theme: &Theme,
+) -> Result<String, RenderError> {
     let title_section = if options.hide_title {
         String::new()
     } else {
@@ -27,14 +49,16 @@ fn render_compact_langs_card(data: &TopLangsData, options: &CardOptions, theme: 
     let mut bar_x = bar_left;
     let mut bar_segments = String::new();
     for lang in &data.languages {
-        let w = (lang.percentage / 100.0) * bar_width;
+        let w = (jsval::to_number(&lang.percentage) / 100.0) * bar_width;
+        // `${lang.color}` : interpolation brute (pas d'encodeHTML côté legacy)
+        let color = jsval::js_to_string(&lang.color);
         bar_segments.push_str(&format!(
             "<rect x=\"{}\" y=\"{}\" width=\"{}\" height=\"{}\" fill=\"{}\">\n        <animate attributeName=\"width\" from=\"0\" to=\"{}\" dur=\"0.6s\" fill=\"freeze\" />\n      </rect>",
             js(bar_x),
             js(bar_y),
             js(w),
             js(bar_height),
-            lang.color,
+            color,
             js(w)
         ));
         bar_x += w;
@@ -61,7 +85,7 @@ fn render_compact_langs_card(data: &TopLangsData, options: &CardOptions, theme: 
         let row = i / 2;
         let x = bar_left + col as f64 * col_width;
         let y = legend_start_y + row as f64 * legend_row_height;
-        let delay = to_fixed(450.0 + i as f64 * 150.0, 0);
+        let delay = to_fixed(450.0 + i as f64 * 150.0, 0)?;
         let fill = match pick(&options.text_color) {
             Some(c) => format!("#{c}"),
             None => theme.text.to_string(),
@@ -70,12 +94,12 @@ fn render_compact_langs_card(data: &TopLangsData, options: &CardOptions, theme: 
             "\n        <g opacity=\"0\">\n          <circle cx=\"{}\" cy=\"{}\" r=\"5\" fill=\"{}\" />\n          <text x=\"{}\" y=\"{}\" class=\"lang-name\" font-size=\"11\" fill=\"{}\">{} {}%</text>\n          <animate attributeName=\"opacity\" from=\"0\" to=\"1\" dur=\"0.3s\" begin=\"{delay}ms\" fill=\"freeze\" />\n        </g>\n      ",
             js(x),
             js(y - 4.0),
-            lang.color,
+            jsval::js_to_string(&lang.color),
             js(x + 14.0),
             js(y),
             fill,
-            encode_html(&lang.name),
-            to_fixed(lang.percentage, 2)
+            encode_html_js(&lang.name)?,
+            pct_to_fixed(&lang.percentage, 2)?
         ));
     }
 
@@ -96,10 +120,19 @@ fn render_compact_langs_card(data: &TopLangsData, options: &CardOptions, theme: 
         "\n    <defs>{bar_clip}</defs>\n    {title_section}\n    <g clip-path=\"url(#{bar_clip_id})\">{bar_segments}</g>\n    {legend_items}\n    {empty_message}\n  "
     );
 
-    create_card_wrapper(COMPACT_WIDTH, dynamic_height, &content, theme, options)
+    Ok(create_card_wrapper(
+        COMPACT_WIDTH,
+        dynamic_height,
+        &content,
+        theme,
+        options,
+    ))
 }
 
-pub fn render_langs_card(data: &TopLangsData, options: &CardOptions) -> String {
+pub fn render_langs_card(
+    data: &TopLangsData,
+    options: &CardOptions,
+) -> Result<String, RenderError> {
     let theme = get_theme(&options.theme);
 
     if options.layout.as_deref() == Some("compact") {
@@ -121,7 +154,7 @@ pub fn render_langs_card(data: &TopLangsData, options: &CardOptions) -> String {
     let mut current_angle = 0.0f64;
     let mut donut_segments = String::new();
     for lang in &data.languages {
-        let sweep_angle = (lang.percentage / 100.0) * std::f64::consts::PI * 2.0;
+        let sweep_angle = (jsval::to_number(&lang.percentage) / 100.0) * std::f64::consts::PI * 2.0;
         // petit espace entre segments
         let gap = 0.02;
         let start_angle = current_angle + gap;
@@ -138,7 +171,7 @@ pub fn render_langs_card(data: &TopLangsData, options: &CardOptions) -> String {
             donut_radius,
             start_angle,
             end_angle,
-            &lang.color,
+            &jsval::js_to_string(&lang.color),
         ));
     }
 
@@ -154,13 +187,13 @@ pub fn render_langs_card(data: &TopLangsData, options: &CardOptions) -> String {
             "\n        <g>\n          <circle cx=\"{}\" cy=\"{}\" r=\"5\" fill=\"{}\" />\n          <text x=\"{}\" y=\"{}\" class=\"stat-label\">{}</text>\n          <text x=\"{}\" y=\"{}\" class=\"stat-value\" text-anchor=\"end\">{}%</text>\n        </g>\n      ",
             js(legend_x),
             js(y - 4.0),
-            lang.color,
+            jsval::js_to_string(&lang.color),
             js(legend_x + 14.0),
             js(y),
-            encode_html(&lang.name),
+            encode_html_js(&lang.name)?,
             js(CARD_WIDTH - 25.0),
             js(y),
-            to_fixed(lang.percentage, 1)
+            pct_to_fixed(&lang.percentage, 1)?
         ));
     }
 
@@ -178,7 +211,13 @@ pub fn render_langs_card(data: &TopLangsData, options: &CardOptions) -> String {
         "\n    {title_section}\n    {donut_segments}\n    {legend_items}\n    {empty_message}\n  "
     );
 
-    create_card_wrapper(CARD_WIDTH, CARD_HEIGHT, &content, theme, options)
+    Ok(create_card_wrapper(
+        CARD_WIDTH,
+        CARD_HEIGHT,
+        &content,
+        theme,
+        options,
+    ))
 }
 
 // `fdlibm` référencé pour documenter C1 : les cos/sin du donut passent par

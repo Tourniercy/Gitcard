@@ -299,8 +299,8 @@ fn check_streak(svg: &str, streak: &Value, locale: &str) {
         } else {
             let range = format!(
                 "{} - {}",
-                intl::date_en(s).expect("date en"),
-                intl::date_en(e).expect("date en")
+                intl::date_en_js(&gitcard_p0::jsval::JsVal::Str(s.into())).expect("date en"),
+                intl::date_en_js(&gitcard_p0::jsval::JsVal::Str(e.into())).expect("date en")
             );
             assert!(
                 svg.contains(&format!("\n        {range}\n      </text>")),
@@ -493,7 +493,7 @@ fn check_profile(svg: &str, profile: &Value, locale: &str) {
     let tick_interval = std::cmp::max(1, n / 6);
     let mut i = 0;
     while i < n {
-        let month = intl::month_en(&weeks[i].0).expect("mois");
+        let month = intl::month_en_tick(&gitcard_p0::jsval::JsVal::Str(weeks[i].0.clone()));
         assert!(svg.contains(&format!(">{month}</text>")), "tick {month}");
         i += tick_interval;
     }

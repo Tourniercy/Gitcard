@@ -3,16 +3,24 @@
 //!
 //! Modules :
 //! - [`jsnum`] : `js_f64_to_string` / `js_to_fixed` (sémantique exacte Node 26.13.1)
+//! - [`jsval`] : `JsVal` — champ JSON vu par V8 (fix2 R2 : compteurs/texte)
+//! - [`jsdate`] : `new Date(x)` V8 + formatage Intl 'en' (fix2 R1 : dates)
 //! - [`intl`]  : formateurs entiers/dates par table extraite de Node (20 locales)
 //! - [`octicons`] : icônes embarquées `@primer/octicons@19.23.1`
 //! - `params_hash` / `md5_hex` : ETag et hash de cache du legacy (étude §1.7)
 //! - [`sanitize`] / [`themes`] / [`types`] / [`cards`] : port P2 du renderer SVG
 //!   (`packages/svg-renderer/src/`), parité à l'octet vs corpus golden (porte G2).
+//!
+//! Fix2 (revue P2) : les quatre `render_*_card` retournent `Result<_, RenderError>`
+//! — là où le legacy lève (RangeError date invalide, TypeError encodeHTML/toFixed),
+//! le Rust retourne une erreur capturable, plus aucun panic sur donnée.
 
 pub mod cards;
 pub mod fdlibm;
 pub mod intl;
+pub mod jsdate;
 pub mod jsnum;
+pub mod jsval;
 pub mod octicons;
 pub mod sanitize;
 pub mod themes;
@@ -23,10 +31,9 @@ pub use cards::base::{
     create_arc_path, create_card_wrapper, create_donut_segment, create_ring_chart, encode_html,
     format_number, octicon_svg, set_card_id_counter,
 };
-pub use cards::langs::render_langs_card;
-pub use cards::profile::render_profile_card;
-pub use cards::stats::render_stats_card;
-pub use cards::streak::render_streak_card;
+pub use cards::{
+    render_langs_card, render_profile_card, render_stats_card, render_streak_card, RenderError,
+};
 pub use sanitize::encode_html as encode_html_reexport;
 pub use themes::{get_theme, THEME_GROUPS, THEME_NAMES};
 pub use types::{
