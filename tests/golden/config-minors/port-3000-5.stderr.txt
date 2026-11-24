@@ -1,0 +1,12 @@
+node:net:2613
+    validatePort(options.port, 'options.port');
+    ^
+
+RangeError [ERR_SOCKET_BAD_PORT]: options.port should be >= 0 and < 65536. Received type number (3000.5).
+    at Server.listen (node:net:2613:5)
+    at serve (/w/node_modules/.pnpm/@hono+node-server@2.1.6_hono@4.13.16/node_modules/@hono/node-server/dist/index.cjs:1353:9)
+    at file:///w/scripts/gen-http-golden.mjs:461:3 {
+  code: 'ERR_SOCKET_BAD_PORT'
+}
+
+Node.js v26.13.1

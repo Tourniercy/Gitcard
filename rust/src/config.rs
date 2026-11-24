@@ -58,6 +58,20 @@ pub struct Config {
     pub l1_max_mib: u64,
 }
 
+/// `Number(port)` → port du LISTEN (`net.validatePort` Node, m-2 revue P4).
+/// zod accepte les non-entiers (coerce) mais Node jette
+/// `RangeError [ERR_SOCKET_BAD_PORT]` AU LISTEN — oracle exécuté :
+/// `tests/golden/config-minors/port-3000-5.stderr.txt` (exit 1). Le port
+/// reproduit l'issue : None ⇔ port non entier hors [0 ; 65536[ → stderr
+/// sémantique identique (sans la pile V8) + exit 1.
+pub fn port_as_u16(port: f64) -> Option<u16> {
+    if port.is_finite() && (0.0..65536.0).contains(&port) && port.fract() == 0.0 {
+        Some(port as u16)
+    } else {
+        None
+    }
+}
+
 /// Un issue zod (format inspect de la capture).
 #[derive(Debug, Clone, PartialEq)]
 pub struct ZodIssue {

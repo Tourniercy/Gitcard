@@ -6,13 +6,15 @@
 //! (prod @hono/node-server).
 //!
 //! Le bind écoute sur le port `Number(PORT)` (défaut 3000, validé 1..65535) ;
-//! PORT non entier : le legacy jette `ERR_SOCKET_BAD_PORT` AU LISTEN (pas à la
-//! validation) — le port arrondit via un cast, divergence théorique documentée
-//! (aucune valeur non entière observable en prod).
+//! PORT non entier : zod l'accepte mais le legacy jette
+//! `RangeError [ERR_SOCKET_BAD_PORT]` AU LISTEN (exit 1) — le port reproduit
+//! l'issue via `config::port_as_u16` (m-2 revue P4, oracle
+//! tests/golden/config-minors/port-3000-5.stderr.txt).
 
 use gitcard_p0::app::{build_router, prod_state};
 use gitcard_p0::cache::{AppCache, L2Cache, NoopL2, RedisL2};
-use gitcard_p0::config::{load_config, Config, OsEnv};
+use gitcard_p0::config::{load_config, port_as_u16, Config, OsEnv};
+use gitcard_p0::jsnum::js_f64_to_string;
 use gitcard_p0::pat_pool::PatPool;
 use std::sync::Arc;
 use std::time::SystemTime;
@@ -79,10 +81,33 @@ async fn run<L2: L2Cache>(cache: AppCache<L2>, pool: PatPool, config: Config) {
     let flush_state = state.clone();
     tokio::spawn(async move { flush_state.cache.flush().await });
 
-    let port = config.port as u16;
+    // m-2 (revue P4) : PORT non entier — zod l'accepte mais le legacy jette
+    // `RangeError [ERR_SOCKET_BAD_PORT]` AU LISTEN et exit 1 (oracle exécuté :
+    // tests/golden/config-minors/port-3000-5.stderr.txt). Le port tronquait
+    // via `as u16` et DÉMARRAIT — même issue : exit 1 + premier bloc
+    // sémantique du message Node (la pile V8 n'est pas reproduite, écart
+    // déjà assumé pour les autres crashes).
+    let port = match port_as_u16(config.port) {
+        Some(p) => p,
+        None => {
+            eprintln!(
+                "RangeError [ERR_SOCKET_BAD_PORT]: options.port should be >= 0 and < 65536. Received type number ({}).",
+                js_f64_to_string(config.port)
+            );
+            std::process::exit(1);
+        }
+    };
     let listener = match tokio::net::TcpListener::bind(("0.0.0.0", port)).await {
         Ok(l) => l,
         Err(e) => {
+            // m-3 (revue P4) — ÉCART ASSUMÉ tranché par l'oracle exécuté
+            // (tests/golden/config-minors/eaddrinuse.stderr.txt + manifest
+            // m3_bind_occupe) : Node ≥ 23 active SO_REUSEPORT par défaut →
+            // le legacy Node 26.13.1 NE CRASHE PAS sur un port occupé (exit 0,
+            // stderr vide). Le port (std Rust, pas de SO_REUSEPORT) imprime
+            // `Error: …` et exit 1 ; reproduire le legacy exigerait
+            // socket2/SO_REUSEPORT (déviation plus grande que l'écart). cf.
+            // rapport §écarts.
             eprintln!("Error: {e}");
             std::process::exit(1);
         }

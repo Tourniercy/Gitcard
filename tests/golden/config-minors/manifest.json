@@ -1,0 +1,20 @@
+{
+ "generator": {
+  "node": "v26.13.1",
+  "entry": "node scripts/probe-minors.mjs (jamais via pnpm) — enfants GEN_HTTP_MODE=serve-child (serve({fetch, port}) = entrée prod @hono/vite-build/node)",
+  "pat": "PAT_1=fake-token-1 (jeton fictif)",
+  "note": "stderr byte-exact ; le bloc sémantique exclut la pile V8 (lignes « at … »)"
+ },
+ "m2_port_non_entier": {
+  "probe_port": "3000.5",
+  "exitCode": 1,
+  "signal": null,
+  "semanticBlock": "node:net:2613\n    validatePort(options.port, 'options.port');\n    ^\n\nRangeError [ERR_SOCKET_BAD_PORT]: options.port should be >= 0 and < 65536. Received type number (3000.5).\n  code: 'ERR_SOCKET_BAD_PORT'\n}\n\nNode.js v26.13.1"
+ },
+ "m3_bind_occupe": {
+  "probe_port": "4199",
+  "exitCode": 0,
+  "signal": null,
+  "semanticBlock": ""
+ }
+}

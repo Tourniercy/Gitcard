@@ -444,4 +444,24 @@ if (MODE === 'cfg') {
   process.exit(0);
 }
 
+// ================= 5. mode serve-child (sondes mineurs m-2/m-3) ================
+// Interne à scripts/probe-minors.mjs : sert l'app SUR UN PORT DONNÉ
+// (PROBE_PORT, peut être non entier) exactement comme l'entrée de prod
+// @hono/vite-build/node (`serve({ fetch: app.fetch, port })`) — pour capturer
+// le stderr du LISTEN (ERR_SOCKET_BAD_PORT / EADDRINUSE). N'écrit aucun
+// fichier, ne touche aucune capture existante.
+if (MODE === 'serve-child') {
+  const requireFromApi = createRequire(
+    fileURLToPath(new URL('../apps/api/src/index.ts', import.meta.url))
+  );
+  const nodeServerPath = requireFromApi.resolve('@hono/node-server');
+  const { serve } = await import(pathToFileURL(nodeServerPath).href);
+  const app = (await import(new URL('../apps/api/src/index.ts', import.meta.url).href)).default;
+  const port = Number(process.env.PROBE_PORT ?? PORT);
+  serve({ fetch: app.fetch, port });
+  console.log('SERVE_OK');
+  setInterval(() => {}, 10_000); // rester vivant jusqu'au kill du parent
+  process.exit(0); // inaccessible (setInterval maintient la boucle) — garde
+}
+
 console.log('GEN_HTTP_OK');
