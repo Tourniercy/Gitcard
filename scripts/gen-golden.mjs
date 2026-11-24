@@ -41,8 +41,16 @@ const root = fileURLToPath(rootURL);
 const goldenDir = `${root}/tests/golden`;
 
 // --- Imports du legacy (type-stripping natif, pas de build) ---
-const { renderStatsCard, renderStreakCard, renderLangsCard, renderProfileCard, LOCALE_CODES } =
-  await import(new URL('../packages/svg-renderer/src/index.ts', import.meta.url).href);
+const {
+    renderStatsCard,
+    renderStreakCard,
+    renderLangsCard,
+    renderProfileCard,
+    LOCALE_CODES,
+    THEME_NAMES,
+    THEME_GROUPS,
+    getTheme,
+} = await import(new URL('../packages/svg-renderer/src/index.ts', import.meta.url).href);
 const { parseCardOptions } = await import(
   new URL('../apps/api/src/utils/query-params.ts', import.meta.url).href
 );
@@ -119,6 +127,34 @@ for (const { id, data } of fixtures) {
     }
   }
 }
+// ================= 2bis. Extension P2 : 1 fixture × carte stats × 35 thèmes =================
+// APPENDUE À LA FIN du manifeste (les uid des entrées v1 restent inchangés).
+// Ordre = THEME_NAMES (ordre d'insertion de themes/index.ts, oracle Node).
+const THEME_FIXTURE = fixtures.find((f) => f.id === 'typical');
+for (const themeName of THEME_NAMES) {
+  const options = parseCardOptions({ theme: themeName });
+  // préfixe x-theme- : évite toute collision avec les labels v1 (ex. 'theme-dark'
+  // = variante dracula de la matrice d'options v1)
+  const label = `x-theme-${themeName}`;
+  const svg = renderStatsCard(THEME_FIXTURE.data.stats, options);
+  const rel = `stats/${THEME_FIXTURE.id}/${label}.svg`;
+  mkdirSync(`${goldenDir}/stats/${THEME_FIXTURE.id}`, { recursive: true });
+  writeFileSync(`${goldenDir}/${rel}`, svg);
+  totalBytes += Buffer.byteLength(svg, 'utf8');
+  manifest.entries.push({
+    file: rel,
+    card: 'stats',
+    fixture: THEME_FIXTURE.id,
+    label,
+    uid: uid++,
+    md5: md5hex(svg),
+    paramsHash: md5hex(JSON.stringify(options)).slice(0, 8),
+    options: JSON.parse(JSON.stringify(options)),
+    query: { theme: themeName },
+  });
+}
+console.log(`themes: ${THEME_NAMES.length} rendus stats × fixture ${THEME_FIXTURE.id}, uid ${THEME_NAMES.length} finis à ${uid - 1}`);
+
 manifest.counts = { files: manifest.entries.length, bytes: totalBytes, fixtures: fixtures.length };
 writeFileSync(`${goldenDir}/manifest.json`, JSON.stringify(manifest, null, 2));
 console.log(`corpus: ${manifest.entries.length} SVG, ${totalBytes} octets, uid 0..${uid - 1}`);
@@ -251,4 +287,37 @@ writeFileSync(`${root}/rust/src/octicons.json`, octJson);
 mkdirSync(`${goldenDir}/meta`, { recursive: true });
 writeFileSync(`${goldenDir}/meta/octicons-extract.json`, octJson);
 console.log(`octicons: ${Object.keys(out).length} icônes 16px, version ${octiconsPkg.version}`);
+
+// ================= 7. Extraits legacy pour tests unitaires Rust (P2) =================
+// Oracle thèmes : ordre, groupes, getTheme (repli nom inconnu + casse).
+mkdirSync(`${goldenDir}/meta`, { recursive: true });
+const themesOracle = {
+  node: NODE_VERSION,
+  themeNames: THEME_NAMES,
+  groups: THEME_GROUPS,
+  defaultTheme: getTheme('default'),
+  unknownTheme: getTheme('pas-un-theme'),
+  caseSensitiveUnknown: getTheme('Dracula'),
+};
+writeFileSync(`${goldenDir}/meta/themes-extract.json`, JSON.stringify(themesOracle, null, 1));
+
+// Oracle createArcPath (exporté mais inutilisé par les cartes — porté quand même).
+const { createArcPath } = await import(
+  new URL('../packages/svg-renderer/src/cards/base-card.ts', import.meta.url).href
+);
+const ARC_ANGLES = [
+  0, 0.02, 0.1, 0.3, 0.55, 1.0, 1.25, 2.0, 2.75, 3.0, 3.5, 4.0, 4.75, 5.0,
+  Math.PI / 6, Math.PI / 4, Math.PI / 2, Math.PI, 2 * Math.PI, 6.283185307179586,
+];
+const arcSamples = [];
+for (const a1 of ARC_ANGLES) {
+  for (const a2 of [a1 + 0.1, a1 + Math.PI / 3, a1 + 2.5]) {
+    arcSamples.push({ startAngle: a1, endAngle: a2, out: createArcPath(90, 110, 55, a1, a2) });
+  }
+}
+writeFileSync(
+  `${goldenDir}/meta/arc-extract.json`,
+  JSON.stringify({ node: NODE_VERSION, cx: 90, cy: 110, radius: 55, samples: arcSamples }, null, 1)
+);
+console.log(`p2-meta: thèmes ${THEME_NAMES.length} / ${THEME_GROUPS.length} groupes, ${arcSamples.length} arcs createArcPath`);
 console.log('GEN_OK');

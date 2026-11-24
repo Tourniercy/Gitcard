@@ -6,8 +6,8 @@
     "note": "cache_seconds n entre jamais dans les octets du SVG (headers/ETag uniquement) : variantes cache-* = mêmes octets, hash différent"
   },
   "counts": {
-    "files": 371,
-    "bytes": 1726211,
+    "files": 406,
+    "bytes": 1905545,
     "fixtures": 7
   },
   "entries": [
@@ -8094,6 +8094,741 @@
       },
       "query": {
         "theme": "dracula"
+      }
+    },
+    {
+      "file": "stats/typical/x-theme-default.svg",
+      "card": "stats",
+      "fixture": "typical",
+      "label": "x-theme-default",
+      "uid": 371,
+      "md5": "c321653e7c79c46eea04d3ad42d8c91f",
+      "paramsHash": "289b4511",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "default"
+      }
+    },
+    {
+      "file": "stats/typical/x-theme-flat.svg",
+      "card": "stats",
+      "fixture": "typical",
+      "label": "x-theme-flat",
+      "uid": 372,
+      "md5": "7c932c16a1a29df73c27bbc333556557",
+      "paramsHash": "327a3f68",
+      "options": {
+        "theme": "flat",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "flat"
+      }
+    },
+    {
+      "file": "stats/typical/x-theme-breezy.svg",
+      "card": "stats",
+      "fixture": "typical",
+      "label": "x-theme-breezy",
+      "uid": 373,
+      "md5": "84def217155f96a34c4f961794737b37",
+      "paramsHash": "8ea92502",
+      "options": {
+        "theme": "breezy",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "breezy"
+      }
+    },
+    {
+      "file": "stats/typical/x-theme-rose.svg",
+      "card": "stats",
+      "fixture": "typical",
+      "label": "x-theme-rose",
+      "uid": 374,
+      "md5": "031389e105b604fc44fae185dbf9045e",
+      "paramsHash": "b7e1f529",
+      "options": {
+        "theme": "rose",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "rose"
+      }
+    },
+    {
+      "file": "stats/typical/x-theme-mint.svg",
+      "card": "stats",
+      "fixture": "typical",
+      "label": "x-theme-mint",
+      "uid": 375,
+      "md5": "a23a533e74ea91c2053d0ea0381d697f",
+      "paramsHash": "c56abd85",
+      "options": {
+        "theme": "mint",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "mint"
+      }
+    },
+    {
+      "file": "stats/typical/x-theme-sand.svg",
+      "card": "stats",
+      "fixture": "typical",
+      "label": "x-theme-sand",
+      "uid": 376,
+      "md5": "383544135be52e4378f85e78675d192d",
+      "paramsHash": "56f38c53",
+      "options": {
+        "theme": "sand",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "sand"
+      }
+    },
+    {
+      "file": "stats/typical/x-theme-lavender.svg",
+      "card": "stats",
+      "fixture": "typical",
+      "label": "x-theme-lavender",
+      "uid": 377,
+      "md5": "c91e2548135b74bc1a11fe9a94ce4906",
+      "paramsHash": "2109fd32",
+      "options": {
+        "theme": "lavender",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "lavender"
+      }
+    },
+    {
+      "file": "stats/typical/x-theme-dark.svg",
+      "card": "stats",
+      "fixture": "typical",
+      "label": "x-theme-dark",
+      "uid": 378,
+      "md5": "543d635d1ef9552578a5dd7f94f90540",
+      "paramsHash": "fd69e159",
+      "options": {
+        "theme": "dark",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "dark"
+      }
+    },
+    {
+      "file": "stats/typical/x-theme-dim.svg",
+      "card": "stats",
+      "fixture": "typical",
+      "label": "x-theme-dim",
+      "uid": 379,
+      "md5": "0ac2128faae7bc374e4b1f4614b9e21f",
+      "paramsHash": "28268421",
+      "options": {
+        "theme": "dim",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "dim"
+      }
+    },
+    {
+      "file": "stats/typical/x-theme-midnight.svg",
+      "card": "stats",
+      "fixture": "typical",
+      "label": "x-theme-midnight",
+      "uid": 380,
+      "md5": "e9077228a0a5c0adc35c8924da16a1c7",
+      "paramsHash": "670933a2",
+      "options": {
+        "theme": "midnight",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "midnight"
+      }
+    },
+    {
+      "file": "stats/typical/x-theme-onyx.svg",
+      "card": "stats",
+      "fixture": "typical",
+      "label": "x-theme-onyx",
+      "uid": 381,
+      "md5": "184756c5704f26a6d39934f6c83fb2a6",
+      "paramsHash": "0a543048",
+      "options": {
+        "theme": "onyx",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "onyx"
+      }
+    },
+    {
+      "file": "stats/typical/x-theme-dracula.svg",
+      "card": "stats",
+      "fixture": "typical",
+      "label": "x-theme-dracula",
+      "uid": 382,
+      "md5": "cec9ee2d09ffb2c51cc54d5313c1fd99",
+      "paramsHash": "022f6ef2",
+      "options": {
+        "theme": "dracula",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "dracula"
+      }
+    },
+    {
+      "file": "stats/typical/x-theme-monokai.svg",
+      "card": "stats",
+      "fixture": "typical",
+      "label": "x-theme-monokai",
+      "uid": 383,
+      "md5": "9d241a087b67d4cd7e9419d546096894",
+      "paramsHash": "9bf7f420",
+      "options": {
+        "theme": "monokai",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "monokai"
+      }
+    },
+    {
+      "file": "stats/typical/x-theme-nord.svg",
+      "card": "stats",
+      "fixture": "typical",
+      "label": "x-theme-nord",
+      "uid": 384,
+      "md5": "0e42e264455ac31fdbdeea8ddc9ca7a7",
+      "paramsHash": "7051fbc6",
+      "options": {
+        "theme": "nord",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "nord"
+      }
+    },
+    {
+      "file": "stats/typical/x-theme-solarized.svg",
+      "card": "stats",
+      "fixture": "typical",
+      "label": "x-theme-solarized",
+      "uid": 385,
+      "md5": "beb8db123751d6512a3f179b33b12bb2",
+      "paramsHash": "cef951a4",
+      "options": {
+        "theme": "solarized",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "solarized"
+      }
+    },
+    {
+      "file": "stats/typical/x-theme-solarized-dark.svg",
+      "card": "stats",
+      "fixture": "typical",
+      "label": "x-theme-solarized-dark",
+      "uid": 386,
+      "md5": "ac6bc683317d48a11f3fdec076c7e0ac",
+      "paramsHash": "bc88932a",
+      "options": {
+        "theme": "solarized-dark",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "solarized-dark"
+      }
+    },
+    {
+      "file": "stats/typical/x-theme-gruvbox.svg",
+      "card": "stats",
+      "fixture": "typical",
+      "label": "x-theme-gruvbox",
+      "uid": 387,
+      "md5": "2ce47065a39556b7a5b04fdfcef6d836",
+      "paramsHash": "958cad07",
+      "options": {
+        "theme": "gruvbox",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "gruvbox"
+      }
+    },
+    {
+      "file": "stats/typical/x-theme-gruvbox-light.svg",
+      "card": "stats",
+      "fixture": "typical",
+      "label": "x-theme-gruvbox-light",
+      "uid": 388,
+      "md5": "1d8e3e47114f80456871dea6a3d965a1",
+      "paramsHash": "c535253f",
+      "options": {
+        "theme": "gruvbox-light",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "gruvbox-light"
+      }
+    },
+    {
+      "file": "stats/typical/x-theme-tokyo-night.svg",
+      "card": "stats",
+      "fixture": "typical",
+      "label": "x-theme-tokyo-night",
+      "uid": 389,
+      "md5": "e1309eb1f06fbd028bdff78994da8a90",
+      "paramsHash": "c5f0c4e8",
+      "options": {
+        "theme": "tokyo-night",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "tokyo-night"
+      }
+    },
+    {
+      "file": "stats/typical/x-theme-one-dark.svg",
+      "card": "stats",
+      "fixture": "typical",
+      "label": "x-theme-one-dark",
+      "uid": 390,
+      "md5": "94f040199b0ac9b324eb3db293535f47",
+      "paramsHash": "b05cc3e8",
+      "options": {
+        "theme": "one-dark",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "one-dark"
+      }
+    },
+    {
+      "file": "stats/typical/x-theme-one-light.svg",
+      "card": "stats",
+      "fixture": "typical",
+      "label": "x-theme-one-light",
+      "uid": 391,
+      "md5": "dd7328fb69f3b3e4f4d7b386ed8f1a7f",
+      "paramsHash": "7f49d70c",
+      "options": {
+        "theme": "one-light",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "one-light"
+      }
+    },
+    {
+      "file": "stats/typical/x-theme-catppuccin-mocha.svg",
+      "card": "stats",
+      "fixture": "typical",
+      "label": "x-theme-catppuccin-mocha",
+      "uid": 392,
+      "md5": "7a1fe4fe93a2d178d5cf34e9db1124d6",
+      "paramsHash": "2c30a91f",
+      "options": {
+        "theme": "catppuccin-mocha",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "catppuccin-mocha"
+      }
+    },
+    {
+      "file": "stats/typical/x-theme-catppuccin-latte.svg",
+      "card": "stats",
+      "fixture": "typical",
+      "label": "x-theme-catppuccin-latte",
+      "uid": 393,
+      "md5": "e7af5ebc2007db4a9222983247cdec3d",
+      "paramsHash": "6537c1c2",
+      "options": {
+        "theme": "catppuccin-latte",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "catppuccin-latte"
+      }
+    },
+    {
+      "file": "stats/typical/x-theme-synthwave.svg",
+      "card": "stats",
+      "fixture": "typical",
+      "label": "x-theme-synthwave",
+      "uid": 394,
+      "md5": "d3eb9f527e323f25cecae0f3ef9786c0",
+      "paramsHash": "fa482900",
+      "options": {
+        "theme": "synthwave",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "synthwave"
+      }
+    },
+    {
+      "file": "stats/typical/x-theme-cobalt.svg",
+      "card": "stats",
+      "fixture": "typical",
+      "label": "x-theme-cobalt",
+      "uid": 395,
+      "md5": "bed1904384db3347f27e0b9f7af825fc",
+      "paramsHash": "f177d05a",
+      "options": {
+        "theme": "cobalt",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "cobalt"
+      }
+    },
+    {
+      "file": "stats/typical/x-theme-night-owl.svg",
+      "card": "stats",
+      "fixture": "typical",
+      "label": "x-theme-night-owl",
+      "uid": 396,
+      "md5": "8d2176f791cfb5551ed71c4303b930e8",
+      "paramsHash": "830b943a",
+      "options": {
+        "theme": "night-owl",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "night-owl"
+      }
+    },
+    {
+      "file": "stats/typical/x-theme-aurora.svg",
+      "card": "stats",
+      "fixture": "typical",
+      "label": "x-theme-aurora",
+      "uid": 397,
+      "md5": "fa64143f7d7069598347957a9f8bba4a",
+      "paramsHash": "524fb40b",
+      "options": {
+        "theme": "aurora",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "aurora"
+      }
+    },
+    {
+      "file": "stats/typical/x-theme-ocean.svg",
+      "card": "stats",
+      "fixture": "typical",
+      "label": "x-theme-ocean",
+      "uid": 398,
+      "md5": "ad81408779d1d07babe99f179af1dd45",
+      "paramsHash": "b6d99392",
+      "options": {
+        "theme": "ocean",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "ocean"
+      }
+    },
+    {
+      "file": "stats/typical/x-theme-forest.svg",
+      "card": "stats",
+      "fixture": "typical",
+      "label": "x-theme-forest",
+      "uid": 399,
+      "md5": "b836206f7cdea2c6ac17aa1df933ff67",
+      "paramsHash": "8d87ba9e",
+      "options": {
+        "theme": "forest",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "forest"
+      }
+    },
+    {
+      "file": "stats/typical/x-theme-sunset.svg",
+      "card": "stats",
+      "fixture": "typical",
+      "label": "x-theme-sunset",
+      "uid": 400,
+      "md5": "f6f7d6a131073472851adb821d8b3030",
+      "paramsHash": "d7b70bb3",
+      "options": {
+        "theme": "sunset",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "sunset"
+      }
+    },
+    {
+      "file": "stats/typical/x-theme-cherry.svg",
+      "card": "stats",
+      "fixture": "typical",
+      "label": "x-theme-cherry",
+      "uid": 401,
+      "md5": "6d0ba26f069acf80e05a77f597a79648",
+      "paramsHash": "b8294203",
+      "options": {
+        "theme": "cherry",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "cherry"
+      }
+    },
+    {
+      "file": "stats/typical/x-theme-slate.svg",
+      "card": "stats",
+      "fixture": "typical",
+      "label": "x-theme-slate",
+      "uid": 402,
+      "md5": "640692f816ab33aeddba8f01e01d9150",
+      "paramsHash": "af6e2e3c",
+      "options": {
+        "theme": "slate",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "slate"
+      }
+    },
+    {
+      "file": "stats/typical/x-theme-cotton-candy.svg",
+      "card": "stats",
+      "fixture": "typical",
+      "label": "x-theme-cotton-candy",
+      "uid": 403,
+      "md5": "2561dabf804a8d4eab0d563c11127afa",
+      "paramsHash": "1993f49e",
+      "options": {
+        "theme": "cotton-candy",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "cotton-candy"
+      }
+    },
+    {
+      "file": "stats/typical/x-theme-high-contrast.svg",
+      "card": "stats",
+      "fixture": "typical",
+      "label": "x-theme-high-contrast",
+      "uid": 404,
+      "md5": "7b82f826c189bb7728832490a423c041",
+      "paramsHash": "8bf920f0",
+      "options": {
+        "theme": "high-contrast",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "high-contrast"
+      }
+    },
+    {
+      "file": "stats/typical/x-theme-paper.svg",
+      "card": "stats",
+      "fixture": "typical",
+      "label": "x-theme-paper",
+      "uid": 405,
+      "md5": "187e621ca6e74130532a410a46613a55",
+      "paramsHash": "c13ef4c8",
+      "options": {
+        "theme": "paper",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "paper"
       }
     }
   ]
