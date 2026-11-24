@@ -248,6 +248,13 @@ async fn cors_middleware<L2: crate::cache::L2Cache>(
     let (mut res_parts, res_body) = response.into_parts();
     // corps buffé (SVG/JSON petits) pour poser content-length à la position du
     // legacy — avant Date, après les en-têtes applicatifs.
+    // INVARIANT (m-4 revue P4) : `to_bytes(…, 64 Mio)` ne peut échouer QUE sur
+    // un corps > 64 Mio ou une erreur de lecture du flux — impossible ici :
+    // tous les corps produits par l'app (SVG ≤ ~15 Ko, JSON data ≤ ~50 Ko,
+    // probe corpus 512) sont très en dessous, et axum/hyper sert des corps
+    // entiers en mémoire. L'err → corps vide ne peut donc JAMAIS masquer une
+    // réponse réelle (choix revue : invariant commenté plutôt que 500
+    // synthétique qui masquerait la vraie cause si l'invariant sautait).
     let body_bytes: Vec<u8> = match axum::body::to_bytes(res_body, 64 * 1024 * 1024).await {
         Ok(b) => b.to_vec(),
         Err(_) => Vec::new(),
