@@ -1,0 +1,3 @@
+CLIENT "SETINFO" "LIB-VER" "5.11.0"
+CLIENT "SETINFO" "LIB-NAME" "node-redis"
+SCAN "0" "MATCH" "keyv::*" "COUNT" "1000" "TYPE" "string"
