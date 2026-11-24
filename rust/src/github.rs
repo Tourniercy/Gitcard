@@ -126,6 +126,23 @@ pub async fn fetch_github_data(
     fetch_github_data_at(http, GITHUB_GRAPHQL_URL, username, token).await
 }
 
+/// Erreur API GitHub « non-404/429 » + capture Sentry (github.ts:153-160 :
+/// `captureException(err, {tags:{username}, extra:{operation}})` pour toute
+/// erreur qui n'est NI NotFound NI RateLimit — transport, statut HTTP, JSON,
+/// GraphQL errors hors user inconnu). Le port émet un message équivalent
+/// (ses erreurs ne portent pas de pile V8 — écart documenté) ; no-op sans
+/// client Sentry.
+fn api_err(username: &str, message: &str, status: Option<u16>) -> GitHubError {
+    crate::sentry_gate::capture_exception_message(
+        message,
+        &[("username", username), ("operation", "fetchGitHubData")],
+    );
+    GitHubError::Api {
+        message: message.to_string(),
+        status,
+    }
+}
+
 /// Variante à URL injectable : les tests `wiremock` lient un serveur sur
 /// 127.0.0.1 (`--network none`) sans toucher à la constante du legacy.
 pub async fn fetch_github_data_at(
@@ -147,10 +164,7 @@ pub async fn fetch_github_data_at(
         .body(body)
         .send()
         .await
-        .map_err(|_| GitHubError::Api {
-            message: "fetch failed".to_string(),
-            status: None,
-        })?;
+        .map_err(|_| api_err(username, "fetch failed", None))?;
 
     let status = response.status();
     if !status.is_success() {
@@ -174,24 +188,23 @@ pub async fn fetch_github_data_at(
                 reset_at_ms,
             });
         }
-        return Err(GitHubError::Api {
-            message: format!(
+        return Err(api_err(
+            username,
+            &format!(
                 "GitHub API error: {} {}",
                 code,
                 status.canonical_reason().unwrap_or_default()
             ),
-            status: Some(code),
-        });
+            Some(code),
+        ));
     }
 
-    let text = response.text().await.map_err(|_| GitHubError::Api {
-        message: "fetch failed".to_string(),
-        status: None,
-    })?;
-    let json: Value = serde_json::from_str(&text).map_err(|_| GitHubError::Api {
-        message: "invalid JSON body".to_string(), // divergence : message SyntaxError V8 non reproduit
-        status: None,
-    })?;
+    let text = response
+        .text()
+        .await
+        .map_err(|_| api_err(username, "fetch failed", None))?;
+    let json: Value =
+        serde_json::from_str(&text).map_err(|_| api_err(username, "invalid JSON body", None))?; // divergence : message SyntaxError V8 non reproduit
 
     if json
         .get("errors")
@@ -215,10 +228,11 @@ pub async fn fetch_github_data_at(
                 username: username.to_string(),
             });
         }
-        return Err(GitHubError::Api {
-            message: format!("GraphQL errors: {joined}"),
-            status: None,
-        });
+        return Err(api_err(
+            username,
+            &format!("GraphQL errors: {joined}"),
+            None,
+        ));
     }
 
     let user = json.get("data").and_then(|d| d.get("user"));

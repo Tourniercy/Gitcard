@@ -27,6 +27,28 @@ url = "2"
 # l'URL brute à node-redis) ni cluster.
 redis = { version = "0.32", default-features = false, features = ["tokio-comp"] }
 
+# P5 : Sentry RÉEL — pile prouvée côté weight (fix5 I1) : façade SANS les
+# features par défaut (le transport par défaut de la 0.49 = reqwest +
+# native-tls → OpenSSL, incompilable musl) : transport `ureq` + `rustls`
+# (ring), la MÊME pile TLS que le `reqwest` du projet. `panic` = intégration
+# hook de panique (équivalent des handlers globaux @sentry/node). `test` =
+# transport mémoire pour les tests hermétiques (AUCUN réseau). `sentry-tower`
+# (feature `http`) = transactions HTTP échantillonnées + contexte requête
+# (scrub des en-têtes sensibles).
+sentry = { version = "0.49.6", default-features = false, features = [
+  "backtrace",
+  "contexts",
+  "panic",
+  "rustls",
+  "test",
+  "ureq",
+] }
+sentry-tower = { version = "0.49.6", features = ["http"] }
+
 [dev-dependencies]
 # serveur HTTP de test lié sur 127.0.0.1 (valable sous --network none).
 wiremock = "0.6"
+# P5 : `ServiceExt::oneshot` pour appeler le routeur réel dans les tests
+# Sentry (transport de test lié au hub — cf. tests/p5_sentry.rs). Déjà
+# présent transitivement (axum/wiremock).
+tower = { version = "0.5", features = ["util"] }

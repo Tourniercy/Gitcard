@@ -31,6 +31,7 @@ pub mod pat_pool;
 pub mod query_params;
 pub mod ratelimit;
 pub mod sanitize;
+pub mod sentry_gate;
 pub mod themes;
 pub mod types;
 

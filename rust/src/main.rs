@@ -33,6 +33,19 @@ async fn main() {
         }
     };
 
+    // P5 telemetry.ts : `if (dsn) Sentry.init({...})` — le port initialise
+    // APRÈS la validation zod (le legacy s'exécute à l'import, avant
+    // loadConfig ; divergence non observable : crash zod byte-exact, init JS
+    // avec DSN invalide n'émet rien). Taux/environment : sémantique RAW
+    // `Number()`/`??` de telemetry.ts (`_telemetry` de config.rs, vide → 0 /
+    // '' ; pas la sémantique zod). La garde vit toute la vie du process
+    // (drop = flush). Soft-fail : DSN mal formé → warn + aucun client.
+    let _sentry = gitcard_p0::sentry_gate::SentryGate::init(
+        &config.sentry_dsn.clone().unwrap_or_default(),
+        &config.sentry_environment_telemetry,
+        config.sentry_traces_sample_rate_telemetry,
+    );
+
     let pool = match PatPool::new(
         config.pats.clone(),
         Arc::new(|| {

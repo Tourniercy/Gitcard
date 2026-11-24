@@ -788,7 +788,34 @@ pub fn build_router<L2: crate::cache::L2Cache>(state: AppState<L2>) -> Router {
             cors_middleware::<L2>,
         ))
         .layer(axum::middleware::from_fn(head_to_get_middleware))
+        // P5 Sentry — ordre axum = inverse de ServiceBuilder (le DERNIER
+        // .layer est le plus externe) : hub par requête (NewSentryLayer,
+        // externe) → SentryHttpLayer (contexte requête + transaction
+        // échantillonnée, en-têtes sensibles filtrés) → capture des 5xx
+        // (équivalent des erreurs non rattrapées du legacy ; méthode +
+        // chemin SANS query). Sans client Sentry (DSN absent), ces couches
+        // sont des no-ops — réponses inchangées (goldens 54×2 byte-exact).
+        .layer(axum::middleware::from_fn(sentry_server_error_mw))
+        .layer(sentry_tower::SentryHttpLayer::new().enable_transaction())
+        .layer(sentry_tower::NewSentryLayer::<Request<axum::body::Body>>::new_from_top())
         .with_state(state)
+}
+
+/// P5 — toute réponse 5xx est capturée vers Sentry (« [web] METHOD /path ->
+/// code », SANS query ni secret). No-op sans client. DIVERGENCE ASSUMÉE
+/// documentée : les 502 cartes du legacy sont rattrapés (jamais remontés),
+/// le port les capture — cf. rapport P5 §Sentry.
+async fn sentry_server_error_mw(req: Request<Body>, next: Next) -> Response {
+    let method = req.method().clone();
+    let path = req.uri().path().to_string();
+    let res = next.run(req).await;
+    if res.status().is_server_error() {
+        crate::sentry_gate::capture_error(&format!(
+            "[web] {method} {path} -> {}",
+            res.status().as_u16()
+        ));
+    }
+    res
 }
 
 /// État de prod : URL réelle, client reqwest par défaut (parité la plus
