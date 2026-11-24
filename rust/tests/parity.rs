@@ -220,7 +220,13 @@ fn check_stats(svg: &str, stats: &Value, opts: &Value, locale: &str) {
     let mut visible_needles: Vec<String> = Vec::new();
     let mut hidden_needles: Vec<(String, String)> = Vec::new();
     for (key, field) in rows {
-        let v = stats[field].as_u64().expect("compteur");
+        // arbitrary_precision (fix3) : les littéraux hors fenêtre (« 1e400 »)
+        // et les non-entiers (« -0.0 ») n'ont pas de forme u64 — lignes sautées
+        // ici, leur parité d'octets étant déjà portée par corpus_byte_parity_g2.
+        let v = match stats[field].as_u64() {
+            Some(v) => v,
+            None => continue,
+        };
         let needle = format!(
             ">{}</text>",
             intl::format_int(v, locale).expect("locale table")
@@ -243,12 +249,24 @@ fn check_stats(svg: &str, stats: &Value, opts: &Value, locale: &str) {
         );
     }
     // Grade + ring chart (port exact de calculateGrade / createRingChart)
-    let score = stats["totalCommits"].as_f64().expect("n") * 1.0
-        + stats["totalPRs"].as_f64().expect("n") * 3.0
-        + stats["totalIssues"].as_f64().expect("n") * 2.0
-        + stats["totalStars"].as_f64().expect("n") * 1.0
-        + stats["totalForks"].as_f64().expect("n") * 0.5
-        + stats["contributedTo"].as_f64().expect("n") * 5.0;
+    // num() : arbitrary_precision (fix3) — littéraux hors fenêtre (« 1e400 »)
+    // et non-entiers (« -0.0 ») sans as_f64 ; re-parse du littéral verbatim
+    // (±inf comme JSON.parse V8, le grade suit).
+    let num = |v: &Value| -> f64 {
+        v.as_f64()
+            .or_else(|| {
+                serde_json::to_string(v)
+                    .ok()
+                    .and_then(|s| s.parse::<f64>().ok())
+            })
+            .unwrap_or(f64::NAN)
+    };
+    let score = num(&stats["totalCommits"]) * 1.0
+        + num(&stats["totalPRs"]) * 3.0
+        + num(&stats["totalIssues"]) * 2.0
+        + num(&stats["totalStars"]) * 1.0
+        + num(&stats["totalForks"]) * 0.5
+        + num(&stats["contributedTo"]) * 5.0;
     let percentage = if score >= 5000.0 {
         100.0
     } else if score >= 2500.0 {

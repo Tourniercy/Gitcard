@@ -37,6 +37,27 @@ pub struct LocaleFormat {
     digits: Vec<String>,
     decimal: String,
     label: String,
+    /// Signe moins ICU de la locale (fix3 : oracle `format(-5)` — U+2212 pour
+    /// « sv »/« nb », tiret ASCII ailleurs).
+    minus: char,
+    /// Préfixe directionnel d'ICU devant toute sortie signée (fix3 : LRM U+200E
+    /// pour « ar » uniquement, chaîne vide pour les 19 autres locales).
+    sign_prefix: &'static str,
+}
+
+/// Signe moins et préfixe directionnel d'ICU par locale (oracle fix3 :
+/// `new Intl.NumberFormat(code).format(-5)` / `.format(-Infinity)`, Node
+/// v26.13.1) : « sv »/« nb » composent les négatifs avec le vrai signe moins
+/// U+2212 (« \u{2212}5 », « \u{2212}∞ ») ; « ar » préfixe toute sortie signée
+/// d'une marque LRM U+200E en gardant le tiret ASCII (« \u{200e}-5 »,
+/// « \u{200e}-∞ ») ; les 17 autres locales : tiret ASCII, aucun préfixe. Les
+/// positifs et NaN ne portent jamais de marque ni de signe (corpus ar inchangé).
+fn minus_sign_data(code: &str) -> (char, &'static str) {
+    match code {
+        "sv" | "nb" => ('\u{2212}', ""),
+        "ar" => ('-', "\u{200e}"),
+        _ => ('-', ""),
+    }
 }
 
 impl LocaleFormat {
@@ -92,7 +113,8 @@ impl LocaleFormat {
     }
 
     /// `Intl.NumberFormat(locale).format(x)` pour tout `number` JS (fix2 R2) :
-    /// NaN → `"NaN"` ; regroupement de la partie entière ; au plus 3 décimales
+    /// NaN → `"NaN"` ; ±∞ → `« ∞ »` / `« -∞ »` (I3, fix3 — ICU, signe moins
+    /// ASCII) ; regroupement de la partie entière ; au plus 3 décimales
     /// (`maximumFractionDigits` par défaut d'ICU, arrondi demi-éloigné-de-zéro) ;
     /// écriture décimale complète dès 1e21 (ICU n'utilise jamais d'exposant ;
     /// oracle : `format(1e21)` → `"1,000,000,000,000,000,000,000"`).
@@ -100,7 +122,19 @@ impl LocaleFormat {
         if x.is_nan() {
             return "NaN".to_string();
         }
-        let neg = x < 0.0; // -0 → "0" (String(-0) JS, oracle R2 : -0 hors matrice)
+        // I3 (fix3) : sans cette garde, a ≥ 1e21 formerait « inf » et `group`
+        // lirait `digits[57]` hors bornes (panic). Oracle : Intl.format(±∞)
+        // → « ∞ » / « -∞ » ; carte stats `totalStars: 1e400` → rendu.
+        if x.is_infinite() {
+            return if x > 0.0 {
+                "∞".to_string()
+            } else {
+                format!("{}{}∞", self.sign_prefix, self.minus)
+            };
+        }
+        // M1 (fix3) : -0 → « -0 » (oracle `Intl.NumberFormat('en').format(-0)`)
+        // ; l'ancien commentaire s'appuyait sur String(-0) = « 0 » — il est faux.
+        let neg = x < 0.0 || (x == 0.0 && x.is_sign_negative());
         let a = x.abs();
         let (int_part, frac) = if a >= 1e21 {
             // expansion décimale exacte du f64 (Rust imprime la valeur binaire exacte)
@@ -123,7 +157,7 @@ impl LocaleFormat {
             }
         }
         if neg {
-            format!("-{out}")
+            format!("{}{}{out}", self.sign_prefix, self.minus)
         } else {
             out
         }
@@ -164,6 +198,8 @@ pub fn locale_format(code: &str) -> Option<LocaleFormat> {
             .collect(),
         decimal: l["decimal"].as_str().unwrap_or(".").to_string(),
         label: l["label"].as_str().unwrap_or_default().to_string(),
+        minus: minus_sign_data(code).0,
+        sign_prefix: minus_sign_data(code).1,
     })
 }
 

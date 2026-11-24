@@ -147,7 +147,9 @@ fn r1_dates_parity_with_legacy_oracle() {
                 }
             }
             set_card_id_counter(e["pu"].as_u64().expect("uid profile"));
-            let got = render_profile_card(&ProfileData::from_value(&pv), &options);
+            let profile_data = ProfileData::from_value(&pv)
+                .unwrap_or_else(|e| panic!("{ctx} : calendrier oracle toujours tableau : {e}"));
+            let got = render_profile_card(&profile_data, &options);
             check(got, &e["p"], &ctx, "profile");
 
             checked += 2;

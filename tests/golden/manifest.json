@@ -3,11 +3,12 @@
     "node": "v26.13.1",
     "entry": "node scripts/gen-golden.mjs (jamais via pnpm)",
     "uidRule": "uid = index global des rendus dans l ordre: fixtures[] x cartes[] x options[]; commence a 0; un createCardWrapper par rendu",
-    "note": "cache_seconds n entre jamais dans les octets du SVG (headers/ETag uniquement) : variantes cache-* = mêmes octets, hash différent"
+    "note": "cache_seconds n entre jamais dans les octets du SVG (headers/ETag uniquement) : variantes cache-* = mêmes octets, hash différent",
+    "fix3": "section 10 : fixture edge-fix3 (I3 totalStars=1e400 -> infini, M1 totalForks=-0.0 -> -0, M2 dates d ere BC sur streak) rendue par un processus enfant (compteur legacy frais amene a 459) — uid 459..511 contigus (uid == index), 459 SVG d origine et metas date/counters-extract inchangés"
   },
   "counts": {
-    "files": 459,
-    "bytes": 2126621,
+    "files": 512,
+    "bytes": 2493306,
     "fixtures": 7
   },
   "entries": [
@@ -9972,6 +9973,1161 @@
       "label": "x-unicode-theme-dark",
       "uid": 458,
       "md5": "45582c0294b3af7455029f305fc59863",
+      "paramsHash": "022f6ef2",
+      "options": {
+        "theme": "dracula",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "dracula"
+      }
+    },
+    {
+      "file": "stats/edge-fix3/x-edge-fix3-default.svg",
+      "card": "stats",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-default",
+      "uid": 459,
+      "md5": "1200e623a836e52f96e65a810a886ef6",
+      "paramsHash": "289b4511",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {}
+    },
+    {
+      "file": "stats/edge-fix3/x-edge-fix3-hide.svg",
+      "card": "stats",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-hide",
+      "uid": 460,
+      "md5": "d6e045c1e60802ccce1844676f5963bd",
+      "paramsHash": "368382c7",
+      "options": {
+        "theme": "default",
+        "hide": [
+          "stars",
+          "commits"
+        ],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "hide": "stars,commits"
+      }
+    },
+    {
+      "file": "stats/edge-fix3/x-edge-fix3-colors.svg",
+      "card": "stats",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-colors",
+      "uid": 461,
+      "md5": "877ea33d6f5de8723ea4244ba0836272",
+      "paramsHash": "83a1c0e1",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "bgColor": "1a1b27",
+        "titleColor": "ff79c6",
+        "textColor": "e6e6e6",
+        "iconColor": "8be9fd",
+        "borderColor": "6272a4",
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "bg_color": "1a1b27",
+        "title_color": "ff79c6",
+        "text_color": "e6e6e6",
+        "icon_color": "8be9fd",
+        "border_color": "6272a4"
+      }
+    },
+    {
+      "file": "stats/edge-fix3/x-edge-fix3-no-icons.svg",
+      "card": "stats",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-no-icons",
+      "uid": 462,
+      "md5": "b0803e2376b27bd1e5a95bc07e7aad79",
+      "paramsHash": "6ae62e0a",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": false,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "show_icons": "false"
+      }
+    },
+    {
+      "file": "stats/edge-fix3/x-edge-fix3-no-border.svg",
+      "card": "stats",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-no-border",
+      "uid": 463,
+      "md5": "d8a9ff64804be7ab3048e80997d85439",
+      "paramsHash": "ca7e2015",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": true,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "hide_border": "true"
+      }
+    },
+    {
+      "file": "stats/edge-fix3/x-edge-fix3-no-title.svg",
+      "card": "stats",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-no-title",
+      "uid": 464,
+      "md5": "95ef9690a71ff63d895cf72608d4f023",
+      "paramsHash": "5ac9a4f5",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": true,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "hide_title": "true"
+      }
+    },
+    {
+      "file": "stats/edge-fix3/x-edge-fix3-fr.svg",
+      "card": "stats",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-fr",
+      "uid": 465,
+      "md5": "8258bff9cd6ae8113847097a3fb2dd71",
+      "paramsHash": "e3002170",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "fr"
+      },
+      "query": {
+        "locale": "fr"
+      }
+    },
+    {
+      "file": "stats/edge-fix3/x-edge-fix3-de.svg",
+      "card": "stats",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-de",
+      "uid": 466,
+      "md5": "d39e380977957f1a3ea7c32d7dac1897",
+      "paramsHash": "698055c2",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "de"
+      },
+      "query": {
+        "locale": "de"
+      }
+    },
+    {
+      "file": "stats/edge-fix3/x-edge-fix3-ar.svg",
+      "card": "stats",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-ar",
+      "uid": 467,
+      "md5": "cea20b4cc21c1f53d297ad4380d58302",
+      "paramsHash": "bef7b63d",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "ar"
+      },
+      "query": {
+        "locale": "ar"
+      }
+    },
+    {
+      "file": "stats/edge-fix3/x-edge-fix3-hi.svg",
+      "card": "stats",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-hi",
+      "uid": 468,
+      "md5": "ff80610cc82981c405b582bd60fbf198",
+      "paramsHash": "54a39f84",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "hi"
+      },
+      "query": {
+        "locale": "hi"
+      }
+    },
+    {
+      "file": "stats/edge-fix3/x-edge-fix3-ja.svg",
+      "card": "stats",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-ja",
+      "uid": 469,
+      "md5": "dac241f58ea7d3a8b8223f4f96b61b5b",
+      "paramsHash": "f7b03076",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "ja"
+      },
+      "query": {
+        "locale": "ja"
+      }
+    },
+    {
+      "file": "stats/edge-fix3/x-edge-fix3-cache-min.svg",
+      "card": "stats",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-cache-min",
+      "uid": 470,
+      "md5": "2a000201f8a20d1e47e3e074d436ab6d",
+      "paramsHash": "93733064",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 1800,
+        "locale": "en"
+      },
+      "query": {
+        "cache_seconds": "1800"
+      }
+    },
+    {
+      "file": "stats/edge-fix3/x-edge-fix3-theme-dark.svg",
+      "card": "stats",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-theme-dark",
+      "uid": 471,
+      "md5": "2373de696c5a5fd84c64059ecebf2051",
+      "paramsHash": "022f6ef2",
+      "options": {
+        "theme": "dracula",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "dracula"
+      }
+    },
+    {
+      "file": "streak/edge-fix3/x-edge-fix3-default.svg",
+      "card": "streak",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-default",
+      "uid": 472,
+      "md5": "81b4d9421ed1e308f84c2518eccab9d0",
+      "paramsHash": "289b4511",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {}
+    },
+    {
+      "file": "streak/edge-fix3/x-edge-fix3-hide.svg",
+      "card": "streak",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-hide",
+      "uid": 473,
+      "md5": "4408609c256736d1a8e31757192b9d32",
+      "paramsHash": "368382c7",
+      "options": {
+        "theme": "default",
+        "hide": [
+          "stars",
+          "commits"
+        ],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "hide": "stars,commits"
+      }
+    },
+    {
+      "file": "streak/edge-fix3/x-edge-fix3-colors.svg",
+      "card": "streak",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-colors",
+      "uid": 474,
+      "md5": "a028e0aeebf77b52f9f233daeeeada46",
+      "paramsHash": "83a1c0e1",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "bgColor": "1a1b27",
+        "titleColor": "ff79c6",
+        "textColor": "e6e6e6",
+        "iconColor": "8be9fd",
+        "borderColor": "6272a4",
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "bg_color": "1a1b27",
+        "title_color": "ff79c6",
+        "text_color": "e6e6e6",
+        "icon_color": "8be9fd",
+        "border_color": "6272a4"
+      }
+    },
+    {
+      "file": "streak/edge-fix3/x-edge-fix3-no-icons.svg",
+      "card": "streak",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-no-icons",
+      "uid": 475,
+      "md5": "6b9aef90c7c9516bbcc687557415c5a9",
+      "paramsHash": "6ae62e0a",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": false,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "show_icons": "false"
+      }
+    },
+    {
+      "file": "streak/edge-fix3/x-edge-fix3-no-border.svg",
+      "card": "streak",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-no-border",
+      "uid": 476,
+      "md5": "63845db168ddae3c449acf9cfefa6f94",
+      "paramsHash": "ca7e2015",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": true,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "hide_border": "true"
+      }
+    },
+    {
+      "file": "streak/edge-fix3/x-edge-fix3-no-title.svg",
+      "card": "streak",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-no-title",
+      "uid": 477,
+      "md5": "bd1336e616074855e978704a0dfbc719",
+      "paramsHash": "5ac9a4f5",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": true,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "hide_title": "true"
+      }
+    },
+    {
+      "file": "streak/edge-fix3/x-edge-fix3-fr.svg",
+      "card": "streak",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-fr",
+      "uid": 478,
+      "md5": "5fc16e18401b3d4e5b047e79ab46de01",
+      "paramsHash": "e3002170",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "fr"
+      },
+      "query": {
+        "locale": "fr"
+      }
+    },
+    {
+      "file": "streak/edge-fix3/x-edge-fix3-de.svg",
+      "card": "streak",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-de",
+      "uid": 479,
+      "md5": "3168e5ed8fae7c1410398db4f062055e",
+      "paramsHash": "698055c2",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "de"
+      },
+      "query": {
+        "locale": "de"
+      }
+    },
+    {
+      "file": "streak/edge-fix3/x-edge-fix3-ar.svg",
+      "card": "streak",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-ar",
+      "uid": 480,
+      "md5": "3ebc4b3866f8511e75879d689359fa27",
+      "paramsHash": "bef7b63d",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "ar"
+      },
+      "query": {
+        "locale": "ar"
+      }
+    },
+    {
+      "file": "streak/edge-fix3/x-edge-fix3-hi.svg",
+      "card": "streak",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-hi",
+      "uid": 481,
+      "md5": "e00f18d20a72106a3e92da524bdc74d8",
+      "paramsHash": "54a39f84",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "hi"
+      },
+      "query": {
+        "locale": "hi"
+      }
+    },
+    {
+      "file": "streak/edge-fix3/x-edge-fix3-ja.svg",
+      "card": "streak",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-ja",
+      "uid": 482,
+      "md5": "2d826cee2c6b57f93ff529c900cffc82",
+      "paramsHash": "f7b03076",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "ja"
+      },
+      "query": {
+        "locale": "ja"
+      }
+    },
+    {
+      "file": "streak/edge-fix3/x-edge-fix3-cache-min.svg",
+      "card": "streak",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-cache-min",
+      "uid": 483,
+      "md5": "c02cb109ca63948204ba236313385436",
+      "paramsHash": "93733064",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 1800,
+        "locale": "en"
+      },
+      "query": {
+        "cache_seconds": "1800"
+      }
+    },
+    {
+      "file": "streak/edge-fix3/x-edge-fix3-theme-dark.svg",
+      "card": "streak",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-theme-dark",
+      "uid": 484,
+      "md5": "39dba6f490d699b36ac56588556f7539",
+      "paramsHash": "022f6ef2",
+      "options": {
+        "theme": "dracula",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "dracula"
+      }
+    },
+    {
+      "file": "langs/edge-fix3/x-edge-fix3-default.svg",
+      "card": "langs",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-default",
+      "uid": 485,
+      "md5": "adb160c05596af7b1fb6fb2db5908f3a",
+      "paramsHash": "289b4511",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {}
+    },
+    {
+      "file": "langs/edge-fix3/x-edge-fix3-hide.svg",
+      "card": "langs",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-hide",
+      "uid": 486,
+      "md5": "544e5352cf370a28a3d93a9ec3705c39",
+      "paramsHash": "368382c7",
+      "options": {
+        "theme": "default",
+        "hide": [
+          "stars",
+          "commits"
+        ],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "hide": "stars,commits"
+      }
+    },
+    {
+      "file": "langs/edge-fix3/x-edge-fix3-colors.svg",
+      "card": "langs",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-colors",
+      "uid": 487,
+      "md5": "b5a6cbc7cfce9a7e04d7e7e0683b9abc",
+      "paramsHash": "83a1c0e1",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "bgColor": "1a1b27",
+        "titleColor": "ff79c6",
+        "textColor": "e6e6e6",
+        "iconColor": "8be9fd",
+        "borderColor": "6272a4",
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "bg_color": "1a1b27",
+        "title_color": "ff79c6",
+        "text_color": "e6e6e6",
+        "icon_color": "8be9fd",
+        "border_color": "6272a4"
+      }
+    },
+    {
+      "file": "langs/edge-fix3/x-edge-fix3-no-icons.svg",
+      "card": "langs",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-no-icons",
+      "uid": 488,
+      "md5": "765387f6e8d9f7595f3af9b2573dcdf5",
+      "paramsHash": "6ae62e0a",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": false,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "show_icons": "false"
+      }
+    },
+    {
+      "file": "langs/edge-fix3/x-edge-fix3-no-border.svg",
+      "card": "langs",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-no-border",
+      "uid": 489,
+      "md5": "b2fc7d36514f9811b422695969098229",
+      "paramsHash": "ca7e2015",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": true,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "hide_border": "true"
+      }
+    },
+    {
+      "file": "langs/edge-fix3/x-edge-fix3-no-title.svg",
+      "card": "langs",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-no-title",
+      "uid": 490,
+      "md5": "e78ff8fb3a2bbc28d12cdececdbb7cdf",
+      "paramsHash": "5ac9a4f5",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": true,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "hide_title": "true"
+      }
+    },
+    {
+      "file": "langs/edge-fix3/x-edge-fix3-fr.svg",
+      "card": "langs",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-fr",
+      "uid": 491,
+      "md5": "b24a3091d76c6321aad75e3e18e22a0f",
+      "paramsHash": "e3002170",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "fr"
+      },
+      "query": {
+        "locale": "fr"
+      }
+    },
+    {
+      "file": "langs/edge-fix3/x-edge-fix3-de.svg",
+      "card": "langs",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-de",
+      "uid": 492,
+      "md5": "796fb13ca10879788cb56d79c0bd34c3",
+      "paramsHash": "698055c2",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "de"
+      },
+      "query": {
+        "locale": "de"
+      }
+    },
+    {
+      "file": "langs/edge-fix3/x-edge-fix3-ar.svg",
+      "card": "langs",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-ar",
+      "uid": 493,
+      "md5": "364cb38987a72c7b8080eddf41b92946",
+      "paramsHash": "bef7b63d",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "ar"
+      },
+      "query": {
+        "locale": "ar"
+      }
+    },
+    {
+      "file": "langs/edge-fix3/x-edge-fix3-hi.svg",
+      "card": "langs",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-hi",
+      "uid": 494,
+      "md5": "03d7ebd7baa9e010356b70d81cf1d45c",
+      "paramsHash": "54a39f84",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "hi"
+      },
+      "query": {
+        "locale": "hi"
+      }
+    },
+    {
+      "file": "langs/edge-fix3/x-edge-fix3-ja.svg",
+      "card": "langs",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-ja",
+      "uid": 495,
+      "md5": "5740248a23b0c4cf3032b91aeeeea953",
+      "paramsHash": "f7b03076",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "ja"
+      },
+      "query": {
+        "locale": "ja"
+      }
+    },
+    {
+      "file": "langs/edge-fix3/x-edge-fix3-cache-min.svg",
+      "card": "langs",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-cache-min",
+      "uid": 496,
+      "md5": "90b4e6b7eea79fd09c51e3a38a49bbf7",
+      "paramsHash": "93733064",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 1800,
+        "locale": "en"
+      },
+      "query": {
+        "cache_seconds": "1800"
+      }
+    },
+    {
+      "file": "langs/edge-fix3/x-edge-fix3-theme-dark.svg",
+      "card": "langs",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-theme-dark",
+      "uid": 497,
+      "md5": "4b06b10add326a6792efc33568a8b8db",
+      "paramsHash": "022f6ef2",
+      "options": {
+        "theme": "dracula",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "dracula"
+      }
+    },
+    {
+      "file": "langs/edge-fix3/x-edge-fix3-compact.svg",
+      "card": "langs",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-compact",
+      "uid": 498,
+      "md5": "087a5d40b8f638e7a2f41dbaeac08264",
+      "paramsHash": "9a5aea82",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": true,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en",
+        "layout": "compact"
+      },
+      "query": {
+        "layout": "compact",
+        "hide_border": "true"
+      }
+    },
+    {
+      "file": "profile/edge-fix3/x-edge-fix3-default.svg",
+      "card": "profile",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-default",
+      "uid": 499,
+      "md5": "f5f3cf0bc9d4bba28c5d3eac542d3400",
+      "paramsHash": "289b4511",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {}
+    },
+    {
+      "file": "profile/edge-fix3/x-edge-fix3-hide.svg",
+      "card": "profile",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-hide",
+      "uid": 500,
+      "md5": "8c5c75e19aed9c96a6a3041a81db204e",
+      "paramsHash": "368382c7",
+      "options": {
+        "theme": "default",
+        "hide": [
+          "stars",
+          "commits"
+        ],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "hide": "stars,commits"
+      }
+    },
+    {
+      "file": "profile/edge-fix3/x-edge-fix3-colors.svg",
+      "card": "profile",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-colors",
+      "uid": 501,
+      "md5": "5044ed9723b415ae1ccd78fcb6990e53",
+      "paramsHash": "83a1c0e1",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "bgColor": "1a1b27",
+        "titleColor": "ff79c6",
+        "textColor": "e6e6e6",
+        "iconColor": "8be9fd",
+        "borderColor": "6272a4",
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "bg_color": "1a1b27",
+        "title_color": "ff79c6",
+        "text_color": "e6e6e6",
+        "icon_color": "8be9fd",
+        "border_color": "6272a4"
+      }
+    },
+    {
+      "file": "profile/edge-fix3/x-edge-fix3-no-icons.svg",
+      "card": "profile",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-no-icons",
+      "uid": 502,
+      "md5": "5765876a93f32647caa9e6a01c3dcf65",
+      "paramsHash": "6ae62e0a",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": false,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "show_icons": "false"
+      }
+    },
+    {
+      "file": "profile/edge-fix3/x-edge-fix3-no-border.svg",
+      "card": "profile",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-no-border",
+      "uid": 503,
+      "md5": "5ee958f6ac32f4a5aea2b4beca26a20d",
+      "paramsHash": "ca7e2015",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": true,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "hide_border": "true"
+      }
+    },
+    {
+      "file": "profile/edge-fix3/x-edge-fix3-no-title.svg",
+      "card": "profile",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-no-title",
+      "uid": 504,
+      "md5": "0db3b814704f9820a21535d3c3c686a6",
+      "paramsHash": "5ac9a4f5",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": true,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "hide_title": "true"
+      }
+    },
+    {
+      "file": "profile/edge-fix3/x-edge-fix3-fr.svg",
+      "card": "profile",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-fr",
+      "uid": 505,
+      "md5": "92eda97840fff426f9599d5b044d15a3",
+      "paramsHash": "e3002170",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "fr"
+      },
+      "query": {
+        "locale": "fr"
+      }
+    },
+    {
+      "file": "profile/edge-fix3/x-edge-fix3-de.svg",
+      "card": "profile",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-de",
+      "uid": 506,
+      "md5": "9a26076e934096db001b8eeaa8b3866c",
+      "paramsHash": "698055c2",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "de"
+      },
+      "query": {
+        "locale": "de"
+      }
+    },
+    {
+      "file": "profile/edge-fix3/x-edge-fix3-ar.svg",
+      "card": "profile",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-ar",
+      "uid": 507,
+      "md5": "0ca0b9d67d2e86b52e769399276ee5b7",
+      "paramsHash": "bef7b63d",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "ar"
+      },
+      "query": {
+        "locale": "ar"
+      }
+    },
+    {
+      "file": "profile/edge-fix3/x-edge-fix3-hi.svg",
+      "card": "profile",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-hi",
+      "uid": 508,
+      "md5": "9dae4537193bc41d4b2bb19532718503",
+      "paramsHash": "54a39f84",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "hi"
+      },
+      "query": {
+        "locale": "hi"
+      }
+    },
+    {
+      "file": "profile/edge-fix3/x-edge-fix3-ja.svg",
+      "card": "profile",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-ja",
+      "uid": 509,
+      "md5": "f023e85602d1e3f08a2ed147fcf5b3c4",
+      "paramsHash": "f7b03076",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "ja"
+      },
+      "query": {
+        "locale": "ja"
+      }
+    },
+    {
+      "file": "profile/edge-fix3/x-edge-fix3-cache-min.svg",
+      "card": "profile",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-cache-min",
+      "uid": 510,
+      "md5": "18aab26204feb55c232de39ccd4ee10c",
+      "paramsHash": "93733064",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 1800,
+        "locale": "en"
+      },
+      "query": {
+        "cache_seconds": "1800"
+      }
+    },
+    {
+      "file": "profile/edge-fix3/x-edge-fix3-theme-dark.svg",
+      "card": "profile",
+      "fixture": "edge-fix3",
+      "label": "x-edge-fix3-theme-dark",
+      "uid": 511,
+      "md5": "8ed903473e88f6a4fe19481929381357",
       "paramsHash": "022f6ef2",
       "options": {
         "theme": "dracula",

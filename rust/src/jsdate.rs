@@ -371,7 +371,13 @@ fn try_fallback(s: &str) -> Option<f64> {
                     i += 1;
                 }
                 let w = s[ls..i].to_ascii_lowercase();
-                let n: i64 = run.parse().expect("chiffres");
+                // I1 (fix3) : run de chiffres NON borné — V8 rejette toute valeur
+                // > 2^53 ; au-delà de i64 → Invalid, jamais de panic
+                // (oracle : « 99999999999999999999june » → Invalid).
+                let n: i64 = match run.parse() {
+                    Ok(v) => v,
+                    Err(_) => return None,
+                };
                 if w.len() >= 3 {
                     if let Some(mi) = MONTH_PREFIXES.iter().position(|p| w.starts_with(p)) {
                         lone_sign = false;
@@ -389,7 +395,13 @@ fn try_fallback(s: &str) -> Option<f64> {
                 return None;
             }
             lone_sign = false;
-            toks.push(Tok::Num(run.parse().expect("chiffres")));
+            // I1 (fix3) : cf. ci-dessus — run de chiffres non borné → checked,
+            // débordement i64 → Invalid (jamais de panic).
+            let n: i64 = match run.parse() {
+                Ok(v) => v,
+                Err(_) => return None,
+            };
+            toks.push(Tok::Num(n));
             continue;
         }
         if c.is_ascii_alphabetic() {
@@ -588,6 +600,15 @@ fn assemble_ymd(month: Option<usize>, nums: &[i64]) -> Option<(i64, usize, i64)>
     if (0..=99).contains(&year) {
         year = if year < 50 { year + 2000 } else { year + 1900 };
     }
+    // I2 (fix3) : fenêtre TimeClip ±8,64e15 ms ≈ ±275 760 ans — au-delà le
+    // legacy rendrait Invalid de toute façon (oracle : « 9223372036854775807 »,
+    // « 100000000000000000 » → Invalid). On rejette AVANT `days_from_civil`,
+    // dont `era * 146_097` déborde d'i64 dès |année| ≳ 2,5e16 (panic en debug,
+    // wrap silencieux en release → date erronée). Valable debug ET release :
+    // aucun calcul entier n'a lieu sur une année hors fenêtre.
+    if year.abs() > 275_760 {
+        return None;
+    }
     Some((year, m_idx, day))
 }
 
@@ -627,8 +648,12 @@ pub fn civil_from_days_full(z: i64) -> (i64, u32, u32) {
 pub fn format_date_en(ms: f64) -> String {
     let days = (ms / 86_400_000.0).floor() as i64;
     let (y, m, d) = civil_from_days_full(days);
+    // M2 (fix3) : ICU affiche l'année d'ÈRE — année astronomique ≤ 0 → 1 − y
+    // (oracle : « -000001-01-01 » → « Jan 1, 2 », « 0000-01-01 » → « Jan 1, 1 »,
+    // « -002026-03-02 » → « Mar 2, 2027 »).
+    let year_era = if y <= 0 { 1 - y } else { y };
     format!(
-        "{} {}, {y}",
+        "{} {}, {year_era}",
         MONTHS_EN[usize::try_from(m).expect("mois 1..=12") - 1],
         d
     )

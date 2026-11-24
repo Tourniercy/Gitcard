@@ -86,6 +86,36 @@ const OPTION_SETS = [
 const CARDS = ['stats', 'streak', 'langs', 'profile'];
 const RENDER = { stats: renderStatsCard, streak: renderStreakCard, langs: renderLangsCard, profile: renderProfileCard };
 
+// ================= 10bis. Extension fix3 : MODE ENFANT (invoqué par la section 10) =================
+// Généré par un processus node FRAÎS : le compteur legacy `cardIdCounter`
+// (module-global du renderer) démarre à 0 → 459 rendus à jeter l'amènent à 459,
+// puis les 53 SVG edge-fix3 sont produits avec uid 459..511 = LEUR INDEX dans le
+// manifeste (invariant `uid == index` épingle par rust/tests/parity.rs). Le
+// compteur du processus PARENT n'est pas déplacé : les méta date/counters-extract
+// (su/pu/u) et les 459 SVG d'origine restent inchangés d'un octet (diff
+// tests/golden = ajouts + manifeste uniquement).
+if (process.env.GEN_FIX3_CHILD === '1') {
+  const fix3 = JSON.parse(readFileSync(`${goldenDir}/fixtures/edge-fix3.json`, 'utf8'));
+  const defaults = parseCardOptions({});
+  for (let i = 0; i < 459; i++) renderStatsCard(fix3.stats, defaults); // compteur legacy : 0 → 459
+  let childUid = 459;
+  let written = 0;
+  for (const card of CARDS) {
+    for (const opt of OPTION_SETS) {
+      if (opt.langsOnly && card !== 'langs') continue;
+      const options = parseCardOptions(opt.query);
+      const label = `x-edge-fix3-${opt.label}`;
+      const svg = RENDER[card](fix3[card === 'langs' ? 'langs' : card] ?? fix3[card], options);
+      mkdirSync(`${goldenDir}/${card}/edge-fix3`, { recursive: true });
+      writeFileSync(`${goldenDir}/${card}/edge-fix3/${label}.svg`, svg);
+      written++;
+      childUid++;
+    }
+  }
+  console.log(`fix3-enfant : ${written} SVG, uid 459..${childUid - 1}`);
+  process.exit(0);
+}
+
 // Ordre de rendu FIGÉ (documenté) : fixtures → cartes → options ; uid = index global depuis 0.
 for (const card of CARDS) rmSync(`${goldenDir}/${card}`, { recursive: true, force: true });
 
@@ -564,4 +594,49 @@ const countersExtract = {
 };
 writeFileSync(`${goldenDir}/meta/counters-extract.json`, JSON.stringify(countersExtract));
 console.log(`r2: ${counterEntries.length} entrées compteurs/texte, uid fini à ${uid - 1}`);
+
+// ================= 10. Extension fix3 : fixture edge-fix3 (I3 ∞, M1 -0, M2 ère BC) =================
+// Les 53 SVG sont rendus par le PROCESSUS ENFANT (cf. section 10bis : compteur
+// legacy frais amené à 459 → uid 459..511, contigus aux 459 entrées précédentes).
+// Le parent ne fait que fusionner : il relit les octets écrits, recalcule md5 /
+// paramsHash / bytes et pousse les entrées aux indices 459..511. Les méta
+// date/counters-extract et les 459 SVG d'origine ne sont pas retouchés.
+{
+  const { spawnSync } = await import('node:child_process');
+  const child = spawnSync(process.execPath, [fileURLToPath(import.meta.url)], {
+    env: { ...process.env, GEN_FIX3_CHILD: '1' },
+    stdio: 'inherit',
+  });
+  if (child.status !== 0) {
+    throw new Error(`gen fix3 (processus enfant) a échoué : status=${child.status}`);
+  }
+  for (const card of CARDS) {
+    for (const opt of OPTION_SETS) {
+      if (opt.langsOnly && card !== 'langs') continue;
+      const options = parseCardOptions(opt.query);
+      const label = `x-edge-fix3-${opt.label}`;
+      const rel = `${card}/edge-fix3/${label}.svg`;
+      const svg = readFileSync(`${goldenDir}/${rel}`, 'utf8');
+      totalBytes += Buffer.byteLength(svg, 'utf8');
+      manifest.entries.push({
+        file: rel,
+        card,
+        fixture: 'edge-fix3',
+        label,
+        uid: manifest.entries.length, // = index courant : contiguïté uid == index
+        md5: md5hex(svg),
+        paramsHash: md5hex(JSON.stringify(options)).slice(0, 8),
+        options: JSON.parse(JSON.stringify(options)),
+        query: opt.query,
+      });
+    }
+  }
+}
+manifest.generator.fix3 =
+  'section 10 : fixture edge-fix3 (I3 totalStars=1e400 -> infini, M1 totalForks=-0.0 -> -0, M2 dates d ere BC sur streak) rendue par un processus enfant (compteur legacy frais amene a 459) — uid 459..511 contigus (uid == index), 459 SVG d origine et metas date/counters-extract inchangés';
+manifest.counts = { files: manifest.entries.length, bytes: totalBytes, fixtures: fixtures.length };
+writeFileSync(`${goldenDir}/manifest.json`, JSON.stringify(manifest, null, 2));
+console.log(
+  `fix3 : edge-fix3 rendu (processus enfant), corpus ${manifest.entries.length} SVG, ${totalBytes} octets, uid parent 0..${uid - 1} + enfants 459..511`,
+);
 console.log('GEN_OK');

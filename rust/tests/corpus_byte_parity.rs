@@ -109,10 +109,18 @@ fn corpus_byte_parity_g2() {
                 .unwrap_or_else(|e| panic!("{file}: le fixture typé doit rendre : {e}")),
             "streak" => render_streak_card(&StreakData::from_value(data), &options)
                 .unwrap_or_else(|e| panic!("{file}: le fixture typé doit rendre : {e}")),
-            "langs" => render_langs_card(&TopLangsData::from_value(data), &options)
-                .unwrap_or_else(|e| panic!("{file}: le fixture typé doit rendre : {e}")),
-            "profile" => render_profile_card(&ProfileData::from_value(data), &options)
-                .unwrap_or_else(|e| panic!("{file}: le fixture typé doit rendre : {e}")),
+            "langs" => render_langs_card(
+                &TopLangsData::from_value(data)
+                    .unwrap_or_else(|e| panic!("{file}: fixture corpus invalide : {e}")),
+                &options,
+            )
+            .unwrap_or_else(|e| panic!("{file}: le fixture typé doit rendre : {e}")),
+            "profile" => render_profile_card(
+                &ProfileData::from_value(data)
+                    .unwrap_or_else(|e| panic!("{file}: fixture corpus invalide : {e}")),
+                &options,
+            )
+            .unwrap_or_else(|e| panic!("{file}: le fixture typé doit rendre : {e}")),
             other => panic!("carte inconnue dans le manifeste: {other}"),
         };
 

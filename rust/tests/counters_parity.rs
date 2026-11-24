@@ -219,8 +219,17 @@ fn r2_compteurs_et_texte_parity_with_legacy_oracle() {
         let result = match card {
             "stats" => render_stats_card(&GitHubStats::from_value(&data), &options),
             "streak" => render_streak_card(&StreakData::from_value(&data), &options),
-            "langs" => render_langs_card(&TopLangsData::from_value(&data), &options),
-            "profile" => render_profile_card(&ProfileData::from_value(&data), &options),
+            "langs" => render_langs_card(
+                &TopLangsData::from_value(&data)
+                    .unwrap_or_else(|e| panic!("{ctx} : languages reste un tableau : {e}")),
+                &options,
+            ),
+            "profile" => render_profile_card(
+                &ProfileData::from_value(&data).unwrap_or_else(|e| {
+                    panic!("{ctx} : contributionCalendar reste un tableau : {e}")
+                }),
+                &options,
+            ),
             other => panic!("carte inconnue : {other}"),
         };
         check(result, e, &ctx);

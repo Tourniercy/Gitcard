@@ -7,6 +7,7 @@
 //! champ absent → `"NaN"`, `${currentStreak}` sur `1e21` → `"1e+21"`, etc.
 //! Oracle : `tests/golden/meta/counters-extract.json`.
 
+use crate::cards::RenderError;
 use crate::jsval::JsVal;
 use serde_json::Value;
 
@@ -203,18 +204,34 @@ pub struct ProfileData {
 
 // ---------------------------------------------------------------- fixtures (JSON)
 
-fn arr_field(v: &Value, k: &str) -> Vec<ContributionDay> {
-    v.get(k)
-        .and_then(Value::as_array)
-        .map(|a| {
-            a.iter()
-                .map(|d| ContributionDay {
-                    date: JsVal::field(d, "date"),
-                    count: JsVal::field(d, "count"),
-                })
-                .collect()
-        })
-        .unwrap_or_default()
+fn arr_field(v: &Value, k: &str) -> Result<Vec<ContributionDay>, RenderError> {
+    match v.get(k) {
+        // M3 (fix3) : `aggregateWeekly(data.contributionCalendar)`
+        // (profile-card.ts:20-29,200) — absent → `undefined.length` lève ;
+        // null → `null.length` lève (TypeError → 500).
+        None => Err(RenderError::TypeError(
+            "Cannot read properties of undefined (reading 'length')".to_string(),
+        )),
+        Some(Value::Null) => Err(RenderError::TypeError(
+            "Cannot read properties of null (reading 'length')".to_string(),
+        )),
+        // string → `.length` existe mais `week.reduce` n'existe pas sur une
+        // string → TypeError (oracle : contributionCalendar = "abc" → TypeError).
+        Some(Value::String(_)) => Err(RenderError::TypeError(
+            "week.reduce is not a function".to_string(),
+        )),
+        Some(Value::Array(a)) => Ok(a
+            .iter()
+            .map(|d| ContributionDay {
+                date: JsVal::field(d, "date"),
+                count: JsVal::field(d, "count"),
+            })
+            .collect()),
+        // objet / nombre / booléen → `.length` absent → `0 < undefined` faux →
+        // boucle jamais parcourue → calendrier vide RENDU (oracle : SVG rendu,
+        // pas d'exception — l'ancien `unwrap_or_default()` était juste trop large).
+        Some(_) => Ok(Vec::new()),
+    }
 }
 
 impl GitHubStats {
@@ -248,31 +265,36 @@ impl StreakData {
 }
 
 impl TopLangsData {
-    pub fn from_value(v: &Value) -> TopLangsData {
-        let langs = v
-            .get("languages")
-            .and_then(Value::as_array)
-            .map(|a| {
-                a.iter()
-                    .map(|l| LanguageData {
-                        name: JsVal::field(l, "name"),
-                        percentage: JsVal::field(l, "percentage"),
-                        color: JsVal::field(l, "color"),
-                        size: JsVal::field(l, "size"),
-                    })
-                    .collect()
-            })
-            .unwrap_or_default();
-        TopLangsData {
+    pub fn from_value(v: &Value) -> Result<TopLangsData, RenderError> {
+        // M3 (fix3) : `data.languages.map` (langs-card.ts:23) — tout non-tableau
+        // (absent, null, objet, nombre, booléen, string) lève TypeError, comme
+        // `.map` sur undefined ; plus aucun tableau vide silencieux.
+        let langs = match v.get("languages") {
+            Some(Value::Array(a)) => a
+                .iter()
+                .map(|l| LanguageData {
+                    name: JsVal::field(l, "name"),
+                    percentage: JsVal::field(l, "percentage"),
+                    color: JsVal::field(l, "color"),
+                    size: JsVal::field(l, "size"),
+                })
+                .collect(),
+            _ => {
+                return Err(RenderError::TypeError(
+                    "data.languages.map is not a function".to_string(),
+                ))
+            }
+        };
+        Ok(TopLangsData {
             username: JsVal::field(v, "username"),
             languages: langs,
-        }
+        })
     }
 }
 
 impl ProfileData {
-    pub fn from_value(v: &Value) -> ProfileData {
-        ProfileData {
+    pub fn from_value(v: &Value) -> Result<ProfileData, RenderError> {
+        Ok(ProfileData {
             username: JsVal::field(v, "username"),
             name: JsVal::field(v, "name"),
             contributions_this_year: JsVal::field(v, "contributionsThisYear"),
@@ -280,8 +302,8 @@ impl ProfileData {
             created_at: JsVal::field(v, "createdAt"),
             // `if (data.email)` JS : truthy uniquement (null/''/absent → pas de ligne)
             email: JsVal::field(v, "email"),
-            contribution_calendar: arr_field(v, "contributionCalendar"),
-        }
+            contribution_calendar: arr_field(v, "contributionCalendar")?,
+        })
     }
 }
 
@@ -312,7 +334,11 @@ mod tests {
         assert_eq!(s.total_stars, JsVal::Str("42".into()));
         assert_eq!(s.contributed_to, JsVal::Null);
         assert_eq!(s.total_commits, JsVal::Undefined); // champ absent
-        let p = ProfileData::from_value(&json!({"createdAt": 1735689600000u64}));
+        let p = ProfileData::from_value(&json!({
+            "createdAt": 1735689600000u64,
+            "contributionCalendar": []
+        }))
+        .expect("calendrier tableau : la construction doit réussir (fix3 M3)");
         assert_eq!(p.created_at, JsVal::Number(1735689600000.0));
         assert_eq!(p.email, JsVal::Undefined);
     }

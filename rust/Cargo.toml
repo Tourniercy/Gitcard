@@ -8,5 +8,5 @@ description = "P0 gitcard-api : primitives numériques JS + tables Intl + octico
 # `float_roundtrip` : parsing décimal → f64 correctement arrondi (Eisel-Lemire),
 # aligné sur JSON.parse de V8. Sans elle, serde_json peut errer d'1 ULP sur des
 # décimaux longs (constaté sur 1.1471975511965977 — oracle arc-extract.json).
-serde_json = { version = "1", features = ["float_roundtrip"] }
+serde_json = { version = "1", features = ["float_roundtrip", "arbitrary_precision"] }
 md-5 = "0.10"

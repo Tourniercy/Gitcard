@@ -33,7 +33,7 @@ impl JsVal {
         match v {
             Value::Null => JsVal::Null,
             Value::Bool(b) => JsVal::Bool(*b),
-            Value::Number(n) => JsVal::Number(n.as_f64().unwrap_or(f64::NAN)),
+            Value::Number(n) => JsVal::Number(number_as_f64(n)),
             Value::String(s) => JsVal::Str(s.clone()),
             Value::Array(_) | Value::Object(_) => JsVal::Other,
         }
@@ -49,6 +49,21 @@ impl JsVal {
             JsVal::Str(_) => "string",
             JsVal::Other => "object",
         }
+    }
+}
+
+/// `Number` serde_json → f64, sémantique `JSON.parse` de V8 (fix3 I3) :
+/// `arbitrary_precision` conserve le littéral source (« 1e400 » reste une
+/// chaîne) et `as_f64` rend alors `None` — V8, lui, rend ±Infinity. Re-parsé
+/// via la forme sérialisée (le littéral verbatim) : « 1e400 » → +inf,
+/// « -1e400 » → -inf, sous-normales et zéros signés inchangés.
+fn number_as_f64(n: &serde_json::Number) -> f64 {
+    match n.as_f64() {
+        Some(f) => f,
+        None => serde_json::to_string(n)
+            .ok()
+            .and_then(|s| s.parse::<f64>().ok())
+            .unwrap_or(f64::NAN),
     }
 }
 
