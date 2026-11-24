@@ -156,6 +156,7 @@ pub async fn fetch_github_data_at(
         json_escape(USER_QUERY),
         json_escape(username),
     );
+    let start = std::time::Instant::now();
     let response = http
         .post(url)
         .header("Authorization", format!("bearer {token}"))
@@ -244,6 +245,13 @@ pub async fn fetch_github_data_at(
         }
         Some(u) => u,
     };
+
+    // `const durationMs = performance.now() - start;
+    // Sentry.metrics.distribution('github_api_duration', durationMs,
+    // {unit: 'millisecond'})` (github.ts:143-147) — émis UNIQUEMENT en
+    // succès, après toutes les validations, juste avant le retour.
+    let duration_ms = start.elapsed().as_secs_f64() * 1000.0;
+    crate::sentry_gate::metric_distribution_ms("github_api_duration", duration_ms);
 
     Ok(extract_all(user, username))
 }

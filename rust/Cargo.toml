@@ -38,6 +38,7 @@ redis = { version = "0.32", default-features = false, features = ["tokio-comp"] 
 sentry = { version = "0.49.6", default-features = false, features = [
   "backtrace",
   "contexts",
+  "metrics",
   "panic",
   "rustls",
   "test",

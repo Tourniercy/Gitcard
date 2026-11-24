@@ -389,8 +389,12 @@ impl<L2: L2Cache> AppCache<L2> {
         };
         if result.is_some() {
             self.hits.fetch_add(1, Ordering::Relaxed);
+            // `Sentry.metrics.count('cache_hits_total')` (cache/index.ts:31)
+            crate::sentry_gate::metric_count("cache_hits_total", &[]);
         } else {
             self.misses.fetch_add(1, Ordering::Relaxed);
+            // `Sentry.metrics.count('cache_misses_total')` (cache/index.ts:35)
+            crate::sentry_gate::metric_count("cache_misses_total", &[]);
         }
         result
     }
@@ -421,7 +425,11 @@ impl<L2: L2Cache> AppCache<L2> {
         self.l2.flush().await;
     }
 
-    /// Compteurs (phase 5 : branchés sur le store de metrics, aucune route).
+    /// Compteurs internes hit/miss (tests). P5 : le STORE de metrics legacy
+    /// (`getSnapshot`/`resetMetrics`) n'est PAS porté — sans observateur
+    /// (grep : appelé uniquement par ses tests vitrine, jamais par une
+    /// route, un log ou un export) ; seuls les `Sentry.metrics.count` de
+    /// cache/index.ts sont portés (cf. sentry_gate::metric_count).
     pub fn counters(&self) -> (u64, u64) {
         (
             self.hits.load(Ordering::Relaxed),

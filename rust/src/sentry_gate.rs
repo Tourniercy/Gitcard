@@ -26,9 +26,16 @@
 //!   par sentry-tower — vérifié dans sa source : Authorization/cookie/Cookie
 //!   retirés, `testé` en p5_sentry.rs).
 //!
-//! DIVERGENCES ASSUMÉES (rapport P5 §Sentry) :
-//! - `Sentry.metrics.*` du legacy : port dans le commit métriques (l'API
-//!   existe dans la crate 0.49, feature `metrics` — voir sujet C) ;
+//! MÉTRIQUES (sujet C) : `Sentry.metrics.*` du legacy EST porté — la crate
+//! Rust 0.49 expose `sentry::metrics` (feature `metrics`, counter/gauge/
+//! distribution + attributs/unités, vérifié dans la source sentry-core
+//! 0.49.6). Les métriques sont batchées côté client (flush à 100 items / 5 s
+//! — client/batcher.rs) : les tests forcent le flush par rafale de 100.
+//! NON PORTÉ (sans observateur) : le store `apps/api/src/metrics/{store,
+//! middleware}.ts` — `getSnapshot`/`resetMetrics` ne sont appelés QUE par
+//! ses tests vitrine (grep apps/ : aucune route, log, export ou appel
+//! Sentry ne lit le snapshot) ; le middleware `metricsMiddleware` remplit
+//! une carte jamais lue en prod. cf. rapport P5 §métriques.
 //! - `Sentry.init` s'exécute à l'IMPORT du legacy (avant la validation zod) ;
 //!   le port initialise après `load_config` — non observable : le crash zod
 //!   reste byte-exact, et l'init JS avec DSN invalide n'émet rien d'observable ;
@@ -138,6 +145,28 @@ pub fn capture_exception_message(message: &str, tags: &[(&str, &str)]) {
 /// login dans le message).
 pub fn capture_error(what: &str) {
     sentry::capture_message(what, sentry::Level::Error);
+}
+
+/// `Sentry.metrics.count(name)` du legacy (valeur par défaut 1) — L'API
+/// Metrics EXISTE dans la crate Rust 0.49 (feature `metrics`, module
+/// `sentry::metrics` — vérifié dans la source sentry-core 0.49.6) : les 4
+/// appels legacy sont portés avec noms/types/attributs identiques.
+/// Sites : cache hit/miss (cache/index.ts:31,35), cards_generated_total
+/// (card-factory.ts:66, attribut `card_type`). No-op sans client.
+pub fn metric_count(name: &'static str, attributes: &[(&'static str, &str)]) {
+    let mut metric = sentry::metrics::counter(name, 1);
+    for (k, v) in attributes {
+        metric = metric.attribute(*k, *v);
+    }
+    metric.capture();
+}
+
+/// `Sentry.metrics.distribution('github_api_duration', ms, {unit:
+/// 'millisecond'})` (github.ts:144-147) — unité milliseconde identique.
+pub fn metric_distribution_ms(name: &'static str, duration_ms: f64) {
+    sentry::metrics::distribution(name, duration_ms)
+        .unit(sentry::protocol::Unit::Millisecond)
+        .capture();
 }
 
 #[cfg(test)]

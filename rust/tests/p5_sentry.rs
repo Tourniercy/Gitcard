@@ -256,3 +256,98 @@ fn e_options_reproduisent_telemetry_ts() {
     assert!(client_options("https://k@sentry.invalid/1", "p", 0.1).is_some());
     assert!(client_options("", "production", 0.1).is_none(), "DSN vide");
 }
+
+/// (f) — métriques : L'API Metrics du SDK Rust 0.49 (feature `metrics`) est
+/// réelle ; les métriques sont batchées (flush à 100 items — batcher.rs
+/// MAX_ITEMS) : une rafale de 100 `metric_count` force le flush → 1
+/// enveloppe `Metrics` avec les noms/types/attributs du legacy.
+#[test]
+fn f_metriques_compteurs_flushees_par_rafale_100() {
+    let _g = test_guard();
+    let envelopes = with_captured_envelopes_options(
+        || {
+            // 50 hits + 50 cards (attributes card_type) = 100 items → flush
+            for _ in 0..50 {
+                gitcard_p0::sentry_gate::metric_count("cache_hits_total", &[]);
+            }
+            for _ in 0..50 {
+                gitcard_p0::sentry_gate::metric_count(
+                    "cards_generated_total",
+                    &[("card_type", "stats")],
+                );
+            }
+        },
+        client_options(TEST_DSN, "production", 0.0).expect("options valides"),
+    );
+    let mut all: Vec<Value> = Vec::new();
+    for env in &envelopes {
+        for item in env.items() {
+            // les métriques voyagent dans un ItemContainer (batch du client)
+            if let EnvelopeItem::ItemContainer(sentry::protocol::ItemContainer::Metrics(m)) = item {
+                for x in m {
+                    all.push(serde_json::to_value(x).expect("metric sérialisable"));
+                }
+            }
+        }
+    }
+    assert!(
+        !all.is_empty(),
+        "au moins une enveloppe Metrics après flush : {envelopes:?}"
+    );
+    let hits = all
+        .iter()
+        .filter(|m| m["name"] == "cache_hits_total")
+        .count();
+    let cards = all
+        .iter()
+        .filter(|m| m["name"] == "cards_generated_total")
+        .count();
+    assert_eq!(hits, 50, "50 compteurs cache_hits_total : {hits}");
+    assert_eq!(cards, 50, "50 compteurs cards_generated_total : {cards}");
+    assert!(
+        all.iter().all(|m| m["type"] == "counter"),
+        "type counter : {all:?}"
+    );
+    let card_attr = all
+        .iter()
+        .find(|m| m["name"] == "cards_generated_total")
+        .expect("card metric");
+    assert_eq!(
+        card_attr["attributes"]["card_type"]["value"], "stats",
+        "attribut card_type du legacy (LogAttribute {{type, value}})"
+    );
+    assert_no_secret(&envelopes, "(f)");
+}
+
+/// (g) — distribution avec unité milliseconde (github_api_duration).
+#[test]
+fn g_distribution_avec_unite_milliseconde() {
+    let _g = test_guard();
+    let envelopes = with_captured_envelopes_options(
+        || {
+            for _ in 0..100 {
+                gitcard_p0::sentry_gate::metric_distribution_ms("github_api_duration", 12.5);
+            }
+        },
+        client_options(TEST_DSN, "production", 0.0).expect("options valides"),
+    );
+    let mut found = 0;
+    for env in &envelopes {
+        for item in env.items() {
+            if let EnvelopeItem::ItemContainer(sentry::protocol::ItemContainer::Metrics(metrics)) =
+                item
+            {
+                for x in metrics {
+                    let m = serde_json::to_value(x).expect("metric sérialisable");
+                    if m["name"] == "github_api_duration" {
+                        found += 1;
+                        assert_eq!(m["type"], "distribution");
+                        assert_eq!(m["unit"], "millisecond");
+                    }
+                }
+            }
+        }
+    }
+    assert_eq!(found, 100, "100 distributions flushees : {found}");
+    assert_no_secret(&envelopes, "(g)");
+}

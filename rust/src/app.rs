@@ -647,6 +647,11 @@ async fn card_route<L2: crate::cache::L2Cache>(
                 .cache
                 .set(&svg_key, svg.clone(), parsed.cache_seconds)
                 .await;
+            // `Sentry.metrics.count('cards_generated_total', 1,
+            // {attributes: {card_type: cachePrefix}})` (card-factory.ts:66) —
+            // UNIQUEMENT sur rendu FRAIS (la branche SVG caché du legacy
+            // retourne AVANT l'appel, card-factory.ts:36-39).
+            crate::sentry_gate::metric_count("cards_generated_total", &[("card_type", prefix)]);
             svg_response(svg, parsed.cache_seconds)
         }
         Err(failure) => card_error_response(failure, &username, prefix),
