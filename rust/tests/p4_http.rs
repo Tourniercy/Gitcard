@@ -113,18 +113,22 @@ fn valid_http_date(v: &str) -> bool {
 }
 
 fn normalize(headers: &[(String, String)]) -> Vec<(String, String)> {
+    // P5 : `ratelimit-*` N'EST PLUS normalisé — le port émet les en-têtes
+    // réels du rate-limiter et la comparaison est byte-exact (seule Date
+    // reste exclue : dynamique).
     headers
         .iter()
-        .filter(|(n, _)| n != "date" && !n.starts_with("ratelimit-"))
+        .filter(|(n, _)| n != "date")
         .cloned()
         .collect()
 }
 
 /// Parité HTTP : chaque sonde des DEUX boots (CORS `*` et CORS_ORIGIN) est
 /// rejouée contre le port, requête OCTET pour OCTET (Host réécrit), réponse
-/// comparée : ligne de statut, liste ORDONNÉE des en-têtes (Date exclu,
-/// ratelimit-* exclu phase 5), corps à l'octet — sauf le timestamp dynamique
-/// de /health (format vérifié).
+/// comparée : ligne de statut, liste ORDONNÉE des en-têtes (Date exclu ;
+/// depuis la P5 les en-têtes `ratelimit-*` du rate-limiter sont comparés à
+/// l'octet — remaining 29/28, reset 60, cf. rust/src/ratelimit.rs), corps à
+/// l'octet — sauf le timestamp dynamique de /health (format vérifié).
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 async fn parite_http_oracles_deux_boots() {
     for boot in ["base", "cors-origin"] {
@@ -169,7 +173,7 @@ async fn parite_http_oracles_deux_boots() {
                     let (n, v) = s.split_once(':').expect("header format");
                     (n.trim().to_ascii_lowercase(), v.trim().to_string())
                 })
-                .filter(|(n, _)| n != "date" && !n.starts_with("ratelimit-"))
+                .filter(|(n, _)| n != "date")
                 .collect();
             let got_headers = normalize(&got.headers);
             // HEAD : hyper écrit un `content-length` (taille connue ou 0) au

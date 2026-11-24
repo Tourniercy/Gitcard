@@ -23,10 +23,10 @@
 //!   ETag = md5 hexadécimal du corps ENTRE GUILLEMETS (fort) ;
 //!   ordre handler OBSERVÉ : cache-control, content-type, etag.
 //!
-//! ÉCART PHASE 5 : le rate-limiter `hono-rate-limiter` de `/api/data/*`
-//! (data.ts:18-34) et ses en-têtes `ratelimit-*` ne sont PAS portés ici
-//! (middlewares = phase 5, cf. plan des phases) ; les tests HTTP normalisent
-//! ces 4 en-têtes le temps de la phase 4.
+//! Rate-limiter P5 : `hono-rate-limiter` de `/api/data/*` (data.ts:18-34)
+//! est porté — cf. src/ratelimit.rs + rate_limit_middleware ; les en-têtes
+//! `ratelimit-*` sont émis à l'identique et les tests HTTP les comparent à
+//! l'octet (normalisation retirée, cf. tests/p4_http.rs).
 //!
 //! Écart transport assumé : hyper écrit `Connection` (position transport) —
 //! les tests comparent les en-têtes application et le corps à l'octet.
