@@ -12,7 +12,7 @@
 //! PTTL ≈ 14400000 ms (unité PX ms de l'oracle), hit L2 = chaîne telle quelle,
 //! flush (SCAN+UNLINK) sur un serveur avec clés.
 use gitcard_p0::cache::{L2Cache, RedisL2};
-use std::time::{SystemTime, UNIX_EPOCH};
+use std::time::{Duration, SystemTime, UNIX_EPOCH};
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::TcpStream;
 
@@ -26,9 +26,41 @@ async fn raw_cmd(addr: &str, parts: &[&str]) -> String {
         req.extend_from_slice(b"\r\n");
     }
     sock.write_all(&req).await.expect("write");
+    // Redis ne ferme JAMAIS la connexion → lecture avec deadline, terminée par
+    // le framing RESP2 : `$<len>\r\n<bytes>\r\n` ou ligne simple `<x>\r\n`.
     let mut buf = Vec::new();
-    sock.read_to_end(&mut buf).await.expect("read");
+    let mut chunk = [0u8; 4096];
+    loop {
+        match tokio::time::timeout(Duration::from_millis(400), sock.read(&mut chunk)).await {
+            Ok(Ok(0)) | Err(_) | Ok(Err(_)) => break,
+            Ok(Ok(n)) => {
+                buf.extend_from_slice(&chunk[..n]);
+                if buf.starts_with(b"$-1\r\n") {
+                    break;
+                }
+                if buf.starts_with(b"$") {
+                    if let Some(head_end) = find_sub(&buf, b"\r\n") {
+                        if let Some(len) = std::str::from_utf8(&buf[1..head_end])
+                            .ok()
+                            .and_then(|s| s.parse::<usize>().ok())
+                        {
+                            let want = head_end + 2 + len + 2;
+                            if buf.len() >= want {
+                                break;
+                            }
+                        }
+                    }
+                } else if buf.ends_with(b"\r\n") {
+                    break;
+                }
+            }
+        }
+    }
     String::from_utf8_lossy(&buf).to_string()
+}
+
+fn find_sub(hay: &[u8], needle: &[u8]) -> Option<usize> {
+    hay.windows(needle.len()).position(|w| w == needle)
 }
 
 fn now_ms() -> i64 {
