@@ -1,0 +1,3275 @@
+{
+ "generator": {
+  "node": "v26.13.1",
+  "entry": "node scripts/gen-ratelimit-golden.mjs (jamais via pnpm) — rateLimiter hono-rate-limiter de apps/api/src/routes/data.ts:20-27",
+  "hono": "4.13.16",
+  "honoRateLimiter": "0.5.3",
+  "note": "captures par socket brute (HTTP/1.1, Connection: close), en-têtes bruts ORDONNÉS ; Date dynamique (format vérifié côté port) ; clé sans cf-connecting-ip = remote 127.0.0.1 ; PAT_1=fake-token-1 ; REDIS_URL/SENTRY_DSN absents",
+  "github": "stub en process (globalThis.fetch avant import) : ok / 404 GraphQL / throw — jamais api.github.com",
+  "window": {
+   "windowMs": 60000,
+   "limit": 30,
+   "standardHeaders": "draft-6",
+   "store": "MemoryStore"
+  }
+ },
+ "boots": [
+  {
+   "name": "window30_31",
+   "stub": {
+    "mode": "ok",
+    "fixture": "name-null"
+   },
+   "note": "(1)+(2)+(5) 31 × /api/data/window-user → 30e=200 remaining 0, 31e=429 texte ; 40 cartes + themes + health : aucun ratelimit-*",
+   "probes": [
+    {
+     "name": "hit_1",
+     "method": "GET",
+     "path": "/api/data/window-user",
+     "request": "GET /api/data/window-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 29",
+      "ratelimit-reset: 60",
+      "content-length: 1280",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1280,
+     "bodyMd5": "d82ee4b7e25e15810d0e7095df162d93"
+    },
+    {
+     "name": "hit_2",
+     "method": "GET",
+     "path": "/api/data/window-user",
+     "request": "GET /api/data/window-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 28",
+      "ratelimit-reset: 60",
+      "content-length: 1280",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1280,
+     "bodyMd5": "d82ee4b7e25e15810d0e7095df162d93"
+    },
+    {
+     "name": "hit_3",
+     "method": "GET",
+     "path": "/api/data/window-user",
+     "request": "GET /api/data/window-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 27",
+      "ratelimit-reset: 60",
+      "content-length: 1280",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1280,
+     "bodyMd5": "d82ee4b7e25e15810d0e7095df162d93"
+    },
+    {
+     "name": "hit_4",
+     "method": "GET",
+     "path": "/api/data/window-user",
+     "request": "GET /api/data/window-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 26",
+      "ratelimit-reset: 60",
+      "content-length: 1280",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1280,
+     "bodyMd5": "d82ee4b7e25e15810d0e7095df162d93"
+    },
+    {
+     "name": "hit_5",
+     "method": "GET",
+     "path": "/api/data/window-user",
+     "request": "GET /api/data/window-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 25",
+      "ratelimit-reset: 60",
+      "content-length: 1280",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1280,
+     "bodyMd5": "d82ee4b7e25e15810d0e7095df162d93"
+    },
+    {
+     "name": "hit_6",
+     "method": "GET",
+     "path": "/api/data/window-user",
+     "request": "GET /api/data/window-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 24",
+      "ratelimit-reset: 60",
+      "content-length: 1280",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1280,
+     "bodyMd5": "d82ee4b7e25e15810d0e7095df162d93"
+    },
+    {
+     "name": "hit_7",
+     "method": "GET",
+     "path": "/api/data/window-user",
+     "request": "GET /api/data/window-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 23",
+      "ratelimit-reset: 60",
+      "content-length: 1280",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1280,
+     "bodyMd5": "d82ee4b7e25e15810d0e7095df162d93"
+    },
+    {
+     "name": "hit_8",
+     "method": "GET",
+     "path": "/api/data/window-user",
+     "request": "GET /api/data/window-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 22",
+      "ratelimit-reset: 60",
+      "content-length: 1280",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1280,
+     "bodyMd5": "d82ee4b7e25e15810d0e7095df162d93"
+    },
+    {
+     "name": "hit_9",
+     "method": "GET",
+     "path": "/api/data/window-user",
+     "request": "GET /api/data/window-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 21",
+      "ratelimit-reset: 60",
+      "content-length: 1280",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1280,
+     "bodyMd5": "d82ee4b7e25e15810d0e7095df162d93"
+    },
+    {
+     "name": "hit_10",
+     "method": "GET",
+     "path": "/api/data/window-user",
+     "request": "GET /api/data/window-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 20",
+      "ratelimit-reset: 60",
+      "content-length: 1280",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1280,
+     "bodyMd5": "d82ee4b7e25e15810d0e7095df162d93"
+    },
+    {
+     "name": "hit_11",
+     "method": "GET",
+     "path": "/api/data/window-user",
+     "request": "GET /api/data/window-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 19",
+      "ratelimit-reset: 60",
+      "content-length: 1280",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1280,
+     "bodyMd5": "d82ee4b7e25e15810d0e7095df162d93"
+    },
+    {
+     "name": "hit_12",
+     "method": "GET",
+     "path": "/api/data/window-user",
+     "request": "GET /api/data/window-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 18",
+      "ratelimit-reset: 60",
+      "content-length: 1280",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1280,
+     "bodyMd5": "d82ee4b7e25e15810d0e7095df162d93"
+    },
+    {
+     "name": "hit_13",
+     "method": "GET",
+     "path": "/api/data/window-user",
+     "request": "GET /api/data/window-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 17",
+      "ratelimit-reset: 60",
+      "content-length: 1280",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1280,
+     "bodyMd5": "d82ee4b7e25e15810d0e7095df162d93"
+    },
+    {
+     "name": "hit_14",
+     "method": "GET",
+     "path": "/api/data/window-user",
+     "request": "GET /api/data/window-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 16",
+      "ratelimit-reset: 60",
+      "content-length: 1280",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1280,
+     "bodyMd5": "d82ee4b7e25e15810d0e7095df162d93"
+    },
+    {
+     "name": "hit_15",
+     "method": "GET",
+     "path": "/api/data/window-user",
+     "request": "GET /api/data/window-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 15",
+      "ratelimit-reset: 60",
+      "content-length: 1280",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1280,
+     "bodyMd5": "d82ee4b7e25e15810d0e7095df162d93"
+    },
+    {
+     "name": "hit_16",
+     "method": "GET",
+     "path": "/api/data/window-user",
+     "request": "GET /api/data/window-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 14",
+      "ratelimit-reset: 60",
+      "content-length: 1280",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1280,
+     "bodyMd5": "d82ee4b7e25e15810d0e7095df162d93"
+    },
+    {
+     "name": "hit_17",
+     "method": "GET",
+     "path": "/api/data/window-user",
+     "request": "GET /api/data/window-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 13",
+      "ratelimit-reset: 60",
+      "content-length: 1280",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1280,
+     "bodyMd5": "d82ee4b7e25e15810d0e7095df162d93"
+    },
+    {
+     "name": "hit_18",
+     "method": "GET",
+     "path": "/api/data/window-user",
+     "request": "GET /api/data/window-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 12",
+      "ratelimit-reset: 60",
+      "content-length: 1280",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1280,
+     "bodyMd5": "d82ee4b7e25e15810d0e7095df162d93"
+    },
+    {
+     "name": "hit_19",
+     "method": "GET",
+     "path": "/api/data/window-user",
+     "request": "GET /api/data/window-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 11",
+      "ratelimit-reset: 60",
+      "content-length: 1280",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1280,
+     "bodyMd5": "d82ee4b7e25e15810d0e7095df162d93"
+    },
+    {
+     "name": "hit_20",
+     "method": "GET",
+     "path": "/api/data/window-user",
+     "request": "GET /api/data/window-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 10",
+      "ratelimit-reset: 60",
+      "content-length: 1280",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1280,
+     "bodyMd5": "d82ee4b7e25e15810d0e7095df162d93"
+    },
+    {
+     "name": "hit_21",
+     "method": "GET",
+     "path": "/api/data/window-user",
+     "request": "GET /api/data/window-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 9",
+      "ratelimit-reset: 60",
+      "content-length: 1280",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1280,
+     "bodyMd5": "d82ee4b7e25e15810d0e7095df162d93"
+    },
+    {
+     "name": "hit_22",
+     "method": "GET",
+     "path": "/api/data/window-user",
+     "request": "GET /api/data/window-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 8",
+      "ratelimit-reset: 60",
+      "content-length: 1280",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1280,
+     "bodyMd5": "d82ee4b7e25e15810d0e7095df162d93"
+    },
+    {
+     "name": "hit_23",
+     "method": "GET",
+     "path": "/api/data/window-user",
+     "request": "GET /api/data/window-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 7",
+      "ratelimit-reset: 60",
+      "content-length: 1280",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1280,
+     "bodyMd5": "d82ee4b7e25e15810d0e7095df162d93"
+    },
+    {
+     "name": "hit_24",
+     "method": "GET",
+     "path": "/api/data/window-user",
+     "request": "GET /api/data/window-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 6",
+      "ratelimit-reset: 60",
+      "content-length: 1280",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1280,
+     "bodyMd5": "d82ee4b7e25e15810d0e7095df162d93"
+    },
+    {
+     "name": "hit_25",
+     "method": "GET",
+     "path": "/api/data/window-user",
+     "request": "GET /api/data/window-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 5",
+      "ratelimit-reset: 60",
+      "content-length: 1280",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1280,
+     "bodyMd5": "d82ee4b7e25e15810d0e7095df162d93"
+    },
+    {
+     "name": "hit_26",
+     "method": "GET",
+     "path": "/api/data/window-user",
+     "request": "GET /api/data/window-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 4",
+      "ratelimit-reset: 60",
+      "content-length: 1280",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1280,
+     "bodyMd5": "d82ee4b7e25e15810d0e7095df162d93"
+    },
+    {
+     "name": "hit_27",
+     "method": "GET",
+     "path": "/api/data/window-user",
+     "request": "GET /api/data/window-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 3",
+      "ratelimit-reset: 60",
+      "content-length: 1280",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1280,
+     "bodyMd5": "d82ee4b7e25e15810d0e7095df162d93"
+    },
+    {
+     "name": "hit_28",
+     "method": "GET",
+     "path": "/api/data/window-user",
+     "request": "GET /api/data/window-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 2",
+      "ratelimit-reset: 60",
+      "content-length: 1280",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1280,
+     "bodyMd5": "d82ee4b7e25e15810d0e7095df162d93"
+    },
+    {
+     "name": "hit_29",
+     "method": "GET",
+     "path": "/api/data/window-user",
+     "request": "GET /api/data/window-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 1",
+      "ratelimit-reset: 60",
+      "content-length: 1280",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1280,
+     "bodyMd5": "d82ee4b7e25e15810d0e7095df162d93",
+     "bodyFile": "window30_31_hit_29.body"
+    },
+    {
+     "name": "hit_30",
+     "method": "GET",
+     "path": "/api/data/window-user",
+     "request": "GET /api/data/window-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 0",
+      "ratelimit-reset: 60",
+      "content-length: 1280",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1280,
+     "bodyMd5": "d82ee4b7e25e15810d0e7095df162d93",
+     "bodyFile": "window30_31_hit_30.body"
+    },
+    {
+     "name": "hit_31",
+     "method": "GET",
+     "path": "/api/data/window-user",
+     "request": "GET /api/data/window-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 429 Too Many Requests",
+     "status": 429,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: text/plain; charset=UTF-8",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 0",
+      "ratelimit-reset: 60",
+      "retry-after: 60",
+      "content-length: 42",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 42,
+     "bodyMd5": "0dcf6ef0a0ea39f753a0539fc159cdda",
+     "bodyFile": "window30_31_hit_31.body"
+    },
+    {
+     "name": "card_flood_1",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_2",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_3",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_4",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_5",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_6",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_7",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_8",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_9",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_10",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_11",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_12",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_13",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_14",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_15",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_16",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_17",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_18",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_19",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_20",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_21",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_22",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_23",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_24",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_25",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_26",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_27",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_28",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_29",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_30",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_31",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_32",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_33",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_34",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_35",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_36",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_37",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_38",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_39",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "card_flood_40",
+     "method": "GET",
+     "path": "/stats/flood-user",
+     "request": "GET /stats/flood-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "cache-control: public, max-age=14400, s-maxage=14400, stale-while-revalidate=86400",
+      "content-type: image/svg+xml; charset=utf-8",
+      "etag: \"6ffd86a65d77940b47024c3fe81ed55a\"",
+      "content-length: 5114",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 5114,
+     "bodyMd5": "6ffd86a65d77940b47024c3fe81ed55a"
+    },
+    {
+     "name": "themes_apres_flood",
+     "method": "GET",
+     "path": "/api/themes",
+     "request": "GET /api/themes HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "content-length: 371",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 371,
+     "bodyMd5": "55b7c98acfc174b2d31473dc37fe605d",
+     "bodyFile": "window30_31_themes_apres_flood.body"
+    },
+    {
+     "name": "health_apres_flood",
+     "method": "GET",
+     "path": "/health",
+     "request": "GET /health HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "content-length: 54",
+      "Date: Tue, 24 Nov 2026 16:53:17 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 54,
+     "bodyMd5": "dc95a97e004832d719b1bee07069c768"
+    }
+   ],
+   "diagnostics": {
+    "stderr": ""
+   }
+  },
+  {
+   "name": "headers_200_404_500",
+   "stub": {
+    "mode": "by-user",
+    "fixture": "name-null",
+    "notFoundUser": "ghost-user",
+    "failUser": "fail-user"
+   },
+   "note": "(2) 200 puis 404 puis 500 — remaining 29→28→27 : erreurs COMPTÉES",
+   "probes": [
+    {
+     "name": "r1_200",
+     "method": "GET",
+     "path": "/api/data/ok-user",
+     "request": "GET /api/data/ok-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 29",
+      "ratelimit-reset: 60",
+      "content-length: 1264",
+      "Date: Tue, 24 Nov 2026 16:53:18 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1264,
+     "bodyMd5": "cb3ae4b8b7b579d6bd960b0b544c9b3d",
+     "bodyFile": "headers_200_404_500_r1_200.body"
+    },
+    {
+     "name": "r2_404",
+     "method": "GET",
+     "path": "/api/data/ghost-user",
+     "request": "GET /api/data/ghost-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 404 Not Found",
+     "status": 404,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 28",
+      "ratelimit-reset: 60",
+      "content-length: 38",
+      "Date: Tue, 24 Nov 2026 16:53:18 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 38,
+     "bodyMd5": "9805df532b750e465ab779141aeb01c4",
+     "bodyFile": "headers_200_404_500_r2_404.body"
+    },
+    {
+     "name": "r3_500",
+     "method": "GET",
+     "path": "/api/data/fail-user",
+     "request": "GET /api/data/fail-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 500 Internal Server Error",
+     "status": 500,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 27",
+      "ratelimit-reset: 60",
+      "content-length: 33",
+      "Date: Tue, 24 Nov 2026 16:53:18 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 33,
+     "bodyMd5": "6506126cdb270ee2b77b3c4a23c156e2",
+     "bodyFile": "headers_200_404_500_r3_500.body"
+    }
+   ],
+   "diagnostics": {
+    "stderr": "Error fetching data for fail-user: Error: fetch failed (stub)\n    at globalThis.fetch (file:///tmp/work/scripts/gen-ratelimit-golden.mjs:128:13)\n    at file:///tmp/github-desugared-rl-28.ts:109:32\n    at Module.startSpan (data:text/javascript,export function startSpan(_options, callback) { return callback(); }\nexport const metrics = { distribution() {}, count() {} };\nexport function captureException() {}\nexport function init() {}:1:56)\n    at fetchGitHubData (file:///tmp/github-desugared-rl-28.ts:99:17)\n    at fetchWithRetry (file:///tmp/github-desugared-rl-28.ts:174:18)\n    at file:///tmp/work/apps/api/src/routes/data.ts:45:28\n    at async dispatch (file:///tmp/work/node_modules/.pnpm/hono@4.13.16/node_modules/hono/dist/compose.js:35:11)\n    at async file:///tmp/work/node_modules/.pnpm/hono-rate-limiter@0.5.3_hono@4.13.16/node_modules/hono-rate-limiter/dist/index.js:295:7\n    at async dispatch (file:///tmp/work/node_modules/.pnpm/hono@4.13.16/node_modules/hono/dist/compose.js:35:11)\n    at async file:///tmp/work/apps/api/src/metrics/middleware.ts:7:3\n"
+   }
+  },
+  {
+   "name": "count_404",
+   "stub": {
+    "mode": "by-user",
+    "fixture": "name-null",
+    "notFoundUser": "ghost-user",
+    "failUser": "fail-user"
+   },
+   "note": "(6) 30 × 404 comptent → la 31e = 429",
+   "probes": [
+    {
+     "name": "hit_1",
+     "method": "GET",
+     "path": "/api/data/ghost-user",
+     "request": "GET /api/data/ghost-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 404 Not Found",
+     "status": 404,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 29",
+      "ratelimit-reset: 60",
+      "content-length: 38",
+      "Date: Tue, 24 Nov 2026 16:53:18 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 38,
+     "bodyMd5": "9805df532b750e465ab779141aeb01c4",
+     "bodyFile": "count_404_hit_1.body"
+    },
+    {
+     "name": "hit_2",
+     "method": "GET",
+     "path": "/api/data/ghost-user",
+     "request": "GET /api/data/ghost-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 404 Not Found",
+     "status": 404,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 28",
+      "ratelimit-reset: 60",
+      "content-length: 38",
+      "Date: Tue, 24 Nov 2026 16:53:18 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 38,
+     "bodyMd5": "9805df532b750e465ab779141aeb01c4"
+    },
+    {
+     "name": "hit_3",
+     "method": "GET",
+     "path": "/api/data/ghost-user",
+     "request": "GET /api/data/ghost-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 404 Not Found",
+     "status": 404,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 27",
+      "ratelimit-reset: 60",
+      "content-length: 38",
+      "Date: Tue, 24 Nov 2026 16:53:18 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 38,
+     "bodyMd5": "9805df532b750e465ab779141aeb01c4"
+    },
+    {
+     "name": "hit_4",
+     "method": "GET",
+     "path": "/api/data/ghost-user",
+     "request": "GET /api/data/ghost-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 404 Not Found",
+     "status": 404,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 26",
+      "ratelimit-reset: 60",
+      "content-length: 38",
+      "Date: Tue, 24 Nov 2026 16:53:18 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 38,
+     "bodyMd5": "9805df532b750e465ab779141aeb01c4"
+    },
+    {
+     "name": "hit_5",
+     "method": "GET",
+     "path": "/api/data/ghost-user",
+     "request": "GET /api/data/ghost-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 404 Not Found",
+     "status": 404,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 25",
+      "ratelimit-reset: 60",
+      "content-length: 38",
+      "Date: Tue, 24 Nov 2026 16:53:18 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 38,
+     "bodyMd5": "9805df532b750e465ab779141aeb01c4"
+    },
+    {
+     "name": "hit_6",
+     "method": "GET",
+     "path": "/api/data/ghost-user",
+     "request": "GET /api/data/ghost-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 404 Not Found",
+     "status": 404,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 24",
+      "ratelimit-reset: 60",
+      "content-length: 38",
+      "Date: Tue, 24 Nov 2026 16:53:18 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 38,
+     "bodyMd5": "9805df532b750e465ab779141aeb01c4"
+    },
+    {
+     "name": "hit_7",
+     "method": "GET",
+     "path": "/api/data/ghost-user",
+     "request": "GET /api/data/ghost-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 404 Not Found",
+     "status": 404,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 23",
+      "ratelimit-reset: 60",
+      "content-length: 38",
+      "Date: Tue, 24 Nov 2026 16:53:18 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 38,
+     "bodyMd5": "9805df532b750e465ab779141aeb01c4"
+    },
+    {
+     "name": "hit_8",
+     "method": "GET",
+     "path": "/api/data/ghost-user",
+     "request": "GET /api/data/ghost-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 404 Not Found",
+     "status": 404,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 22",
+      "ratelimit-reset: 60",
+      "content-length: 38",
+      "Date: Tue, 24 Nov 2026 16:53:18 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 38,
+     "bodyMd5": "9805df532b750e465ab779141aeb01c4"
+    },
+    {
+     "name": "hit_9",
+     "method": "GET",
+     "path": "/api/data/ghost-user",
+     "request": "GET /api/data/ghost-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 404 Not Found",
+     "status": 404,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 21",
+      "ratelimit-reset: 60",
+      "content-length: 38",
+      "Date: Tue, 24 Nov 2026 16:53:18 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 38,
+     "bodyMd5": "9805df532b750e465ab779141aeb01c4"
+    },
+    {
+     "name": "hit_10",
+     "method": "GET",
+     "path": "/api/data/ghost-user",
+     "request": "GET /api/data/ghost-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 404 Not Found",
+     "status": 404,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 20",
+      "ratelimit-reset: 60",
+      "content-length: 38",
+      "Date: Tue, 24 Nov 2026 16:53:18 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 38,
+     "bodyMd5": "9805df532b750e465ab779141aeb01c4"
+    },
+    {
+     "name": "hit_11",
+     "method": "GET",
+     "path": "/api/data/ghost-user",
+     "request": "GET /api/data/ghost-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 404 Not Found",
+     "status": 404,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 19",
+      "ratelimit-reset: 60",
+      "content-length: 38",
+      "Date: Tue, 24 Nov 2026 16:53:18 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 38,
+     "bodyMd5": "9805df532b750e465ab779141aeb01c4"
+    },
+    {
+     "name": "hit_12",
+     "method": "GET",
+     "path": "/api/data/ghost-user",
+     "request": "GET /api/data/ghost-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 404 Not Found",
+     "status": 404,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 18",
+      "ratelimit-reset: 60",
+      "content-length: 38",
+      "Date: Tue, 24 Nov 2026 16:53:18 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 38,
+     "bodyMd5": "9805df532b750e465ab779141aeb01c4"
+    },
+    {
+     "name": "hit_13",
+     "method": "GET",
+     "path": "/api/data/ghost-user",
+     "request": "GET /api/data/ghost-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 404 Not Found",
+     "status": 404,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 17",
+      "ratelimit-reset: 60",
+      "content-length: 38",
+      "Date: Tue, 24 Nov 2026 16:53:18 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 38,
+     "bodyMd5": "9805df532b750e465ab779141aeb01c4"
+    },
+    {
+     "name": "hit_14",
+     "method": "GET",
+     "path": "/api/data/ghost-user",
+     "request": "GET /api/data/ghost-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 404 Not Found",
+     "status": 404,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 16",
+      "ratelimit-reset: 60",
+      "content-length: 38",
+      "Date: Tue, 24 Nov 2026 16:53:18 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 38,
+     "bodyMd5": "9805df532b750e465ab779141aeb01c4"
+    },
+    {
+     "name": "hit_15",
+     "method": "GET",
+     "path": "/api/data/ghost-user",
+     "request": "GET /api/data/ghost-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 404 Not Found",
+     "status": 404,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 15",
+      "ratelimit-reset: 60",
+      "content-length: 38",
+      "Date: Tue, 24 Nov 2026 16:53:18 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 38,
+     "bodyMd5": "9805df532b750e465ab779141aeb01c4"
+    },
+    {
+     "name": "hit_16",
+     "method": "GET",
+     "path": "/api/data/ghost-user",
+     "request": "GET /api/data/ghost-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 404 Not Found",
+     "status": 404,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 14",
+      "ratelimit-reset: 60",
+      "content-length: 38",
+      "Date: Tue, 24 Nov 2026 16:53:18 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 38,
+     "bodyMd5": "9805df532b750e465ab779141aeb01c4"
+    },
+    {
+     "name": "hit_17",
+     "method": "GET",
+     "path": "/api/data/ghost-user",
+     "request": "GET /api/data/ghost-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 404 Not Found",
+     "status": 404,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 13",
+      "ratelimit-reset: 60",
+      "content-length: 38",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 38,
+     "bodyMd5": "9805df532b750e465ab779141aeb01c4"
+    },
+    {
+     "name": "hit_18",
+     "method": "GET",
+     "path": "/api/data/ghost-user",
+     "request": "GET /api/data/ghost-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 404 Not Found",
+     "status": 404,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 12",
+      "ratelimit-reset: 60",
+      "content-length: 38",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 38,
+     "bodyMd5": "9805df532b750e465ab779141aeb01c4"
+    },
+    {
+     "name": "hit_19",
+     "method": "GET",
+     "path": "/api/data/ghost-user",
+     "request": "GET /api/data/ghost-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 404 Not Found",
+     "status": 404,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 11",
+      "ratelimit-reset: 60",
+      "content-length: 38",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 38,
+     "bodyMd5": "9805df532b750e465ab779141aeb01c4"
+    },
+    {
+     "name": "hit_20",
+     "method": "GET",
+     "path": "/api/data/ghost-user",
+     "request": "GET /api/data/ghost-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 404 Not Found",
+     "status": 404,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 10",
+      "ratelimit-reset: 60",
+      "content-length: 38",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 38,
+     "bodyMd5": "9805df532b750e465ab779141aeb01c4"
+    },
+    {
+     "name": "hit_21",
+     "method": "GET",
+     "path": "/api/data/ghost-user",
+     "request": "GET /api/data/ghost-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 404 Not Found",
+     "status": 404,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 9",
+      "ratelimit-reset: 60",
+      "content-length: 38",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 38,
+     "bodyMd5": "9805df532b750e465ab779141aeb01c4"
+    },
+    {
+     "name": "hit_22",
+     "method": "GET",
+     "path": "/api/data/ghost-user",
+     "request": "GET /api/data/ghost-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 404 Not Found",
+     "status": 404,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 8",
+      "ratelimit-reset: 60",
+      "content-length: 38",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 38,
+     "bodyMd5": "9805df532b750e465ab779141aeb01c4"
+    },
+    {
+     "name": "hit_23",
+     "method": "GET",
+     "path": "/api/data/ghost-user",
+     "request": "GET /api/data/ghost-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 404 Not Found",
+     "status": 404,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 7",
+      "ratelimit-reset: 60",
+      "content-length: 38",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 38,
+     "bodyMd5": "9805df532b750e465ab779141aeb01c4"
+    },
+    {
+     "name": "hit_24",
+     "method": "GET",
+     "path": "/api/data/ghost-user",
+     "request": "GET /api/data/ghost-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 404 Not Found",
+     "status": 404,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 6",
+      "ratelimit-reset: 60",
+      "content-length: 38",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 38,
+     "bodyMd5": "9805df532b750e465ab779141aeb01c4"
+    },
+    {
+     "name": "hit_25",
+     "method": "GET",
+     "path": "/api/data/ghost-user",
+     "request": "GET /api/data/ghost-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 404 Not Found",
+     "status": 404,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 5",
+      "ratelimit-reset: 60",
+      "content-length: 38",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 38,
+     "bodyMd5": "9805df532b750e465ab779141aeb01c4"
+    },
+    {
+     "name": "hit_26",
+     "method": "GET",
+     "path": "/api/data/ghost-user",
+     "request": "GET /api/data/ghost-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 404 Not Found",
+     "status": 404,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 4",
+      "ratelimit-reset: 60",
+      "content-length: 38",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 38,
+     "bodyMd5": "9805df532b750e465ab779141aeb01c4"
+    },
+    {
+     "name": "hit_27",
+     "method": "GET",
+     "path": "/api/data/ghost-user",
+     "request": "GET /api/data/ghost-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 404 Not Found",
+     "status": 404,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 3",
+      "ratelimit-reset: 60",
+      "content-length: 38",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 38,
+     "bodyMd5": "9805df532b750e465ab779141aeb01c4"
+    },
+    {
+     "name": "hit_28",
+     "method": "GET",
+     "path": "/api/data/ghost-user",
+     "request": "GET /api/data/ghost-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 404 Not Found",
+     "status": 404,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 2",
+      "ratelimit-reset: 60",
+      "content-length: 38",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 38,
+     "bodyMd5": "9805df532b750e465ab779141aeb01c4"
+    },
+    {
+     "name": "hit_29",
+     "method": "GET",
+     "path": "/api/data/ghost-user",
+     "request": "GET /api/data/ghost-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 404 Not Found",
+     "status": 404,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 1",
+      "ratelimit-reset: 60",
+      "content-length: 38",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 38,
+     "bodyMd5": "9805df532b750e465ab779141aeb01c4"
+    },
+    {
+     "name": "hit_30",
+     "method": "GET",
+     "path": "/api/data/ghost-user",
+     "request": "GET /api/data/ghost-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 404 Not Found",
+     "status": 404,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 0",
+      "ratelimit-reset: 60",
+      "content-length: 38",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 38,
+     "bodyMd5": "9805df532b750e465ab779141aeb01c4"
+    },
+    {
+     "name": "hit_31",
+     "method": "GET",
+     "path": "/api/data/ghost-user",
+     "request": "GET /api/data/ghost-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 429 Too Many Requests",
+     "status": 429,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: text/plain; charset=UTF-8",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 0",
+      "ratelimit-reset: 60",
+      "retry-after: 60",
+      "content-length: 42",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 42,
+     "bodyMd5": "0dcf6ef0a0ea39f753a0539fc159cdda",
+     "bodyFile": "count_404_hit_31.body"
+    }
+   ],
+   "diagnostics": {
+    "stderr": ""
+   }
+  },
+  {
+   "name": "keys",
+   "stub": {
+    "mode": "ok",
+    "fixture": "name-null"
+   },
+   "note": "(3) sans cf-connecting-ip : clé = remote (127.0.0.1) ; cf-connecting-ip: 9.9.9.9 → compteur INDÉPENDANT (429 sur la 31e du header, loopback intact)",
+   "probes": [
+    {
+     "name": "loop_1",
+     "method": "GET",
+     "path": "/api/data/keys-user",
+     "request": "GET /api/data/keys-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 29",
+      "ratelimit-reset: 60",
+      "content-length: 1272",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1272,
+     "bodyMd5": "8889eb4fe333c28a06233e3cede95223"
+    },
+    {
+     "name": "loop_2",
+     "method": "GET",
+     "path": "/api/data/keys-user",
+     "request": "GET /api/data/keys-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 28",
+      "ratelimit-reset: 60",
+      "content-length: 1272",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1272,
+     "bodyMd5": "8889eb4fe333c28a06233e3cede95223"
+    },
+    {
+     "name": "loop_3",
+     "method": "GET",
+     "path": "/api/data/keys-user",
+     "request": "GET /api/data/keys-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 27",
+      "ratelimit-reset: 60",
+      "content-length: 1272",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1272,
+     "bodyMd5": "8889eb4fe333c28a06233e3cede95223",
+     "bodyFile": "keys_loop_3.body"
+    },
+    {
+     "name": "cfip_1",
+     "method": "GET",
+     "path": "/api/data/keys-user",
+     "request": "GET /api/data/keys-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\ncf-connecting-ip: 9.9.9.9\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 29",
+      "ratelimit-reset: 60",
+      "content-length: 1272",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1272,
+     "bodyMd5": "8889eb4fe333c28a06233e3cede95223",
+     "extraHeaders": [
+      "cf-connecting-ip: 9.9.9.9"
+     ]
+    },
+    {
+     "name": "cfip_2",
+     "method": "GET",
+     "path": "/api/data/keys-user",
+     "request": "GET /api/data/keys-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\ncf-connecting-ip: 9.9.9.9\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 28",
+      "ratelimit-reset: 60",
+      "content-length: 1272",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1272,
+     "bodyMd5": "8889eb4fe333c28a06233e3cede95223",
+     "extraHeaders": [
+      "cf-connecting-ip: 9.9.9.9"
+     ]
+    },
+    {
+     "name": "cfip_3",
+     "method": "GET",
+     "path": "/api/data/keys-user",
+     "request": "GET /api/data/keys-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\ncf-connecting-ip: 9.9.9.9\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 27",
+      "ratelimit-reset: 60",
+      "content-length: 1272",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1272,
+     "bodyMd5": "8889eb4fe333c28a06233e3cede95223",
+     "extraHeaders": [
+      "cf-connecting-ip: 9.9.9.9"
+     ]
+    },
+    {
+     "name": "cfip_4",
+     "method": "GET",
+     "path": "/api/data/keys-user",
+     "request": "GET /api/data/keys-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\ncf-connecting-ip: 9.9.9.9\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 26",
+      "ratelimit-reset: 60",
+      "content-length: 1272",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1272,
+     "bodyMd5": "8889eb4fe333c28a06233e3cede95223",
+     "extraHeaders": [
+      "cf-connecting-ip: 9.9.9.9"
+     ]
+    },
+    {
+     "name": "cfip_5",
+     "method": "GET",
+     "path": "/api/data/keys-user",
+     "request": "GET /api/data/keys-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\ncf-connecting-ip: 9.9.9.9\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 25",
+      "ratelimit-reset: 60",
+      "content-length: 1272",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1272,
+     "bodyMd5": "8889eb4fe333c28a06233e3cede95223",
+     "extraHeaders": [
+      "cf-connecting-ip: 9.9.9.9"
+     ]
+    },
+    {
+     "name": "cfip_6",
+     "method": "GET",
+     "path": "/api/data/keys-user",
+     "request": "GET /api/data/keys-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\ncf-connecting-ip: 9.9.9.9\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 24",
+      "ratelimit-reset: 60",
+      "content-length: 1272",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1272,
+     "bodyMd5": "8889eb4fe333c28a06233e3cede95223",
+     "extraHeaders": [
+      "cf-connecting-ip: 9.9.9.9"
+     ]
+    },
+    {
+     "name": "cfip_7",
+     "method": "GET",
+     "path": "/api/data/keys-user",
+     "request": "GET /api/data/keys-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\ncf-connecting-ip: 9.9.9.9\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 23",
+      "ratelimit-reset: 60",
+      "content-length: 1272",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1272,
+     "bodyMd5": "8889eb4fe333c28a06233e3cede95223",
+     "extraHeaders": [
+      "cf-connecting-ip: 9.9.9.9"
+     ]
+    },
+    {
+     "name": "cfip_8",
+     "method": "GET",
+     "path": "/api/data/keys-user",
+     "request": "GET /api/data/keys-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\ncf-connecting-ip: 9.9.9.9\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 22",
+      "ratelimit-reset: 60",
+      "content-length: 1272",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1272,
+     "bodyMd5": "8889eb4fe333c28a06233e3cede95223",
+     "extraHeaders": [
+      "cf-connecting-ip: 9.9.9.9"
+     ]
+    },
+    {
+     "name": "cfip_9",
+     "method": "GET",
+     "path": "/api/data/keys-user",
+     "request": "GET /api/data/keys-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\ncf-connecting-ip: 9.9.9.9\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 21",
+      "ratelimit-reset: 60",
+      "content-length: 1272",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1272,
+     "bodyMd5": "8889eb4fe333c28a06233e3cede95223",
+     "extraHeaders": [
+      "cf-connecting-ip: 9.9.9.9"
+     ]
+    },
+    {
+     "name": "cfip_10",
+     "method": "GET",
+     "path": "/api/data/keys-user",
+     "request": "GET /api/data/keys-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\ncf-connecting-ip: 9.9.9.9\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 20",
+      "ratelimit-reset: 60",
+      "content-length: 1272",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1272,
+     "bodyMd5": "8889eb4fe333c28a06233e3cede95223",
+     "extraHeaders": [
+      "cf-connecting-ip: 9.9.9.9"
+     ]
+    },
+    {
+     "name": "cfip_11",
+     "method": "GET",
+     "path": "/api/data/keys-user",
+     "request": "GET /api/data/keys-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\ncf-connecting-ip: 9.9.9.9\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 19",
+      "ratelimit-reset: 60",
+      "content-length: 1272",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1272,
+     "bodyMd5": "8889eb4fe333c28a06233e3cede95223",
+     "extraHeaders": [
+      "cf-connecting-ip: 9.9.9.9"
+     ]
+    },
+    {
+     "name": "cfip_12",
+     "method": "GET",
+     "path": "/api/data/keys-user",
+     "request": "GET /api/data/keys-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\ncf-connecting-ip: 9.9.9.9\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 18",
+      "ratelimit-reset: 60",
+      "content-length: 1272",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1272,
+     "bodyMd5": "8889eb4fe333c28a06233e3cede95223",
+     "extraHeaders": [
+      "cf-connecting-ip: 9.9.9.9"
+     ]
+    },
+    {
+     "name": "cfip_13",
+     "method": "GET",
+     "path": "/api/data/keys-user",
+     "request": "GET /api/data/keys-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\ncf-connecting-ip: 9.9.9.9\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 17",
+      "ratelimit-reset: 60",
+      "content-length: 1272",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1272,
+     "bodyMd5": "8889eb4fe333c28a06233e3cede95223",
+     "extraHeaders": [
+      "cf-connecting-ip: 9.9.9.9"
+     ]
+    },
+    {
+     "name": "cfip_14",
+     "method": "GET",
+     "path": "/api/data/keys-user",
+     "request": "GET /api/data/keys-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\ncf-connecting-ip: 9.9.9.9\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 16",
+      "ratelimit-reset: 60",
+      "content-length: 1272",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1272,
+     "bodyMd5": "8889eb4fe333c28a06233e3cede95223",
+     "extraHeaders": [
+      "cf-connecting-ip: 9.9.9.9"
+     ]
+    },
+    {
+     "name": "cfip_15",
+     "method": "GET",
+     "path": "/api/data/keys-user",
+     "request": "GET /api/data/keys-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\ncf-connecting-ip: 9.9.9.9\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 15",
+      "ratelimit-reset: 60",
+      "content-length: 1272",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1272,
+     "bodyMd5": "8889eb4fe333c28a06233e3cede95223",
+     "extraHeaders": [
+      "cf-connecting-ip: 9.9.9.9"
+     ]
+    },
+    {
+     "name": "cfip_16",
+     "method": "GET",
+     "path": "/api/data/keys-user",
+     "request": "GET /api/data/keys-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\ncf-connecting-ip: 9.9.9.9\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 14",
+      "ratelimit-reset: 60",
+      "content-length: 1272",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1272,
+     "bodyMd5": "8889eb4fe333c28a06233e3cede95223",
+     "extraHeaders": [
+      "cf-connecting-ip: 9.9.9.9"
+     ]
+    },
+    {
+     "name": "cfip_17",
+     "method": "GET",
+     "path": "/api/data/keys-user",
+     "request": "GET /api/data/keys-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\ncf-connecting-ip: 9.9.9.9\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 13",
+      "ratelimit-reset: 60",
+      "content-length: 1272",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1272,
+     "bodyMd5": "8889eb4fe333c28a06233e3cede95223",
+     "extraHeaders": [
+      "cf-connecting-ip: 9.9.9.9"
+     ]
+    },
+    {
+     "name": "cfip_18",
+     "method": "GET",
+     "path": "/api/data/keys-user",
+     "request": "GET /api/data/keys-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\ncf-connecting-ip: 9.9.9.9\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 12",
+      "ratelimit-reset: 60",
+      "content-length: 1272",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1272,
+     "bodyMd5": "8889eb4fe333c28a06233e3cede95223",
+     "extraHeaders": [
+      "cf-connecting-ip: 9.9.9.9"
+     ]
+    },
+    {
+     "name": "cfip_19",
+     "method": "GET",
+     "path": "/api/data/keys-user",
+     "request": "GET /api/data/keys-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\ncf-connecting-ip: 9.9.9.9\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 11",
+      "ratelimit-reset: 60",
+      "content-length: 1272",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1272,
+     "bodyMd5": "8889eb4fe333c28a06233e3cede95223",
+     "extraHeaders": [
+      "cf-connecting-ip: 9.9.9.9"
+     ]
+    },
+    {
+     "name": "cfip_20",
+     "method": "GET",
+     "path": "/api/data/keys-user",
+     "request": "GET /api/data/keys-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\ncf-connecting-ip: 9.9.9.9\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 10",
+      "ratelimit-reset: 60",
+      "content-length: 1272",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1272,
+     "bodyMd5": "8889eb4fe333c28a06233e3cede95223",
+     "extraHeaders": [
+      "cf-connecting-ip: 9.9.9.9"
+     ]
+    },
+    {
+     "name": "cfip_21",
+     "method": "GET",
+     "path": "/api/data/keys-user",
+     "request": "GET /api/data/keys-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\ncf-connecting-ip: 9.9.9.9\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 9",
+      "ratelimit-reset: 60",
+      "content-length: 1272",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1272,
+     "bodyMd5": "8889eb4fe333c28a06233e3cede95223",
+     "extraHeaders": [
+      "cf-connecting-ip: 9.9.9.9"
+     ]
+    },
+    {
+     "name": "cfip_22",
+     "method": "GET",
+     "path": "/api/data/keys-user",
+     "request": "GET /api/data/keys-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\ncf-connecting-ip: 9.9.9.9\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 8",
+      "ratelimit-reset: 60",
+      "content-length: 1272",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1272,
+     "bodyMd5": "8889eb4fe333c28a06233e3cede95223",
+     "extraHeaders": [
+      "cf-connecting-ip: 9.9.9.9"
+     ]
+    },
+    {
+     "name": "cfip_23",
+     "method": "GET",
+     "path": "/api/data/keys-user",
+     "request": "GET /api/data/keys-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\ncf-connecting-ip: 9.9.9.9\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 7",
+      "ratelimit-reset: 60",
+      "content-length: 1272",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1272,
+     "bodyMd5": "8889eb4fe333c28a06233e3cede95223",
+     "extraHeaders": [
+      "cf-connecting-ip: 9.9.9.9"
+     ]
+    },
+    {
+     "name": "cfip_24",
+     "method": "GET",
+     "path": "/api/data/keys-user",
+     "request": "GET /api/data/keys-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\ncf-connecting-ip: 9.9.9.9\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 6",
+      "ratelimit-reset: 60",
+      "content-length: 1272",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1272,
+     "bodyMd5": "8889eb4fe333c28a06233e3cede95223",
+     "extraHeaders": [
+      "cf-connecting-ip: 9.9.9.9"
+     ]
+    },
+    {
+     "name": "cfip_25",
+     "method": "GET",
+     "path": "/api/data/keys-user",
+     "request": "GET /api/data/keys-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\ncf-connecting-ip: 9.9.9.9\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 5",
+      "ratelimit-reset: 60",
+      "content-length: 1272",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1272,
+     "bodyMd5": "8889eb4fe333c28a06233e3cede95223",
+     "extraHeaders": [
+      "cf-connecting-ip: 9.9.9.9"
+     ]
+    },
+    {
+     "name": "cfip_26",
+     "method": "GET",
+     "path": "/api/data/keys-user",
+     "request": "GET /api/data/keys-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\ncf-connecting-ip: 9.9.9.9\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 4",
+      "ratelimit-reset: 60",
+      "content-length: 1272",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1272,
+     "bodyMd5": "8889eb4fe333c28a06233e3cede95223",
+     "extraHeaders": [
+      "cf-connecting-ip: 9.9.9.9"
+     ]
+    },
+    {
+     "name": "cfip_27",
+     "method": "GET",
+     "path": "/api/data/keys-user",
+     "request": "GET /api/data/keys-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\ncf-connecting-ip: 9.9.9.9\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 3",
+      "ratelimit-reset: 60",
+      "content-length: 1272",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1272,
+     "bodyMd5": "8889eb4fe333c28a06233e3cede95223",
+     "extraHeaders": [
+      "cf-connecting-ip: 9.9.9.9"
+     ]
+    },
+    {
+     "name": "cfip_28",
+     "method": "GET",
+     "path": "/api/data/keys-user",
+     "request": "GET /api/data/keys-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\ncf-connecting-ip: 9.9.9.9\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 2",
+      "ratelimit-reset: 60",
+      "content-length: 1272",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1272,
+     "bodyMd5": "8889eb4fe333c28a06233e3cede95223",
+     "extraHeaders": [
+      "cf-connecting-ip: 9.9.9.9"
+     ]
+    },
+    {
+     "name": "cfip_29",
+     "method": "GET",
+     "path": "/api/data/keys-user",
+     "request": "GET /api/data/keys-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\ncf-connecting-ip: 9.9.9.9\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 1",
+      "ratelimit-reset: 60",
+      "content-length: 1272",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1272,
+     "bodyMd5": "8889eb4fe333c28a06233e3cede95223",
+     "extraHeaders": [
+      "cf-connecting-ip: 9.9.9.9"
+     ]
+    },
+    {
+     "name": "cfip_30",
+     "method": "GET",
+     "path": "/api/data/keys-user",
+     "request": "GET /api/data/keys-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\ncf-connecting-ip: 9.9.9.9\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 0",
+      "ratelimit-reset: 60",
+      "content-length: 1272",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1272,
+     "bodyMd5": "8889eb4fe333c28a06233e3cede95223",
+     "extraHeaders": [
+      "cf-connecting-ip: 9.9.9.9"
+     ]
+    },
+    {
+     "name": "cfip_31",
+     "method": "GET",
+     "path": "/api/data/keys-user",
+     "request": "GET /api/data/keys-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\ncf-connecting-ip: 9.9.9.9\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 429 Too Many Requests",
+     "status": 429,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: text/plain; charset=UTF-8",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 0",
+      "ratelimit-reset: 60",
+      "retry-after: 60",
+      "content-length: 42",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 42,
+     "bodyMd5": "0dcf6ef0a0ea39f753a0539fc159cdda",
+     "bodyFile": "keys_cfip_31.body",
+     "extraHeaders": [
+      "cf-connecting-ip: 9.9.9.9"
+     ]
+    },
+    {
+     "name": "loop_4",
+     "method": "GET",
+     "path": "/api/data/keys-user",
+     "request": "GET /api/data/keys-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 26",
+      "ratelimit-reset: 60",
+      "content-length: 1272",
+      "Date: Tue, 24 Nov 2026 16:53:19 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1272,
+     "bodyMd5": "8889eb4fe333c28a06233e3cede95223",
+     "bodyFile": "keys_loop_4.body"
+    }
+   ],
+   "diagnostics": {
+    "stderr": ""
+   }
+  },
+  {
+   "name": "reset_61s",
+   "stub": {
+    "mode": "ok",
+    "fixture": "name-null"
+   },
+   "note": "(4) fenêtre FIXE ancrée au 1er hit : reset 60 → 59 à t0+1,25 s → reset total à t0+61,5 s (remaining 29)",
+   "probes": [
+    {
+     "name": "r1_t0",
+     "method": "GET",
+     "path": "/api/data/reset-user",
+     "request": "GET /api/data/reset-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 29",
+      "ratelimit-reset: 60",
+      "content-length: 1276",
+      "Date: Tue, 24 Nov 2026 16:53:20 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1276,
+     "bodyMd5": "358d2f7118a6067df09ee85400396c46",
+     "bodyFile": "reset_61s_r1_t0.body"
+    },
+    {
+     "name": "r2_t0_1250ms",
+     "method": "GET",
+     "path": "/api/data/reset-user",
+     "request": "GET /api/data/reset-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 28",
+      "ratelimit-reset: 59",
+      "content-length: 1276",
+      "Date: Tue, 24 Nov 2026 16:53:21 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1276,
+     "bodyMd5": "358d2f7118a6067df09ee85400396c46",
+     "bodyFile": "reset_61s_r2_t0_1250ms.body",
+     "delayMs": 1250
+    },
+    {
+     "name": "r3_t0_61500ms",
+     "method": "GET",
+     "path": "/api/data/reset-user",
+     "request": "GET /api/data/reset-user HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 29",
+      "ratelimit-reset: 60",
+      "content-length: 1276",
+      "Date: Tue, 24 Nov 2026 16:54:22 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 1276,
+     "bodyMd5": "358d2f7118a6067df09ee85400396c46",
+     "bodyFile": "reset_61s_r3_t0_61500ms.body",
+     "delayMs": 60250
+    }
+   ],
+   "diagnostics": {
+    "stderr": ""
+   }
+  },
+  {
+   "name": "paths",
+   "stub": {
+    "mode": "ok",
+    "fixture": "name-null"
+   },
+   "note": "sémantique du motif use('/api/data/*') : /api/data nu, /api/data/ (segment vide), /api/data/deep/a/b (profond), POST /api/data/posted — chaque sonde éclaire si le limiter S'APPLIQUE (en-têtes ratelimit-*) et le statut (route vs fallback notFound)",
+   "probes": [
+    {
+     "name": "bare",
+     "method": "GET",
+     "path": "/api/data",
+     "request": "GET /api/data HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 404 Not Found",
+     "status": 404,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 29",
+      "ratelimit-reset: 60",
+      "content-length: 21",
+      "Date: Tue, 24 Nov 2026 16:54:22 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 21,
+     "bodyMd5": "2efae0e06cfdc3eacc743546ff595d74",
+     "bodyFile": "paths_bare.body"
+    },
+    {
+     "name": "slash",
+     "method": "GET",
+     "path": "/api/data/",
+     "request": "GET /api/data/ HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 404 Not Found",
+     "status": 404,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 28",
+      "ratelimit-reset: 60",
+      "content-length: 21",
+      "Date: Tue, 24 Nov 2026 16:54:22 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 21,
+     "bodyMd5": "2efae0e06cfdc3eacc743546ff595d74",
+     "bodyFile": "paths_slash.body"
+    },
+    {
+     "name": "deep",
+     "method": "GET",
+     "path": "/api/data/deep/a/b",
+     "request": "GET /api/data/deep/a/b HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 404 Not Found",
+     "status": 404,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 27",
+      "ratelimit-reset: 60",
+      "content-length: 21",
+      "Date: Tue, 24 Nov 2026 16:54:22 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 21,
+     "bodyMd5": "2efae0e06cfdc3eacc743546ff595d74",
+     "bodyFile": "paths_deep.body"
+    },
+    {
+     "name": "posted",
+     "method": "POST",
+     "path": "/api/data/posted",
+     "request": "POST /api/data/posted HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nContent-Length: 0\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 404 Not Found",
+     "status": 404,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "ratelimit-limit: 30",
+      "ratelimit-policy: 30;w=60",
+      "ratelimit-remaining: 26",
+      "ratelimit-reset: 60",
+      "content-length: 21",
+      "Date: Tue, 24 Nov 2026 16:54:22 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 21,
+     "bodyMd5": "2efae0e06cfdc3eacc743546ff595d74",
+     "bodyFile": "paths_posted.body"
+    },
+    {
+     "name": "themes_control",
+     "method": "GET",
+     "path": "/api/themes",
+     "request": "GET /api/themes HTTP/1.1\r\nHost: 127.0.0.1:3000\r\nConnection: close\r\n\r\n",
+     "statusLine": "HTTP/1.1 200 OK",
+     "status": 200,
+     "headers": [
+      "access-control-allow-origin: *",
+      "content-type: application/json",
+      "content-length: 371",
+      "Date: Tue, 24 Nov 2026 16:54:22 GMT",
+      "Connection: close"
+     ],
+     "bodyBytes": 371,
+     "bodyMd5": "55b7c98acfc174b2d31473dc37fe605d"
+    }
+   ],
+   "diagnostics": {
+    "stderr": ""
+   }
+  }
+ ]
+}

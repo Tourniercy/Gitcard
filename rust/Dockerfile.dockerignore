@@ -1,0 +1,32 @@
+# Filtre de contexte EFFECTIF (BuildKit lit `<Dockerfile>.dockerignore` à côté
+# du Dockerfile choisi). Contexte de build = RACINE du dépôt.
+# N'exclut AUCUN chemin embarqué par `include_str!` (le meta-test
+# `rust/tests/dockerfile_includes.rs` le vérifie) :
+#   tests/golden/meta/octicons-extract.json      (réinclu sous meta/*)
+#   tests/golden/graphql/user-query.txt          (réincluse sous graphql/*)
+#   tests/golden/intl-tables.json                (jamais excluse)
+# Le reste des goldens (6,5 Mo au total) est exclu — seuls les 3 embarqués
+# entrent dans le contexte.
+.git
+node_modules
+apps
+packages
+rust/target
+tests/golden/config-minors
+tests/golden/errors
+tests/golden/fixtures
+tests/golden/graphql/*
+!tests/golden/graphql/user-query.txt
+tests/golden/http
+tests/golden/langs
+tests/golden/profile
+tests/golden/ratelimit
+tests/golden/redis
+tests/golden/stats
+tests/golden/streak
+tests/golden/meta/*
+!tests/golden/meta/octicons-extract.json
+tests/golden/manifest.json
+tests/golden/libm-sweep.json
+tests/golden/num-samples.json
+*.md

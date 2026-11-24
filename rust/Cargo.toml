@@ -1,0 +1,60 @@
+[package]
+name = "gitcard-p0"
+version = "0.1.0"
+edition = "2021"
+description = "P0 gitcard-api : primitives numériques JS + tables Intl + octicons + parité corpus golden"
+
+[dependencies]
+# `float_roundtrip` : parsing décimal → f64 correctement arrondi (Eisel-Lemire),
+# aligné sur JSON.parse de V8. Sans elle, serde_json peut errer d'1 ULP sur des
+# décimaux longs (constaté sur 1.1471975511965977 — oracle arc-extract.json).
+serde_json = { version = "1", features = ["float_roundtrip", "arbitrary_precision"] }
+md-5 = "0.10"
+# P3 : client GitHub GraphQL — TLS par rustls/ring (RULES-RUST), pas d'openssl.
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "time", "net"] }
+# P4 : HTTP serveur (axum/hyper 1) + cache L1 TTL par entrée (moka) +
+# validation `z.string().url()` des env REDIS_URL/SENTRY_DSN (zod v4 =
+# `URL.canParse` WHATWG → crate `url`, cf. src/config.rs).
+axum = { version = "0.8", default-features = false, features = ["http1", "tokio"] }
+moka = { version = "0.12", default-features = false, features = ["future"] }
+url = "2"
+
+# P4b : L2 Redis — client async tokio (connexion multiplexée, RESP2). Les
+# commandes (GET / SET…PX / UNLINK / SCAN…MATCH…COUNT…TYPE) sont épinglées
+# byte-exact par l'oracle `tests/golden/redis/`. default-features = false :
+# pas de TLS (REDIS_URL interne au réseau de l'app, comme le legacy qui passe
+# l'URL brute à node-redis) ni cluster.
+redis = { version = "0.32", default-features = false, features = ["tokio-comp"] }
+
+# P5 : Sentry RÉEL — pile prouvée côté weight (fix5 I1) : façade SANS les
+# features par défaut (le transport par défaut de la 0.49 = reqwest +
+# native-tls → OpenSSL, incompilable musl) : transport `ureq` + `rustls`
+# (ring), la MÊME pile TLS que le `reqwest` du projet. `panic` = intégration
+# hook de panique (équivalent des handlers globaux @sentry/node).
+# `sentry-tower` (feature `http`) = transactions HTTP échantillonnées +
+# contexte requête (scrub des en-têtes sensibles).
+sentry = { version = "0.49.6", default-features = false, features = [
+  "backtrace",
+  "contexts",
+  "metrics",
+  "panic",
+  "rustls",
+  "ureq",
+] }
+sentry-tower = { version = "0.49.6", features = ["http"] }
+
+[dev-dependencies]
+# serveur HTTP de test lié sur 127.0.0.1 (valable sous --network none).
+wiremock = "0.6"
+# P5 : `ServiceExt::oneshot` pour appeler le routeur réel dans les tests
+# Sentry (transport de test lié au hub — cf. tests/p5_sentry.rs). Déjà
+# présent transitivement (axum/wiremock).
+tower = { version = "0.5", features = ["util"] }
+# Fix 4c N-1 (revue Q6a ; précédent weight fix6 M-A) : la feature `test` de
+# `sentry` — transport mémoire pour les tests hermétiques (AUCUN réseau) —
+# vit en DEV-ONLY : le graphe NORMAL ne la porte plus (0 ligne
+# `sentry feature "test"` sur musl), le binaire de prod n'embarque plus le
+# module `test` cfg-gated de sentry-core ; même version épinglée, Cargo.lock
+# inchangé (le lock liste les packages, pas la sélection normal/dev).
+sentry = { version = "0.49.6", default-features = false, features = ["test"] }

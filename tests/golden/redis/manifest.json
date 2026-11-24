@@ -1,0 +1,266 @@
+{
+ "generator": {
+  "node": "v26.13.1",
+  "entry": "node scripts/gen-redis-golden.mjs (jamais via pnpm) — faux serveur RESP 127.0.0.1 + legacy apps/api/src/index.ts servi par @hono/node-server",
+  "github": "stub fetch en process (réponse GraphQL déterministe, /stats/probe-user)",
+  "pat": "PAT_1=fake-token-1 (jeton fictif)",
+  "libs": {
+   "cacheable": "2.3.4",
+   "keyv": "5.6.0",
+   "@keyv/redis": "5.1.6"
+  },
+  "normalization": "hexlog : octets de chaque commande (RESP), hexadécimal, une ligne par commande ; chaque CHIFFRE de \"expires\":<epoch> remplacé par 0 (longueur conservée → hexlog re-parsable comme RESP). Les commandes CLIENT SETINFO LIB-VER/LIB-NAME (transport du client, node-redis côté legacy, redis-rs côté port) sont hors sémantique cache et filtrées des deux côtés dans les tests",
+  "files": [
+   {
+    "segment": "a_boot",
+    "commands": [
+     "CLIENT",
+     "CLIENT",
+     "SCAN"
+    ],
+    "count": 3,
+    "hexlogMd5": "1f32c6970dad3f551a838c41edc9b759",
+    "txtMd5": "ffa333c66ec1dd8127050cc8023b0354"
+   },
+   {
+    "segment": "a_req1_get_svg",
+    "commands": [
+     "GET"
+    ],
+    "count": 1,
+    "hexlogMd5": "4b61001862f5ec6e35b7e1dcd758e63f",
+    "txtMd5": "3cce5199226fd5933c7ada2d27c8b7ce"
+   },
+   {
+    "segment": "a_req1_get_data",
+    "commands": [
+     "GET"
+    ],
+    "count": 1,
+    "hexlogMd5": "1d4c656a64e86b9aa4af567615b89509",
+    "txtMd5": "16e7f489cbfde2ebe41e978cae2e3ad7"
+   },
+   {
+    "segment": "a_req1_set_data",
+    "commands": [
+     "SET"
+    ],
+    "count": 1,
+    "hexlogMd5": "023f9fee7fc3ccc3d57df66974b3aa08",
+    "txtMd5": "e70fb908eb4cc315fde86e4d1e031451"
+   },
+   {
+    "segment": "a_req1_set_svg",
+    "commands": [
+     "SET"
+    ],
+    "count": 1,
+    "hexlogMd5": "6473da639a611d890da1800cb70179f8",
+    "txtMd5": "d750d30dfde5f42f88ebc7cfcd9669e9"
+   },
+   {
+    "segment": "a_req1_other",
+    "commands": [],
+    "count": 0,
+    "hexlogMd5": "68b329da9893e34099c7d8ad5cb9c940",
+    "txtMd5": "68b329da9893e34099c7d8ad5cb9c940"
+   },
+   {
+    "segment": "a_req2_all",
+    "commands": [],
+    "count": 0,
+    "hexlogMd5": "68b329da9893e34099c7d8ad5cb9c940",
+    "txtMd5": "68b329da9893e34099c7d8ad5cb9c940"
+   },
+   {
+    "segment": "a_req3_get_data",
+    "commands": [
+     "GET"
+    ],
+    "count": 1,
+    "hexlogMd5": "e11d608528e1db1624598aabae37cda5",
+    "txtMd5": "8849a61e8bc37a3ca14e75216fed3f21"
+   },
+   {
+    "segment": "a_req3_set_data",
+    "commands": [
+     "SET"
+    ],
+    "count": 1,
+    "hexlogMd5": "f1e304fe9bf713fd31818a16dcc2b1ba",
+    "txtMd5": "353b6417c8792d01b86d4dffc1e95a33"
+   },
+   {
+    "segment": "a_req3_other",
+    "commands": [],
+    "count": 0,
+    "hexlogMd5": "68b329da9893e34099c7d8ad5cb9c940",
+    "txtMd5": "68b329da9893e34099c7d8ad5cb9c940"
+   },
+   {
+    "segment": "e_boot_flush",
+    "commands": [
+     "CLIENT",
+     "CLIENT",
+     "SCAN",
+     "UNLINK"
+    ],
+    "count": 4,
+    "hexlogMd5": "2ee2e37435f0e376b452ba8615564286",
+    "txtMd5": "8e9d24c1933d4db61efd480307783f12"
+   },
+   {
+    "segment": "b_boot",
+    "commands": [
+     "CLIENT",
+     "CLIENT",
+     "SCAN"
+    ],
+    "count": 3,
+    "hexlogMd5": "1f32c6970dad3f551a838c41edc9b759",
+    "txtMd5": "ffa333c66ec1dd8127050cc8023b0354"
+   },
+   {
+    "segment": "b_req1_get_svg",
+    "commands": [
+     "GET"
+    ],
+    "count": 1,
+    "hexlogMd5": "4b61001862f5ec6e35b7e1dcd758e63f",
+    "txtMd5": "3cce5199226fd5933c7ada2d27c8b7ce"
+   },
+   {
+    "segment": "b_req1_rest",
+    "commands": [],
+    "count": 0,
+    "hexlogMd5": "68b329da9893e34099c7d8ad5cb9c940",
+    "txtMd5": "68b329da9893e34099c7d8ad5cb9c940"
+   },
+   {
+    "segment": "b_req2_all",
+    "commands": [],
+    "count": 0,
+    "hexlogMd5": "68b329da9893e34099c7d8ad5cb9c940",
+    "txtMd5": "68b329da9893e34099c7d8ad5cb9c940"
+   },
+   {
+    "segment": "c_boot",
+    "commands": [
+     "CLIENT",
+     "CLIENT",
+     "SCAN"
+    ],
+    "count": 3,
+    "hexlogMd5": "1f32c6970dad3f551a838c41edc9b759",
+    "txtMd5": "ffa333c66ec1dd8127050cc8023b0354"
+   },
+   {
+    "segment": "c_get_svg_expired",
+    "commands": [
+     "GET"
+    ],
+    "count": 1,
+    "hexlogMd5": "4b61001862f5ec6e35b7e1dcd758e63f",
+    "txtMd5": "3cce5199226fd5933c7ada2d27c8b7ce"
+   },
+   {
+    "segment": "c_unlink_svg",
+    "commands": [
+     "UNLINK"
+    ],
+    "count": 1,
+    "hexlogMd5": "64aa363e6494a9db3986f4db3a2d341b",
+    "txtMd5": "6654f229e82c13e73a6403b982cae057"
+   },
+   {
+    "segment": "c_get_data",
+    "commands": [
+     "GET"
+    ],
+    "count": 1,
+    "hexlogMd5": "1d4c656a64e86b9aa4af567615b89509",
+    "txtMd5": "16e7f489cbfde2ebe41e978cae2e3ad7"
+   },
+   {
+    "segment": "c_set_data",
+    "commands": [
+     "SET"
+    ],
+    "count": 1,
+    "hexlogMd5": "023f9fee7fc3ccc3d57df66974b3aa08",
+    "txtMd5": "01047b82bca1d565e718776d5765143e"
+   },
+   {
+    "segment": "c_set_svg",
+    "commands": [
+     "SET"
+    ],
+    "count": 1,
+    "hexlogMd5": "6473da639a611d890da1800cb70179f8",
+    "txtMd5": "21925448d3b4fabcee6abefc4f33ed61"
+   },
+   {
+    "segment": "c_other",
+    "commands": [],
+    "count": 0,
+    "hexlogMd5": "68b329da9893e34099c7d8ad5cb9c940",
+    "txtMd5": "68b329da9893e34099c7d8ad5cb9c940"
+   }
+  ]
+ },
+ "facts": {
+  "boot": {
+   "commands": [
+    "CLIENT",
+    "CLIENT",
+    "SCAN"
+   ],
+   "flushdb_flushall_seen": false
+  },
+  "store_after_boot_flush_with_keys": [],
+  "first_get_miss": {
+   "command": "GET \"keyv::keyv:svg:stats:probe-user:289b4511\"",
+   "get_count_req1": 2
+  },
+  "set": {
+   "command": "SET … PX 14400000",
+   "key_example": "keyv::keyv:svg:stats:probe-user:289b4511",
+   "ttl_args": [
+    "PX",
+    "14400000"
+   ]
+  },
+  "envelope": {
+   "value_type": "string",
+   "expires_present": true,
+   "expires_type": "number",
+   "expires_note": "epoch ms (Date.now()+ttl) ; chaque chiffre masqué par 0 dans les hexlog (longueur conservée)"
+  },
+  "expired_get": {
+   "commands": [
+    "GET",
+    "UNLINK"
+   ],
+   "note": "enveloppe expires < now → UNLINK puis miss (keyv 5.6.0 getRaw)"
+  },
+  "prefix": {
+   "observed": "keyv::keyv:",
+   "full_key_example": "keyv::keyv:svg:stats:probe-user:289b4511",
+   "separator_note": "namespace KeyvRedis (::) + préfixe Keyv (keyv:) → clé logique svg:/data: préfixée keyv::keyv:"
+  },
+  "store_choice": {
+   "identical_requests": 2,
+   "get_count_req1": 2,
+   "get_count_req2": 0,
+   "conclusion": "GETs uniquement sur la 1re requête → L1 mémoire DEVANT Redis (cacheable secondary) = l1_plus_l2"
+  },
+  "hit_l2": {
+   "get_count": 1,
+   "rest_commands": 0,
+   "bodyMd5": "003d456ceb386adf458d5c27a54a2153",
+   "equals_fresh_render_md5": true,
+   "second_request_commands": 0,
+   "note": "chaîne stockée servie telle quelle (byte md5 identique au rendu frais)"
+  }
+ }
+}

@@ -1,0 +1,37 @@
+{
+  "id": "empty",
+  "description": "Tout à zéro : calendrier vide, streak 0 sans dates, 0 langue, name vide",
+  "stats": {
+    "username": "ghost-account",
+    "name": "",
+    "totalStars": 0,
+    "totalForks": 0,
+    "totalCommits": 0,
+    "totalPRs": 0,
+    "totalIssues": 0,
+    "contributedTo": 0
+  },
+  "streak": {
+    "username": "ghost-account",
+    "totalContributions": 0,
+    "currentStreak": 0,
+    "longestStreak": 0,
+    "currentStreakStart": "",
+    "currentStreakEnd": "",
+    "longestStreakStart": "",
+    "longestStreakEnd": ""
+  },
+  "langs": {
+    "username": "ghost-account",
+    "languages": []
+  },
+  "profile": {
+    "username": "ghost-account",
+    "name": "",
+    "contributionsThisYear": 0,
+    "publicRepos": 0,
+    "createdAt": "2014-02-01T00:00:00Z",
+    "email": null,
+    "contributionCalendar": []
+  }
+}

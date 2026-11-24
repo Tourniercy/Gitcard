@@ -1,0 +1,14 @@
+{
+ "generator": {
+  "node": "v26.13.1",
+  "scenario": "D — serveur qui accepte puis ferme chaque connexion"
+ },
+ "boot": {
+  "ready": true
+ },
+ "request": {
+  "hung": false,
+  "status": 200,
+  "ms": 306
+ }
+}

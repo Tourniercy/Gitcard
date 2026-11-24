@@ -1,0 +1,97 @@
+{
+  "data": {
+    "user": {
+      "name": "Ada Lovelace",
+      "login": "octocat",
+      "createdAt": "2019-04-15T08:32:11Z",
+      "contributionsCollection": {
+        "totalCommitContributions": 6000000000,
+        "restrictedContributionsCount": 0,
+        "contributionCalendar": {
+          "totalContributions": 842,
+          "weeks": [
+            {
+              "contributionDays": [
+                {
+                  "contributionCount": 3,
+                  "date": "2026-11-02"
+                },
+                {
+                  "contributionCount": 0,
+                  "date": "2026-11-03"
+                },
+                {
+                  "contributionCount": 5,
+                  "date": "2026-11-04"
+                },
+                {
+                  "contributionCount": 7,
+                  "date": "2026-11-05"
+                },
+                {
+                  "contributionCount": 2,
+                  "date": "2026-11-06"
+                },
+                {
+                  "contributionCount": 9,
+                  "date": "2026-11-07"
+                },
+                {
+                  "contributionCount": 4,
+                  "date": "2026-11-08"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "repositories": {
+        "totalCount": 23,
+        "nodes": [
+          {
+            "stargazerCount": 5000000000,
+            "forkCount": 2500000000,
+            "languages": {
+              "edges": [
+                {
+                  "size": 987654321,
+                  "node": {
+                    "name": "TypeScript",
+                    "color": "#3178c6"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "stargazerCount": 4294967296,
+            "forkCount": 1000000000,
+            "languages": {
+              "edges": [
+                {
+                  "size": 123456789,
+                  "node": {
+                    "name": "Rust",
+                    "color": "#dea584"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "pullRequests": {
+        "totalCount": 4294967297
+      },
+      "issues": {
+        "totalCount": 50000000
+      },
+      "followers": {
+        "totalCount": 512
+      },
+      "repositoriesContributedTo": {
+        "totalCount": 1000000
+      }
+    }
+  }
+}

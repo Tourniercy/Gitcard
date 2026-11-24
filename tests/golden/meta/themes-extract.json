@@ -1,0 +1,132 @@
+{
+ "node": "v26.13.1",
+ "themeNames": [
+  "default",
+  "flat",
+  "breezy",
+  "rose",
+  "mint",
+  "sand",
+  "lavender",
+  "dark",
+  "dim",
+  "midnight",
+  "onyx",
+  "dracula",
+  "monokai",
+  "nord",
+  "solarized",
+  "solarized-dark",
+  "gruvbox",
+  "gruvbox-light",
+  "tokyo-night",
+  "one-dark",
+  "one-light",
+  "catppuccin-mocha",
+  "catppuccin-latte",
+  "synthwave",
+  "cobalt",
+  "night-owl",
+  "aurora",
+  "ocean",
+  "forest",
+  "sunset",
+  "cherry",
+  "slate",
+  "cotton-candy",
+  "high-contrast",
+  "paper"
+ ],
+ "groups": [
+  {
+   "label": "Light",
+   "themes": [
+    "default",
+    "flat",
+    "breezy",
+    "rose",
+    "mint",
+    "sand",
+    "lavender",
+    "solarized",
+    "gruvbox-light",
+    "one-light",
+    "catppuccin-latte",
+    "cotton-candy",
+    "paper"
+   ]
+  },
+  {
+   "label": "Dark",
+   "themes": [
+    "dark",
+    "dim",
+    "midnight",
+    "onyx",
+    "slate"
+   ]
+  },
+  {
+   "label": "Editor",
+   "themes": [
+    "dracula",
+    "monokai",
+    "nord",
+    "solarized-dark",
+    "gruvbox",
+    "tokyo-night",
+    "one-dark",
+    "catppuccin-mocha",
+    "synthwave",
+    "cobalt",
+    "night-owl"
+   ]
+  },
+  {
+   "label": "Atmosphere",
+   "themes": [
+    "aurora",
+    "ocean",
+    "forest",
+    "sunset",
+    "cherry"
+   ]
+  },
+  {
+   "label": "Accessibility",
+   "themes": [
+    "high-contrast"
+   ]
+  }
+ ],
+ "defaultTheme": {
+  "name": "default",
+  "background": "rgba(255, 255, 255, 0.7)",
+  "border": "rgba(0, 0, 0, 0.1)",
+  "title": "#1f2937",
+  "text": "#374151",
+  "muted": "#6b7280",
+  "icon": "#3b82f6",
+  "ring": "#3b82f6"
+ },
+ "unknownTheme": {
+  "name": "default",
+  "background": "rgba(255, 255, 255, 0.7)",
+  "border": "rgba(0, 0, 0, 0.1)",
+  "title": "#1f2937",
+  "text": "#374151",
+  "muted": "#6b7280",
+  "icon": "#3b82f6",
+  "ring": "#3b82f6"
+ },
+ "caseSensitiveUnknown": {
+  "name": "default",
+  "background": "rgba(255, 255, 255, 0.7)",
+  "border": "rgba(0, 0, 0, 0.1)",
+  "title": "#1f2937",
+  "text": "#374151",
+  "muted": "#6b7280",
+  "icon": "#3b82f6",
+  "ring": "#3b82f6"
+ }
+}

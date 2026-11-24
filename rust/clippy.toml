@@ -1,0 +1,10 @@
+# C1 (P0, non négociable) : la libm musl de rust:1-alpine diverge d'1 ULP de V8 sur
+# 2,06 % des angles (rapport P0 §2). Toute coordonnée SVG passant par cos/sin DOIT
+# utiliser `crate::fdlibm::cos` / `crate::fdlibm::sin` (port bit-exact de V8).
+# C2 : toute valeur f64 interpolée dans le SVG passe par `crate::jsnum::js_f64_to_string`
+# (String(x) JS), jamais par Display/to_string de Rust.
+disallowed-methods = [
+  { path = "f64::cos", reason = "C1 : utiliser crate::fdlibm::cos (port bit-exact de V8 ; la libm musl diverge d'1 ULP sur 2 % des angles)" },
+  { path = "f64::sin", reason = "C1 : utiliser crate::fdlibm::sin (port bit-exact de V8)" },
+  { path = "f64::to_string", reason = "C2 : utiliser crate::jsnum::js_f64_to_string (String(x) JS, pas Display Rust)" },
+]

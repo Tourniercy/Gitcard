@@ -1,0 +1,107 @@
+{
+  "id": "newcomer",
+  "description": "name null (fallback login), petit compte, 1 semaine quasi vide",
+  "stats": {
+    "username": "newbie-dev",
+    "name": "newbie-dev",
+    "totalStars": 3,
+    "totalForks": 1,
+    "totalCommits": 42,
+    "totalPRs": 2,
+    "totalIssues": 5,
+    "contributedTo": 7
+  },
+  "streak": {
+    "username": "newbie-dev",
+    "totalContributions": 8,
+    "currentStreak": 1,
+    "longestStreak": 3,
+    "currentStreakStart": "2026-11-22",
+    "currentStreakEnd": "2026-11-22",
+    "longestStreakStart": "2026-03-05",
+    "longestStreakEnd": "2026-03-07"
+  },
+  "langs": {
+    "username": "newbie-dev",
+    "languages": [
+      {
+        "name": "HTML",
+        "percentage": 64.5,
+        "color": "#e34c26",
+        "size": 64500
+      },
+      {
+        "name": "CSS",
+        "percentage": 35.5,
+        "color": "#563d7c",
+        "size": 35500
+      }
+    ]
+  },
+  "profile": {
+    "username": "newbie-dev",
+    "name": null,
+    "contributionsThisYear": 8,
+    "publicRepos": 2,
+    "createdAt": "2025-11-30T18:04:00Z",
+    "email": null,
+    "contributionCalendar": [
+      {
+        "date": "2026-11-09",
+        "count": 0
+      },
+      {
+        "date": "2026-11-10",
+        "count": 1
+      },
+      {
+        "date": "2026-11-11",
+        "count": 0
+      },
+      {
+        "date": "2026-11-12",
+        "count": 2
+      },
+      {
+        "date": "2026-11-13",
+        "count": 0
+      },
+      {
+        "date": "2026-11-14",
+        "count": 1
+      },
+      {
+        "date": "2026-11-15",
+        "count": 0
+      },
+      {
+        "date": "2026-11-16",
+        "count": 0
+      },
+      {
+        "date": "2026-11-17",
+        "count": 0
+      },
+      {
+        "date": "2026-11-18",
+        "count": 1
+      },
+      {
+        "date": "2026-11-19",
+        "count": 0
+      },
+      {
+        "date": "2026-11-20",
+        "count": 0
+      },
+      {
+        "date": "2026-11-21",
+        "count": 2
+      },
+      {
+        "date": "2026-11-22",
+        "count": 1
+      }
+    ]
+  }
+}

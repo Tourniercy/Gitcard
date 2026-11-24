@@ -1,0 +1,49 @@
+{
+  "data": {
+    "user": {
+      "name": "Ada Lovelace",
+      "login": "octocat",
+      "createdAt": "2019-04-15T08:32:11Z",
+      "contributionsCollection": {
+        "totalCommitContributions": 1247,
+        "restrictedContributionsCount": 0,
+        "contributionCalendar": {
+          "totalContributions": 0,
+          "weeks": []
+        }
+      },
+      "repositories": {
+        "totalCount": 1,
+        "nodes": [
+          {
+            "stargazerCount": 10,
+            "forkCount": 1,
+            "languages": {
+              "edges": [
+                {
+                  "size": 500,
+                  "node": {
+                    "name": "Python",
+                    "color": "#3572A5"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "pullRequests": {
+        "totalCount": 87
+      },
+      "issues": {
+        "totalCount": 41
+      },
+      "followers": {
+        "totalCount": 512
+      },
+      "repositoriesContributedTo": {
+        "totalCount": 118
+      }
+    }
+  }
+}

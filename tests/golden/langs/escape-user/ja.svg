@@ -1,0 +1,53 @@
+<svg width="495" height="195" viewBox="0 0 495 195"
+     xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <clipPath id="clip-142">
+      <rect width="495" height="195" rx="8" ry="8" />
+    </clipPath>
+  </defs>
+
+  <style>
+    * { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+    .title { font-size: 14px; font-weight: 600; fill: #1f2937; }
+    .stat-label { font-size: 12px; fill: #6b7280; }
+    .stat-value { font-size: 14px; font-weight: 700; fill: #374151; }
+    .muted { font-size: 11px; fill: #6b7280; }
+  </style>
+
+  <g clip-path="url(#clip-142)">
+    <rect width="495" height="195" rx="8" ry="8"
+          fill="rgba(255, 255, 255, 0.7)" />
+    <rect width="495" height="195" rx="8" ry="8" fill="none" stroke="rgba(0, 0, 0, 0.1)" stroke-width="1" />
+
+    
+    <text x="25" y="30" class="title">Most Used Languages</text>
+    <path d="M 91.09992666813332 55.01099963333822 A 55 55 0 0 1 127.94708637926614 149.8122925153088 L 112.76825182755968 133.8873755091853 A 33 33 0 0 0 90.65995600088 77.00659978000294 Z" fill="#438eff" /><path d="M 126.32466568750536 151.29792564634417 A 55 55 0 0 1 40.26148598083019 133.47509793727914 L 60.15689158849811 124.08505876236748 A 33 33 0 0 0 111.79479941250321 134.7787553878065 Z" fill="#945db7" /><path d="M 39.36251795040917 131.4673103037471 A 55 55 0 0 1 49.8634377094866 72.39605914934265 L 65.91806262569196 87.43763548960558 A 33 33 0 0 0 59.6175107702455 122.88038618224826 Z" fill="#178600" /><path d="M 51.39929923572535 70.8211038886121 A 55 55 0 0 1 88.9000733318667 55.01099963333822 L 89.34004399912001 77.00659978000294 A 33 33 0 0 0 66.83957954143521 86.49266233316726 Z" fill="#858585" />
+    
+        <g>
+          <circle cx="185" cy="56" r="5" fill="#438eff" />
+          <text x="199" y="60" class="stat-label">Objective-C</text>
+          <text x="470" y="60" class="stat-value" text-anchor="end">38.2%</text>
+        </g>
+      
+        <g>
+          <circle cx="185" cy="80" r="5" fill="#945db7" />
+          <text x="199" y="84" class="stat-label">Visual Basic .NET</text>
+          <text x="470" y="84" class="stat-value" text-anchor="end">30.1%</text>
+        </g>
+      
+        <g>
+          <circle cx="185" cy="104" r="5" fill="#178600" />
+          <text x="199" y="108" class="stat-label">C#</text>
+          <text x="470" y="108" class="stat-value" text-anchor="end">19.0%</text>
+        </g>
+      
+        <g>
+          <circle cx="185" cy="128" r="5" fill="#858585" />
+          <text x="199" y="132" class="stat-label">Emacs Lisp</text>
+          <text x="470" y="132" class="stat-value" text-anchor="end">12.7%</text>
+        </g>
+      
+    
+  
+  </g>
+</svg>

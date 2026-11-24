@@ -1,0 +1,54 @@
+<svg width="700" height="200" viewBox="0 0 700 200"
+     xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <clipPath id="clip-314">
+      <rect width="700" height="200" rx="8" ry="8" />
+    </clipPath>
+  </defs>
+
+  <style>
+    * { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+    .title { font-size: 14px; font-weight: 600; fill: #1f2937; }
+    .stat-label { font-size: 12px; fill: #6b7280; }
+    .stat-value { font-size: 14px; font-weight: 700; fill: #374151; }
+    .muted { font-size: 11px; fill: #6b7280; }
+  </style>
+
+  <g clip-path="url(#clip-314)">
+    <rect width="700" height="200" rx="8" ry="8"
+          fill="rgba(255, 255, 255, 0.7)" />
+    <rect width="700" height="200" rx="8" ry="8" fill="none" stroke="rgba(0, 0, 0, 0.1)" stroke-width="1" />
+
+    
+    <text x="25" y="30" class="title">Tie Breaker</text>
+    
+        <g>
+          <svg x="25" y="42" width="16" height="16" viewBox="0 0 16 16" fill="#3b82f6"><path d="m.427 1.927 1.215 1.215a8.002 8.002 0 1 1-1.6 5.685.75.75 0 1 1 1.493-.154 6.5 6.5 0 1 0 1.18-4.458l1.358 1.358A.25.25 0 0 1 3.896 6H.25A.25.25 0 0 1 0 5.75V2.104a.25.25 0 0 1 .427-.177ZM7.75 4a.75.75 0 0 1 .75.75v2.992l2.028.812a.75.75 0 0 1-.557 1.392l-2.5-1A.751.751 0 0 1 7 8.25v-3.5A.75.75 0 0 1 7.75 4Z"></path></svg>
+          <text x="47" y="55" class="stat-label">Contributions</text>
+          <text x="290" y="55" class="stat-value" text-anchor="end">225</text>
+        </g>
+      
+        <g>
+          <svg x="25" y="68" width="16" height="16" viewBox="0 0 16 16" fill="#3b82f6"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"></path></svg>
+          <text x="47" y="81" class="stat-label">Public Repos</text>
+          <text x="290" y="81" class="stat-value" text-anchor="end">9</text>
+        </g>
+      
+        <g>
+          <svg x="25" y="94" width="16" height="16" viewBox="0 0 16 16" fill="#3b82f6"><path d="M4.75 0a.75.75 0 0 1 .75.75V2h5V.75a.75.75 0 0 1 1.5 0V2h1.25c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 13.25 16H2.75A1.75 1.75 0 0 1 1 14.25V3.75C1 2.784 1.784 2 2.75 2H4V.75A.75.75 0 0 1 4.75 0ZM2.5 7.5v6.75c0 .138.112.25.25.25h10.5a.25.25 0 0 0 .25-.25V7.5Zm10.75-4H2.75a.25.25 0 0 0-.25.25V6h11V3.75a.25.25 0 0 0-.25-.25Z"></path></svg>
+          <text x="47" y="107" class="stat-label">Account Age</text>
+          <text x="290" y="107" class="stat-value" text-anchor="end">6y</text>
+        </g>
+      
+    <line x1="305" y1="15" x2="305" y2="185" stroke="rgba(0, 0, 0, 0.1)" stroke-width="1" />
+    
+    <line x1="320" y1="155" x2="670" y2="155" stroke="#6b7280" stroke-opacity="0.15" stroke-width="0.5" /><line x1="320" y1="100" x2="670" y2="100" stroke="#6b7280" stroke-opacity="0.15" stroke-width="0.5" /><line x1="320" y1="45" x2="670" y2="45" stroke="#6b7280" stroke-opacity="0.15" stroke-width="0.5" />
+    <path d="M320,73.38709677419355 C358.88888888888886,63.924731182795696 397.77777777777777,45 436.66666666666663,45 C475.5555555555555,45 514.4444444444443,71.61290322580645 553.3333333333333,71.61290322580645 C592.2222222222222,71.61290322580645 631.1111111111111,62.1505376344086 670,57.41935483870968 L670,155 L320,155 Z" fill="#3b82f6" fill-opacity="0.15" />
+    <path d="M320,73.38709677419355 C358.88888888888886,63.924731182795696 397.77777777777777,45 436.66666666666663,45 C475.5555555555555,45 514.4444444444443,71.61290322580645 553.3333333333333,71.61290322580645 C592.2222222222222,71.61290322580645 631.1111111111111,62.1505376344086 670,57.41935483870968" fill="none" stroke="#3b82f6" stroke-width="1.5" />
+    <text x="320" y="169" text-anchor="middle" font-size="9" fill="#6b7280">Oct</text><text x="436.66666666666663" y="169" text-anchor="middle" font-size="9" fill="#6b7280">Nov</text><text x="553.3333333333333" y="169" text-anchor="middle" font-size="9" fill="#6b7280">Nov</text><text x="670" y="169" text-anchor="middle" font-size="9" fill="#6b7280">Nov</text>
+    <text x="314" y="158" text-anchor="end" font-size="9" fill="#6b7280">0</text><text x="314" y="103" text-anchor="end" font-size="9" fill="#6b7280">31</text><text x="314" y="48" text-anchor="end" font-size="9" fill="#6b7280">62</text>
+    <text x="495" y="183" text-anchor="middle" font-size="10" fill="#374151">contributions in the last year</text>
+  
+  
+  </g>
+</svg>

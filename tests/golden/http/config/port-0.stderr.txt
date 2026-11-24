@@ -1,0 +1,23 @@
+❌ Invalid environment variables: [
+  {
+    origin: 'number',
+    code: 'too_small',
+    minimum: 1,
+    inclusive: true,
+    path: [ 'PORT' ],
+    message: 'Too small: expected number to be >=1'
+  }
+]
+file:///w/node_modules/.pnpm/@t3-oss+env-core@0.13.11_typescript@6.0.2_zod@4.6.6/node_modules/@t3-oss/env-core/dist/index.js:32
+		throw new Error("Invalid environment variables");
+		      ^
+
+Error: Invalid environment variables
+    at file:///w/node_modules/.pnpm/@t3-oss+env-core@0.13.11_typescript@6.0.2_zod@4.6.6/node_modules/@t3-oss/env-core/dist/index.js:32:9
+    at createEnv (file:///w/node_modules/.pnpm/@t3-oss+env-core@0.13.11_typescript@6.0.2_zod@4.6.6/node_modules/@t3-oss/env-core/dist/index.js:37:28)
+    at file:///w/apps/api/src/config.ts:4:13
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async file:///w/scripts/gen-http-golden.mjs:113:3
+
+Node.js v26.13.1
