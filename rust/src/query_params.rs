@@ -11,8 +11,11 @@
 //!   → booléen ; toute autre valeur → ZodError → la route renvoie 500 JSON ;
 //! - `cache_seconds` : `z.coerce.number().catch(14400).transform(max(v,1800))`
 //!   — `Number("")` = 0 → 1800, `Number("abc")` = NaN → catch 14400,
-//!   `"Infinity"` → Infinity → `Cache-Control: max-age=Infinity` (reproduit,
-//!   étude §1.3) ;
+//!   `"Infinity"` → Infinity → catch 14400 AUSSI (l'oracle `cache-inf` et le
+//!   code legacy tranchent : `catch` englobe TOUTE valeur invalide, Infinity
+//!   compris → `max-age=14400`, hash identique à no-query `289b4511` —
+//!   le commentaire précédent (« max-age=Infinity reproduit, étude §1.3 »)
+//!   était PÉRIMÉ, m-1 revue P4) ;
 //! - `locale` ∉ `LOCALE_CODES` → `'en'` ; clés inconnues ignorées (zod strip) ;
 //! - l'objet `CardOptions` construit a TOUJOURS l'ordre de clés `theme, hide,
 //!   showIcons, hideBorder, hideTitle, bgColor?, titleColor?, textColor?,
