@@ -63,6 +63,9 @@ fn num_samples_parity_with_node() {
 
 // ---------------------------------------------------------------- libm sweep
 
+// Comparaison musl vs fdlibm : f64::cos/sin (libm musl) sont l'OBJET du test
+// (contre-exemple qui justifie le verrou C1) — exception locale assumée.
+#[allow(clippy::disallowed_methods)]
 #[test]
 fn libm_cos_sin_parity_with_node() {
     let v = read_json(&golden().join("libm-sweep.json"));
