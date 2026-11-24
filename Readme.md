@@ -3,17 +3,17 @@
   <p>Dynamically generated GitHub stats cards for your profile README.</p>
 
   <p>
-    <a href="https://github.com/Tourniercy/Gitcard/issues"><img src="https://img.shields.io/github/issues/Tourniercy/Gitcard?color=0088ff" alt="Issues"></a>
-    <a href="https://github.com/Tourniercy/Gitcard/pulls"><img src="https://img.shields.io/github/issues-pr/Tourniercy/Gitcard?color=0088ff" alt="Pull Requests"></a>
-    <a href="https://github.com/Tourniercy/Gitcard/blob/main/LICENSE"><img src="https://img.shields.io/github/license/Tourniercy/Gitcard" alt="License"></a>
+    <a href="https://github.com/rilcydev/Gitcard/issues"><img src="https://img.shields.io/github/issues/rilcydev/Gitcard?color=0088ff" alt="Issues"></a>
+    <a href="https://github.com/rilcydev/Gitcard/pulls"><img src="https://img.shields.io/github/issues-pr/rilcydev/Gitcard?color=0088ff" alt="Pull Requests"></a>
+    <a href="https://github.com/rilcydev/Gitcard/blob/main/LICENSE"><img src="https://img.shields.io/github/license/rilcydev/Gitcard" alt="License"></a>
   </p>
 
   <p>
     <a href="https://gitcard.rilcy.app">View Demo</a>
     &middot;
-    <a href="https://github.com/Tourniercy/Gitcard/issues/new">Report Bug</a>
+    <a href="https://github.com/rilcydev/Gitcard/issues/new">Report Bug</a>
     &middot;
-    <a href="https://github.com/Tourniercy/Gitcard/issues/new">Request Feature</a>
+    <a href="https://github.com/rilcydev/Gitcard/issues/new">Request Feature</a>
   </p>
 
   <br />
@@ -24,12 +24,12 @@
 
 ## Stats Card
 
-![Tourniercy's GitHub stats](https://api-gitcard.rilcy.app/stats/tourniercy)
+![rilcydev's GitHub stats](https://api-gitcard.rilcy.app/stats/rilcydev)
 
 Copy and paste this into your README to get started:
 
 ```md
-[![Tourniercy's GitHub stats](https://api-gitcard.rilcy.app/stats/tourniercy)](https://github.com/Tourniercy/Gitcard)
+[![rilcydev's GitHub stats](https://api-gitcard.rilcy.app/stats/rilcydev)](https://github.com/rilcydev/Gitcard)
 ```
 
 ### Hiding individual stats
@@ -37,7 +37,7 @@ Copy and paste this into your README to get started:
 You can hide specific stat items with the `hide` parameter.
 
 ```md
-![Stats](https://api-gitcard.rilcy.app/stats/tourniercy?hide=stars,forks)
+![Stats](https://api-gitcard.rilcy.app/stats/rilcydev?hide=stars,forks)
 ```
 
 > [!NOTE]
@@ -48,7 +48,7 @@ You can hide specific stat items with the `hide` parameter.
 Icons are displayed by default. You can turn them off:
 
 ```md
-![Stats](https://api-gitcard.rilcy.app/stats/tourniercy?show_icons=false)
+![Stats](https://api-gitcard.rilcy.app/stats/rilcydev?show_icons=false)
 ```
 
 ### Themes
@@ -56,10 +56,10 @@ Icons are displayed by default. You can turn them off:
 Use any built-in theme via the `theme` parameter:
 
 ```md
-![Stats](https://api-gitcard.rilcy.app/stats/tourniercy?theme=tokyo-night)
+![Stats](https://api-gitcard.rilcy.app/stats/rilcydev?theme=tokyo-night)
 ```
 
-![Stats with Tokyo Night theme](https://api-gitcard.rilcy.app/stats/tourniercy?theme=tokyo-night)
+![Stats with Tokyo Night theme](https://api-gitcard.rilcy.app/stats/rilcydev?theme=tokyo-night)
 
 <details>
 <summary>All available themes</summary>
@@ -90,13 +90,13 @@ Use GitHub's `#gh-dark-mode-only` and `#gh-light-mode-only` fragments to show di
 <picture>
   <source
     media="(prefers-color-scheme: dark)"
-    srcset="https://api-gitcard.rilcy.app/stats/tourniercy?theme=tokyo-night"
+    srcset="https://api-gitcard.rilcy.app/stats/rilcydev?theme=tokyo-night"
   />
   <source
     media="(prefers-color-scheme: light)"
-    srcset="https://api-gitcard.rilcy.app/stats/tourniercy?theme=default"
+    srcset="https://api-gitcard.rilcy.app/stats/rilcydev?theme=default"
   />
-  <img alt="GitHub Stats" src="https://api-gitcard.rilcy.app/stats/tourniercy" />
+  <img alt="GitHub Stats" src="https://api-gitcard.rilcy.app/stats/rilcydev" />
 </picture>
 ```
 
@@ -120,10 +120,10 @@ Use GitHub's `#gh-dark-mode-only` and `#gh-light-mode-only` fragments to show di
 
 ## Streak Card
 
-![Tourniercy's streak](https://api-gitcard.rilcy.app/stats/tourniercy/streak)
+![rilcydev's streak](https://api-gitcard.rilcy.app/stats/rilcydev/streak)
 
 ```md
-[![Tourniercy's streak](https://api-gitcard.rilcy.app/stats/tourniercy/streak)](https://github.com/Tourniercy/Gitcard)
+[![rilcydev's streak](https://api-gitcard.rilcy.app/stats/rilcydev/streak)](https://github.com/rilcydev/Gitcard)
 ```
 
 Shows your current streak, longest streak, and total contributions. Supports the same `theme`, `hide_border`, and color parameters as the stats card.
@@ -132,10 +132,10 @@ Shows your current streak, longest streak, and total contributions. Supports the
 
 ## Top Languages Card
 
-![Tourniercy's top languages](https://api-gitcard.rilcy.app/stats/tourniercy/top-langs)
+![rilcydev's top languages](https://api-gitcard.rilcy.app/stats/rilcydev/top-langs)
 
 ```md
-[![Top Langs](https://api-gitcard.rilcy.app/stats/tourniercy/top-langs)](https://github.com/Tourniercy/Gitcard)
+[![Top Langs](https://api-gitcard.rilcy.app/stats/rilcydev/top-langs)](https://github.com/rilcydev/Gitcard)
 ```
 
 Displays your most-used languages across public repositories, calculated by code size. Supports the same `theme`, `hide_border`, and color parameters as the stats card.
@@ -144,18 +144,18 @@ Displays your most-used languages across public repositories, calculated by code
 
 ## All Demos
 
-![Stats](https://api-gitcard.rilcy.app/stats/tourniercy?theme=default)
+![Stats](https://api-gitcard.rilcy.app/stats/rilcydev?theme=default)
 
-![Streak](https://api-gitcard.rilcy.app/stats/tourniercy/streak?theme=default)
+![Streak](https://api-gitcard.rilcy.app/stats/rilcydev/streak?theme=default)
 
-![Top Langs](https://api-gitcard.rilcy.app/stats/tourniercy/top-langs?theme=default)
+![Top Langs](https://api-gitcard.rilcy.app/stats/rilcydev/top-langs?theme=default)
 
 ### Quick Tip: Align Cards Side by Side
 
 ```html
-<a href="https://github.com/Tourniercy/Gitcard">
-  <img src="https://api-gitcard.rilcy.app/stats/tourniercy" width="400" />
-  <img src="https://api-gitcard.rilcy.app/stats/tourniercy/streak" width="400" />
+<a href="https://github.com/rilcydev/Gitcard">
+  <img src="https://api-gitcard.rilcy.app/stats/rilcydev" width="400" />
+  <img src="https://api-gitcard.rilcy.app/stats/rilcydev/streak" width="400" />
 </a>
 ```
 
@@ -173,7 +173,7 @@ GitCard is designed to be self-hosted. No shared public instance, no rate-limit 
 ### Quick Start
 
 ```bash
-git clone https://github.com/Tourniercy/Gitcard.git
+git clone https://github.com/rilcydev/Gitcard.git
 cd Gitcard
 cp apps/api/.env.example apps/api/.env
 ```
@@ -190,7 +190,7 @@ Then start everything:
 docker compose up -d
 ```
 
-That's it. Open `http://localhost:3000/stats/tourniercy` and you should see an SVG card.
+That's it. Open `http://localhost:3000/stats/rilcydev` and you should see an SVG card.
 
 ### Environment Variables
 
