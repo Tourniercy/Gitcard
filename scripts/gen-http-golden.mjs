@@ -34,20 +34,26 @@ export function init() {}`;
 // (`public status?: number`) de github.ts ne sont pas supportées. Desugaring
 // MÉCANIQUE repris de scripts/gen-graphql.mjs (4 remplacements exacts +
 // 3 assignations de champs, chaque cible DOIT être trouvée).
+// FIX 4c N-6 (revue Q9 ; technique déjà dans gen-ratelimit-golden.mjs:46-75) :
+// les parameter properties de la SIGNATURE du constructeur deviennent des
+// paramètres PLAIN (l'annotation `public X` ne survit pas au type-stripping),
+// PAS des suppressions — l'ancien code supprimait `status` puis référençait
+// `this.status = status` → ReferenceError à la construction d'une
+// GitHubApiError (jamais déclenché là : les captures HTTP ne construisent
+// jamais GitHubApiError — « fetch failed » est une Error nue).
 function desugarParameterProperties(src) {
-  const hits = [
-    ['    public status?: number,\n', 1],
-    ['    public remaining: number,\n', 1],
-    ['    public resetAt?: Date,\n', 1],
-    ['  constructor(public username: string) {', 1],
-  ];
   let out = src;
-  for (const [needle, n] of hits) {
+  for (const [needle, plain] of [
+    ['    public status?: number,\n', '    status?: number,\n'],
+    ['    public remaining: number,\n', '    remaining: number,\n'],
+    ['    public resetAt?: Date,\n', '    resetAt?: Date,\n'],
+    ['  constructor(public username: string) {', '  constructor(username: string) {'],
+  ]) {
     const count = out.split(needle).length - 1;
-    if (count !== n) {
-      throw new Error(`desugar : cible trouvée ${count}x (attendu ${n}) : ${JSON.stringify(needle.slice(0, 40))}`);
+    if (count !== 1) {
+      throw new Error(`desugar : cible trouvée ${count}x (attendu 1) : ${JSON.stringify(needle.slice(0, 40))}`);
     }
-    out = out.split(needle).join(needle === hits[3][0] ? '  constructor(username: string) {' : '');
+    out = out.split(needle).join(plain);
   }
   out = out.replace(
     "    super(message);\n    this.name = 'GitHubApiError';",
