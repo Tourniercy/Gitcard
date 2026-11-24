@@ -6,8 +6,8 @@
     "note": "cache_seconds n entre jamais dans les octets du SVG (headers/ETag uniquement) : variantes cache-* = mêmes octets, hash différent"
   },
   "counts": {
-    "files": 406,
-    "bytes": 1905545,
+    "files": 459,
+    "bytes": 2126621,
     "fixtures": 7
   },
   "entries": [
@@ -8829,6 +8829,1161 @@
       },
       "query": {
         "theme": "paper"
+      }
+    },
+    {
+      "file": "stats/unicode/x-unicode-default.svg",
+      "card": "stats",
+      "fixture": "unicode",
+      "label": "x-unicode-default",
+      "uid": 406,
+      "md5": "2d833ab2434aa3e626effc90eef4bd7b",
+      "paramsHash": "289b4511",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {}
+    },
+    {
+      "file": "stats/unicode/x-unicode-hide.svg",
+      "card": "stats",
+      "fixture": "unicode",
+      "label": "x-unicode-hide",
+      "uid": 407,
+      "md5": "62ed3d7fafe289bcaff285a68fdcb55b",
+      "paramsHash": "368382c7",
+      "options": {
+        "theme": "default",
+        "hide": [
+          "stars",
+          "commits"
+        ],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "hide": "stars,commits"
+      }
+    },
+    {
+      "file": "stats/unicode/x-unicode-colors.svg",
+      "card": "stats",
+      "fixture": "unicode",
+      "label": "x-unicode-colors",
+      "uid": 408,
+      "md5": "8bcaec80b8ca5042e1c238afa0b9b36e",
+      "paramsHash": "83a1c0e1",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "bgColor": "1a1b27",
+        "titleColor": "ff79c6",
+        "textColor": "e6e6e6",
+        "iconColor": "8be9fd",
+        "borderColor": "6272a4",
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "bg_color": "1a1b27",
+        "title_color": "ff79c6",
+        "text_color": "e6e6e6",
+        "icon_color": "8be9fd",
+        "border_color": "6272a4"
+      }
+    },
+    {
+      "file": "stats/unicode/x-unicode-no-icons.svg",
+      "card": "stats",
+      "fixture": "unicode",
+      "label": "x-unicode-no-icons",
+      "uid": 409,
+      "md5": "e71f8aeb15b990ccd13dccce84b8ddf1",
+      "paramsHash": "6ae62e0a",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": false,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "show_icons": "false"
+      }
+    },
+    {
+      "file": "stats/unicode/x-unicode-no-border.svg",
+      "card": "stats",
+      "fixture": "unicode",
+      "label": "x-unicode-no-border",
+      "uid": 410,
+      "md5": "4a950b129a8c6c0e877b7f180aba6edc",
+      "paramsHash": "ca7e2015",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": true,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "hide_border": "true"
+      }
+    },
+    {
+      "file": "stats/unicode/x-unicode-no-title.svg",
+      "card": "stats",
+      "fixture": "unicode",
+      "label": "x-unicode-no-title",
+      "uid": 411,
+      "md5": "1d47cb7cec61d425a74a6c90889f5938",
+      "paramsHash": "5ac9a4f5",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": true,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "hide_title": "true"
+      }
+    },
+    {
+      "file": "stats/unicode/x-unicode-fr.svg",
+      "card": "stats",
+      "fixture": "unicode",
+      "label": "x-unicode-fr",
+      "uid": 412,
+      "md5": "a988054f73c10653e14df4f71be8c78d",
+      "paramsHash": "e3002170",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "fr"
+      },
+      "query": {
+        "locale": "fr"
+      }
+    },
+    {
+      "file": "stats/unicode/x-unicode-de.svg",
+      "card": "stats",
+      "fixture": "unicode",
+      "label": "x-unicode-de",
+      "uid": 413,
+      "md5": "85c0fb549f09b1a207889986d98f1be0",
+      "paramsHash": "698055c2",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "de"
+      },
+      "query": {
+        "locale": "de"
+      }
+    },
+    {
+      "file": "stats/unicode/x-unicode-ar.svg",
+      "card": "stats",
+      "fixture": "unicode",
+      "label": "x-unicode-ar",
+      "uid": 414,
+      "md5": "3e550b754bc3f2c89079422423900406",
+      "paramsHash": "bef7b63d",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "ar"
+      },
+      "query": {
+        "locale": "ar"
+      }
+    },
+    {
+      "file": "stats/unicode/x-unicode-hi.svg",
+      "card": "stats",
+      "fixture": "unicode",
+      "label": "x-unicode-hi",
+      "uid": 415,
+      "md5": "a2de407173e49338809d503d4ee57826",
+      "paramsHash": "54a39f84",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "hi"
+      },
+      "query": {
+        "locale": "hi"
+      }
+    },
+    {
+      "file": "stats/unicode/x-unicode-ja.svg",
+      "card": "stats",
+      "fixture": "unicode",
+      "label": "x-unicode-ja",
+      "uid": 416,
+      "md5": "bda7afa151ce8f430c7691d7e2466a57",
+      "paramsHash": "f7b03076",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "ja"
+      },
+      "query": {
+        "locale": "ja"
+      }
+    },
+    {
+      "file": "stats/unicode/x-unicode-cache-min.svg",
+      "card": "stats",
+      "fixture": "unicode",
+      "label": "x-unicode-cache-min",
+      "uid": 417,
+      "md5": "a04d14ee136338493732c7f6282e5f76",
+      "paramsHash": "93733064",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 1800,
+        "locale": "en"
+      },
+      "query": {
+        "cache_seconds": "1800"
+      }
+    },
+    {
+      "file": "stats/unicode/x-unicode-theme-dark.svg",
+      "card": "stats",
+      "fixture": "unicode",
+      "label": "x-unicode-theme-dark",
+      "uid": 418,
+      "md5": "6e24e268f6b5d6f3d0a8a848303b4ec3",
+      "paramsHash": "022f6ef2",
+      "options": {
+        "theme": "dracula",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "dracula"
+      }
+    },
+    {
+      "file": "streak/unicode/x-unicode-default.svg",
+      "card": "streak",
+      "fixture": "unicode",
+      "label": "x-unicode-default",
+      "uid": 419,
+      "md5": "caa5f9c74374c57d547bb607a621e4df",
+      "paramsHash": "289b4511",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {}
+    },
+    {
+      "file": "streak/unicode/x-unicode-hide.svg",
+      "card": "streak",
+      "fixture": "unicode",
+      "label": "x-unicode-hide",
+      "uid": 420,
+      "md5": "251b2a3a8aa1c3368702b918c3e06815",
+      "paramsHash": "368382c7",
+      "options": {
+        "theme": "default",
+        "hide": [
+          "stars",
+          "commits"
+        ],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "hide": "stars,commits"
+      }
+    },
+    {
+      "file": "streak/unicode/x-unicode-colors.svg",
+      "card": "streak",
+      "fixture": "unicode",
+      "label": "x-unicode-colors",
+      "uid": 421,
+      "md5": "7f3106226728f4e43d77db3a1ae3abea",
+      "paramsHash": "83a1c0e1",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "bgColor": "1a1b27",
+        "titleColor": "ff79c6",
+        "textColor": "e6e6e6",
+        "iconColor": "8be9fd",
+        "borderColor": "6272a4",
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "bg_color": "1a1b27",
+        "title_color": "ff79c6",
+        "text_color": "e6e6e6",
+        "icon_color": "8be9fd",
+        "border_color": "6272a4"
+      }
+    },
+    {
+      "file": "streak/unicode/x-unicode-no-icons.svg",
+      "card": "streak",
+      "fixture": "unicode",
+      "label": "x-unicode-no-icons",
+      "uid": 422,
+      "md5": "69da10bdc055f43a35f08d432640bb86",
+      "paramsHash": "6ae62e0a",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": false,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "show_icons": "false"
+      }
+    },
+    {
+      "file": "streak/unicode/x-unicode-no-border.svg",
+      "card": "streak",
+      "fixture": "unicode",
+      "label": "x-unicode-no-border",
+      "uid": 423,
+      "md5": "12361b58f78e72f2b2a2a47ce26b2519",
+      "paramsHash": "ca7e2015",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": true,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "hide_border": "true"
+      }
+    },
+    {
+      "file": "streak/unicode/x-unicode-no-title.svg",
+      "card": "streak",
+      "fixture": "unicode",
+      "label": "x-unicode-no-title",
+      "uid": 424,
+      "md5": "da405fdc52e6cc6fd4f4c1e186fafe11",
+      "paramsHash": "5ac9a4f5",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": true,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "hide_title": "true"
+      }
+    },
+    {
+      "file": "streak/unicode/x-unicode-fr.svg",
+      "card": "streak",
+      "fixture": "unicode",
+      "label": "x-unicode-fr",
+      "uid": 425,
+      "md5": "57c5edad61c05520ebe3179c462ca9ba",
+      "paramsHash": "e3002170",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "fr"
+      },
+      "query": {
+        "locale": "fr"
+      }
+    },
+    {
+      "file": "streak/unicode/x-unicode-de.svg",
+      "card": "streak",
+      "fixture": "unicode",
+      "label": "x-unicode-de",
+      "uid": 426,
+      "md5": "feb4e9413cb1c3b1ddd3c2ca0100e0d7",
+      "paramsHash": "698055c2",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "de"
+      },
+      "query": {
+        "locale": "de"
+      }
+    },
+    {
+      "file": "streak/unicode/x-unicode-ar.svg",
+      "card": "streak",
+      "fixture": "unicode",
+      "label": "x-unicode-ar",
+      "uid": 427,
+      "md5": "a04bf23cefb1c85ede73cd4632948932",
+      "paramsHash": "bef7b63d",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "ar"
+      },
+      "query": {
+        "locale": "ar"
+      }
+    },
+    {
+      "file": "streak/unicode/x-unicode-hi.svg",
+      "card": "streak",
+      "fixture": "unicode",
+      "label": "x-unicode-hi",
+      "uid": 428,
+      "md5": "5149d95cce04a6a527d55d1fbb413b3a",
+      "paramsHash": "54a39f84",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "hi"
+      },
+      "query": {
+        "locale": "hi"
+      }
+    },
+    {
+      "file": "streak/unicode/x-unicode-ja.svg",
+      "card": "streak",
+      "fixture": "unicode",
+      "label": "x-unicode-ja",
+      "uid": 429,
+      "md5": "689a8532714c353f99945eee55fcd7e8",
+      "paramsHash": "f7b03076",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "ja"
+      },
+      "query": {
+        "locale": "ja"
+      }
+    },
+    {
+      "file": "streak/unicode/x-unicode-cache-min.svg",
+      "card": "streak",
+      "fixture": "unicode",
+      "label": "x-unicode-cache-min",
+      "uid": 430,
+      "md5": "8d6e521cbbc78b7b36fdc7b4c5321bd4",
+      "paramsHash": "93733064",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 1800,
+        "locale": "en"
+      },
+      "query": {
+        "cache_seconds": "1800"
+      }
+    },
+    {
+      "file": "streak/unicode/x-unicode-theme-dark.svg",
+      "card": "streak",
+      "fixture": "unicode",
+      "label": "x-unicode-theme-dark",
+      "uid": 431,
+      "md5": "0060f12922acf32171ce300ec4a1aa87",
+      "paramsHash": "022f6ef2",
+      "options": {
+        "theme": "dracula",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "dracula"
+      }
+    },
+    {
+      "file": "langs/unicode/x-unicode-default.svg",
+      "card": "langs",
+      "fixture": "unicode",
+      "label": "x-unicode-default",
+      "uid": 432,
+      "md5": "a5c02be05e53196a89e1218fc1eee444",
+      "paramsHash": "289b4511",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {}
+    },
+    {
+      "file": "langs/unicode/x-unicode-hide.svg",
+      "card": "langs",
+      "fixture": "unicode",
+      "label": "x-unicode-hide",
+      "uid": 433,
+      "md5": "b93e4e185e611776aff877886fad57b0",
+      "paramsHash": "368382c7",
+      "options": {
+        "theme": "default",
+        "hide": [
+          "stars",
+          "commits"
+        ],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "hide": "stars,commits"
+      }
+    },
+    {
+      "file": "langs/unicode/x-unicode-colors.svg",
+      "card": "langs",
+      "fixture": "unicode",
+      "label": "x-unicode-colors",
+      "uid": 434,
+      "md5": "a9c27dcb20fb5a0b030a05d197da11a1",
+      "paramsHash": "83a1c0e1",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "bgColor": "1a1b27",
+        "titleColor": "ff79c6",
+        "textColor": "e6e6e6",
+        "iconColor": "8be9fd",
+        "borderColor": "6272a4",
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "bg_color": "1a1b27",
+        "title_color": "ff79c6",
+        "text_color": "e6e6e6",
+        "icon_color": "8be9fd",
+        "border_color": "6272a4"
+      }
+    },
+    {
+      "file": "langs/unicode/x-unicode-no-icons.svg",
+      "card": "langs",
+      "fixture": "unicode",
+      "label": "x-unicode-no-icons",
+      "uid": 435,
+      "md5": "8f576a7c76f749a16a8b868913f64d6c",
+      "paramsHash": "6ae62e0a",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": false,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "show_icons": "false"
+      }
+    },
+    {
+      "file": "langs/unicode/x-unicode-no-border.svg",
+      "card": "langs",
+      "fixture": "unicode",
+      "label": "x-unicode-no-border",
+      "uid": 436,
+      "md5": "ba03ca87f53b42b849f5c6f43206e19a",
+      "paramsHash": "ca7e2015",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": true,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "hide_border": "true"
+      }
+    },
+    {
+      "file": "langs/unicode/x-unicode-no-title.svg",
+      "card": "langs",
+      "fixture": "unicode",
+      "label": "x-unicode-no-title",
+      "uid": 437,
+      "md5": "31cf4cc8a8d5195924a18dee685de0a2",
+      "paramsHash": "5ac9a4f5",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": true,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "hide_title": "true"
+      }
+    },
+    {
+      "file": "langs/unicode/x-unicode-fr.svg",
+      "card": "langs",
+      "fixture": "unicode",
+      "label": "x-unicode-fr",
+      "uid": 438,
+      "md5": "82db7d38567115644d3c81c511326a50",
+      "paramsHash": "e3002170",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "fr"
+      },
+      "query": {
+        "locale": "fr"
+      }
+    },
+    {
+      "file": "langs/unicode/x-unicode-de.svg",
+      "card": "langs",
+      "fixture": "unicode",
+      "label": "x-unicode-de",
+      "uid": 439,
+      "md5": "c7e01316524e14636ccbfe0383d6dde0",
+      "paramsHash": "698055c2",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "de"
+      },
+      "query": {
+        "locale": "de"
+      }
+    },
+    {
+      "file": "langs/unicode/x-unicode-ar.svg",
+      "card": "langs",
+      "fixture": "unicode",
+      "label": "x-unicode-ar",
+      "uid": 440,
+      "md5": "f86a5086d6535f97e89e951af52bd996",
+      "paramsHash": "bef7b63d",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "ar"
+      },
+      "query": {
+        "locale": "ar"
+      }
+    },
+    {
+      "file": "langs/unicode/x-unicode-hi.svg",
+      "card": "langs",
+      "fixture": "unicode",
+      "label": "x-unicode-hi",
+      "uid": 441,
+      "md5": "c5362ed2a23c77984fb5f7aa16d59223",
+      "paramsHash": "54a39f84",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "hi"
+      },
+      "query": {
+        "locale": "hi"
+      }
+    },
+    {
+      "file": "langs/unicode/x-unicode-ja.svg",
+      "card": "langs",
+      "fixture": "unicode",
+      "label": "x-unicode-ja",
+      "uid": 442,
+      "md5": "34c1fa847c0f57093ff1d2069c63dd7c",
+      "paramsHash": "f7b03076",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "ja"
+      },
+      "query": {
+        "locale": "ja"
+      }
+    },
+    {
+      "file": "langs/unicode/x-unicode-cache-min.svg",
+      "card": "langs",
+      "fixture": "unicode",
+      "label": "x-unicode-cache-min",
+      "uid": 443,
+      "md5": "d10385b387859efcd0af00d9b725264d",
+      "paramsHash": "93733064",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 1800,
+        "locale": "en"
+      },
+      "query": {
+        "cache_seconds": "1800"
+      }
+    },
+    {
+      "file": "langs/unicode/x-unicode-theme-dark.svg",
+      "card": "langs",
+      "fixture": "unicode",
+      "label": "x-unicode-theme-dark",
+      "uid": 444,
+      "md5": "bf37e77ba06d93b6ae87deca236bdb12",
+      "paramsHash": "022f6ef2",
+      "options": {
+        "theme": "dracula",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "dracula"
+      }
+    },
+    {
+      "file": "langs/unicode/x-unicode-compact.svg",
+      "card": "langs",
+      "fixture": "unicode",
+      "label": "x-unicode-compact",
+      "uid": 445,
+      "md5": "49dd0210019c13a8a1888f17c5edfc2e",
+      "paramsHash": "9a5aea82",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": true,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en",
+        "layout": "compact"
+      },
+      "query": {
+        "layout": "compact",
+        "hide_border": "true"
+      }
+    },
+    {
+      "file": "profile/unicode/x-unicode-default.svg",
+      "card": "profile",
+      "fixture": "unicode",
+      "label": "x-unicode-default",
+      "uid": 446,
+      "md5": "4ee3845a64d91b83fe9214632c9f6747",
+      "paramsHash": "289b4511",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {}
+    },
+    {
+      "file": "profile/unicode/x-unicode-hide.svg",
+      "card": "profile",
+      "fixture": "unicode",
+      "label": "x-unicode-hide",
+      "uid": 447,
+      "md5": "faaab66f509848478127a799a466db03",
+      "paramsHash": "368382c7",
+      "options": {
+        "theme": "default",
+        "hide": [
+          "stars",
+          "commits"
+        ],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "hide": "stars,commits"
+      }
+    },
+    {
+      "file": "profile/unicode/x-unicode-colors.svg",
+      "card": "profile",
+      "fixture": "unicode",
+      "label": "x-unicode-colors",
+      "uid": 448,
+      "md5": "159c2f9f621c9eea7bdd4a5a57cafc05",
+      "paramsHash": "83a1c0e1",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "bgColor": "1a1b27",
+        "titleColor": "ff79c6",
+        "textColor": "e6e6e6",
+        "iconColor": "8be9fd",
+        "borderColor": "6272a4",
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "bg_color": "1a1b27",
+        "title_color": "ff79c6",
+        "text_color": "e6e6e6",
+        "icon_color": "8be9fd",
+        "border_color": "6272a4"
+      }
+    },
+    {
+      "file": "profile/unicode/x-unicode-no-icons.svg",
+      "card": "profile",
+      "fixture": "unicode",
+      "label": "x-unicode-no-icons",
+      "uid": 449,
+      "md5": "795a11ff789f8e20a522a8c9867edd05",
+      "paramsHash": "6ae62e0a",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": false,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "show_icons": "false"
+      }
+    },
+    {
+      "file": "profile/unicode/x-unicode-no-border.svg",
+      "card": "profile",
+      "fixture": "unicode",
+      "label": "x-unicode-no-border",
+      "uid": 450,
+      "md5": "cb0e6abd8c7d396920983800674f9a6a",
+      "paramsHash": "ca7e2015",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": true,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "hide_border": "true"
+      }
+    },
+    {
+      "file": "profile/unicode/x-unicode-no-title.svg",
+      "card": "profile",
+      "fixture": "unicode",
+      "label": "x-unicode-no-title",
+      "uid": 451,
+      "md5": "3bc39af80c35c6ba8a45ef3a193f796b",
+      "paramsHash": "5ac9a4f5",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": true,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "hide_title": "true"
+      }
+    },
+    {
+      "file": "profile/unicode/x-unicode-fr.svg",
+      "card": "profile",
+      "fixture": "unicode",
+      "label": "x-unicode-fr",
+      "uid": 452,
+      "md5": "7eebfeacf85efe627024b05361795426",
+      "paramsHash": "e3002170",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "fr"
+      },
+      "query": {
+        "locale": "fr"
+      }
+    },
+    {
+      "file": "profile/unicode/x-unicode-de.svg",
+      "card": "profile",
+      "fixture": "unicode",
+      "label": "x-unicode-de",
+      "uid": 453,
+      "md5": "4a09bbdd56557196e01e9fda07345444",
+      "paramsHash": "698055c2",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "de"
+      },
+      "query": {
+        "locale": "de"
+      }
+    },
+    {
+      "file": "profile/unicode/x-unicode-ar.svg",
+      "card": "profile",
+      "fixture": "unicode",
+      "label": "x-unicode-ar",
+      "uid": 454,
+      "md5": "8bb5bc9977f5194bb52e9d0370f5c7df",
+      "paramsHash": "bef7b63d",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "ar"
+      },
+      "query": {
+        "locale": "ar"
+      }
+    },
+    {
+      "file": "profile/unicode/x-unicode-hi.svg",
+      "card": "profile",
+      "fixture": "unicode",
+      "label": "x-unicode-hi",
+      "uid": 455,
+      "md5": "56dd19f4d7651c586df66473f9f43c1a",
+      "paramsHash": "54a39f84",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "hi"
+      },
+      "query": {
+        "locale": "hi"
+      }
+    },
+    {
+      "file": "profile/unicode/x-unicode-ja.svg",
+      "card": "profile",
+      "fixture": "unicode",
+      "label": "x-unicode-ja",
+      "uid": 456,
+      "md5": "b85699dc8aaa222b1bedd3ff3b4a82f4",
+      "paramsHash": "f7b03076",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "ja"
+      },
+      "query": {
+        "locale": "ja"
+      }
+    },
+    {
+      "file": "profile/unicode/x-unicode-cache-min.svg",
+      "card": "profile",
+      "fixture": "unicode",
+      "label": "x-unicode-cache-min",
+      "uid": 457,
+      "md5": "0976782b9f478af3b662864271c7adf0",
+      "paramsHash": "93733064",
+      "options": {
+        "theme": "default",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 1800,
+        "locale": "en"
+      },
+      "query": {
+        "cache_seconds": "1800"
+      }
+    },
+    {
+      "file": "profile/unicode/x-unicode-theme-dark.svg",
+      "card": "profile",
+      "fixture": "unicode",
+      "label": "x-unicode-theme-dark",
+      "uid": 458,
+      "md5": "45582c0294b3af7455029f305fc59863",
+      "paramsHash": "022f6ef2",
+      "options": {
+        "theme": "dracula",
+        "hide": [],
+        "showIcons": true,
+        "hideBorder": false,
+        "hideTitle": false,
+        "cacheSeconds": 14400,
+        "locale": "en"
+      },
+      "query": {
+        "theme": "dracula"
       }
     }
   ]

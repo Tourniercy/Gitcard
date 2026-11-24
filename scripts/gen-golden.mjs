@@ -155,6 +155,41 @@ for (const themeName of THEME_NAMES) {
 }
 console.log(`themes: ${THEME_NAMES.length} rendus stats × fixture ${THEME_FIXTURE.id}, uid ${THEME_NAMES.length} finis à ${uid - 1}`);
 
+// ================= 2ter. Extension fix2 (R6) : fixture non ASCII + email non null =================
+// APPENDUE après l'extension thèmes : les uid des 406 entrées précédentes restent
+// inchangés → les SVG existants sont réécrits à l'identique (diff = ajouts + manifeste).
+// Étiquettes préfixées x- : aucune collision avec les labels v1 ni x-theme-*.
+const FIX2_FIXTURES = ['unicode'].map((id) => ({
+  id,
+  data: JSON.parse(readFileSync(`${goldenDir}/fixtures/${id}.json`, 'utf8')),
+}));
+for (const { id, data } of FIX2_FIXTURES) {
+  for (const card of CARDS) {
+    for (const opt of OPTION_SETS) {
+      if (opt.langsOnly && card !== 'langs') continue;
+      const options = parseCardOptions(opt.query);
+      const label = `x-${id}-${opt.label}`;
+      const svg = RENDER[card](data[card === 'langs' ? 'langs' : card] ?? data[card], options);
+      const rel = `${card}/${id}/${label}.svg`;
+      mkdirSync(`${goldenDir}/${card}/${id}`, { recursive: true });
+      writeFileSync(`${goldenDir}/${rel}`, svg);
+      totalBytes += Buffer.byteLength(svg, 'utf8');
+      manifest.entries.push({
+        file: rel,
+        card,
+        fixture: id,
+        label,
+        uid: uid++,
+        md5: md5hex(svg),
+        paramsHash: md5hex(JSON.stringify(options)).slice(0, 8),
+        options: JSON.parse(JSON.stringify(options)),
+        query: opt.query,
+      });
+    }
+  }
+}
+console.log(`fix2 R6 : fixture(s) ${FIX2_FIXTURES.map((f) => f.id).join(', ')} rendus, uid finis à ${uid - 1}`);
+
 manifest.counts = { files: manifest.entries.length, bytes: totalBytes, fixtures: fixtures.length };
 writeFileSync(`${goldenDir}/manifest.json`, JSON.stringify(manifest, null, 2));
 console.log(`corpus: ${manifest.entries.length} SVG, ${totalBytes} octets, uid 0..${uid - 1}`);
@@ -175,12 +210,15 @@ for (const code of LOCALE_CODES) {
   const zeroPart = nf.formatToParts(0).find((p) => p.type === 'integer').value;
   const digits = [zeroPart[0]];
   for (let i = 0; i < 9; i++) digits.push(intDigits[i]);
+  // séparateur décimal (fix2 R4/R2 : nécessaire au format Intl des nombres fractionnaires)
+  const decimalPart = nf.formatToParts(1.5).find((p) => p.type === 'decimal');
   const number = {};
   for (const n of intSamples) number[String(n)] = nf.format(n);
   locales[code] = {
     separatorRightToLeft: groupParts.slice().reverse(),
     groupSizesRightToLeft: collapsed,
     digits,
+    decimal: decimalPart ? decimalPart.value : '',
     label: new Intl.DisplayNames([code], { type: 'language' }).of(code) ?? code,
     number,
   };
@@ -201,6 +239,15 @@ for (const d of [...dateStrs].sort()) {
   months[d] = new Date(d).toLocaleString('en', { month: 'short' });
 }
 const intlTables = { node: NODE_VERSION, localeCount: LOCALE_CODES.length, locales, dates, months };
+// fix2 R4 : oracle du repli de locale — `Intl.NumberFormat(tag_inconnu)` résout vers
+// la locale par défaut du runtime (regroupement « root ») ; tags invalides jettent
+// une RangeError côté Intl, mais parseCardOptions (zod) mappe déjà tout hors
+// LOCALE_CODES vers 'en', donc la crate ne voit que des tags valides-sans-données.
+const localeFallback = {};
+for (const bad of ['xx', 'zz', 'qq']) {
+  localeFallback[bad] = new Intl.NumberFormat(bad).format(1234567);
+}
+intlTables.localeFallback = localeFallback;
 writeFileSync(`${goldenDir}/intl-tables.json`, JSON.stringify(intlTables, null, 1));
 console.log(`intl: ${LOCALE_CODES.length} locales (${LOCALE_CODES.join(',')}), ${dateStrs.size} dates`);
 
@@ -320,4 +367,201 @@ writeFileSync(
   JSON.stringify({ node: NODE_VERSION, cx: 90, cy: 110, radius: 55, samples: arcSamples }, null, 1)
 );
 console.log(`p2-meta: thèmes ${THEME_NAMES.length} / ${THEME_GROUPS.length} groupes, ${arcSamples.length} arcs createArcPath`);
+
+// ================= 8. Oracle fix2 R1 : parsing `new Date(x)` (V8) =================
+// Pour chaque entrée : md5 du SVG legacy de (i) la carte streak (les 4 champs date
+// = input) et (ii) la carte profile (createdAt = input ET toutes les dates du
+// contributionCalendar = input). Quand le legacy LÈVE (RangeError « Invalid time
+// value » sur date invalide), on enregistre `err:<nom>` — le port Rust doit échouer
+// de même (aucun panic). uid = valeur du compteur global cardIdCounter au moment
+// du rendu (+1 par rendu réussi ; un rendu en échec ne consomme rien).
+const ABSENT = Symbol('absent');
+const serInput = (v) => (v === ABSENT ? { $absent: true } : v);
+
+const dateInputsRepresentative = [
+  // ISO date seule
+  '2024-01-05', '2026-02-14', '1970-01-01', '2000-02-29',
+  // ISO date-heure, avec/sans Z, fraction, séparateur espace
+  '2024-01-05T12:00:00Z', '2024-01-05T12:00:00.500Z', '2024-01-05T12:00:00.123456Z',
+  '2024-01-05T12:00:00.999Z', '2024-01-05T12:00:00.9999Z', '2024-01-05T12:00:00',
+  '2024-01-05T12:00', '2024-01-05 12:00:00',
+  // décalages
+  '2024-01-05T12:00:00+02:00', '2024-01-05T12:00:00-05:30', '2024-01-05T12:00:00+0200',
+  '2024-01-05T00:00:00+23:59', '2024-01-05T00:30:00-01:00',
+  // année seule / année-mois
+  '2024', '1970', '2000', '2024-06', '2024-12', '1999-12',
+  // jours hors bornes (rollover V8)
+  '2026-02-30', '2024-02-30', '2024-02-31', '2024-04-31', '2024-01-00', '2024-01-32',
+  '2023-12-00', '2024-02-00',
+  // mois 00 / 13+ / composantes massives
+  '2024-00-15', '2024-13-01', '2024-13-32', '2024-20-20', '2024-99-99',
+  // heure hors bornes
+  '2024-01-05T24:00:00Z', '2024-01-05T12:60:00Z',
+  // mois en lettres (parseur legacy V8)
+  'January 5, 2024', 'Jan 5, 2024', '5 January 2024', 'JANUARY 5, 2024', 'jan 5 2024',
+  'February 30, 2026', 'Feb 29, 2024', 'Feb 29, 2025', 'Dec 25, 1999',
+  'september 21, 2023', 'January 2024', 'Jan 5', 'May 2024',
+  // formats type RFC 2822
+  'Mon, 05 Jan 2024 12:00:00 GMT', 'Mon, 05 Jan 2024 12:00:00 +0200',
+  'Fri, 05 Jan 2024 12:00:00 UTC', '05 Jan 2024 12:00:00 GMT',
+  'Tue, 01 Apr 2025 00:00:00 GMT', 'Sun, 03 Mar 2024 23:59:59 PST',
+  // numériques non ISO (parseur legacy)
+  '2026-1-5', '01/05/2024', '2024/01/05', '2024/1/5', '12/25/2023', '2/3/24', '1/5',
+  // formes diverses acceptées/refusées
+  '0024-05-06', '0099-12-31', '10000', '  2024-01-05  ', '2024-01-05z', '+002024-01-05',
+  '1735689600000', '20240105',
+  // refus attendus
+  '', ' ', 'garbage', 'not a date', 'x', '2026-01-01T12Z', 'null', 'undefined',
+  // non-chaînes : null, nombre (epoch), champ absent
+  null, 1735689600000, 0, -86400000, 951782400000, 12.5, ABSENT,
+];
+
+// liste pseudo-aléatoire : graine fixe (mulberry32), alphabet mixte, longueur 0..40
+function mulberry32(seed) {
+  let a = seed >>> 0;
+  return function () {
+    a |= 0; a = (a + 0x6d2b79f5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+const RAND_N = 2000;
+const RAND_ALPHA = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 -:,./+';
+const dateInputsRandom = [];
+{
+  const rnd = mulberry32(0x20261124);
+  for (let i = 0; i < RAND_N; i++) {
+    const len = Math.floor(rnd() * 41);
+    let s = '';
+    for (let j = 0; j < len; j++) s += RAND_ALPHA[Math.floor(rnd() * RAND_ALPHA.length)];
+    dateInputsRandom.push(s);
+  }
+}
+
+const typicalData = fixtures.find((f) => f.id === 'typical').data;
+const defaultOptions = parseCardOptions({});
+
+function renderDateEntry(input) {
+  const streak = JSON.parse(JSON.stringify(typicalData.streak));
+  for (const k of ['currentStreakStart', 'currentStreakEnd', 'longestStreakStart', 'longestStreakEnd']) {
+    if (input === ABSENT) delete streak[k]; else streak[k] = input;
+  }
+  const profile = JSON.parse(JSON.stringify(typicalData.profile));
+  if (input === ABSENT) delete profile.createdAt; else profile.createdAt = input;
+  for (const d of profile.contributionCalendar) {
+    if (input === ABSENT) delete d.date; else d.date = input;
+  }
+  const entry = { in: serInput(input) };
+  try {
+    entry.su = uid;
+    entry.s = md5hex(renderStreakCard(streak, defaultOptions));
+    uid++;
+  } catch (e) {
+    entry.s = `err:${e.constructor.name}`;
+  }
+  try {
+    entry.pu = uid;
+    entry.p = md5hex(renderProfileCard(profile, defaultOptions));
+    uid++;
+  } catch (e) {
+    entry.p = `err:${e.constructor.name}`;
+  }
+  return entry;
+}
+
+mkdirSync(`${goldenDir}/meta`, { recursive: true });
+const dateExtract = {
+  node: NODE_VERSION,
+  kind: 'date-extract',
+  now: new Date().toISOString().slice(0, 7),
+  fixture: 'typical',
+  options: 'parseCardOptions({}) — variante « default » du manifeste',
+  uidRule: 'su/pu = valeur du compteur global cardIdCounter au moment du rendu streak/profile ; +1 par rendu réussi (createCardWrapper) ; un rendu en échec (err:*) ne consomme rien ; numérotation globale du script',
+  injectionRule: 'streak : currentStreakStart/End + longestStreakStart/End = input ; profile : createdAt = input ET contributionCalendar[*].date = input ; {"$absent":true} = champ supprimé (undefined)',
+  representative: dateInputsRepresentative.map(renderDateEntry),
+  random: dateInputsRandom.map(renderDateEntry),
+};
+writeFileSync(`${goldenDir}/meta/date-extract.json`, JSON.stringify(dateExtract));
+console.log(`r1: ${dateExtract.representative.length} entrées représentatives + ${dateExtract.random.length} aléatoires (dates), uid fini à ${uid - 1}`);
+
+// ================= 9. Oracle fix2 R2 : compteurs et champs texte =================
+// Pour chaque carte et chaque champ numérique/texte déclaré dans types.ts :
+// valeurs hors/aux bornes ; md5 du SVG legacy ou err:<nom> quand le legacy lève.
+const NUM_VALUES = [ABSENT, null, 0, -5, 12.5, 9007199254740993, 1e21, '42', true];
+const TEXT_VALUES = [ABSENT, null, '', 0, 'José García', '日本語のテスト', 'Émoji 🚀 ici'];
+const NUMERIC_FIELDS = {
+  stats: ['totalStars', 'totalForks', 'totalCommits', 'totalPRs', 'totalIssues', 'contributedTo'],
+  streak: ['totalContributions', 'currentStreak', 'longestStreak'],
+  langs: ['languages[0].percentage', 'languages[0].size'],
+  profile: ['contributionsThisYear', 'publicRepos', 'contributionCalendar[*].count'],
+};
+const TEXT_FIELDS = {
+  stats: ['username', 'name'],
+  streak: ['username', 'currentStreakStart', 'currentStreakEnd', 'longestStreakStart', 'longestStreakEnd'],
+  langs: ['username', 'languages[0].name', 'languages[0].color'],
+  profile: ['username', 'name', 'createdAt', 'email', 'contributionCalendar[*].date'],
+};
+
+function setPath(root, path, value) {
+  const star = path.indexOf('[*]');
+  if (star !== -1) {
+    const head = path.slice(0, star);
+    const rest = path.slice(star + 3).replace(/^\./, '');
+    const arr = head === '' ? root : getPath(root, head);
+    for (const el of arr) setPath(el, rest, value);
+    return;
+  }
+  const dot = path.indexOf('.');
+  if (dot === -1) {
+    if (value === ABSENT) delete root[path]; else root[path] = value;
+    return;
+  }
+  const head = path.slice(0, dot);
+  const m = head.match(/^(.+?)\[(\d+)\]$/);
+  const child = m ? getPath(root, m[1])[Number(m[2])] : root[head];
+  setPath(child, path.slice(dot + 1), value);
+}
+function getPath(root, path) {
+  const m = path.match(/^(.+?)\[(\d+)\]$/);
+  return m ? getPath(root, m[1])[Number(m[2])] : root[path];
+}
+
+const counterEntries = [];
+for (const card of CARDS) {
+  for (const kind of ['number', 'text']) {
+    const fields = kind === 'number' ? NUMERIC_FIELDS[card] : TEXT_FIELDS[card];
+    const values = kind === 'number' ? NUM_VALUES : TEXT_VALUES;
+    for (const field of fields) {
+      for (const value of values) {
+        const data = JSON.parse(JSON.stringify(typicalData[card === 'langs' ? 'langs' : card]));
+        setPath(data, field, value);
+        const entry = { card, kind, field, value: serInput(value) };
+        try {
+          entry.u = uid;
+          entry.md5 = md5hex(RENDER[card](data, defaultOptions));
+          uid++;
+        } catch (e) {
+          entry.err = e.constructor.name;
+        }
+        counterEntries.push(entry);
+      }
+    }
+  }
+}
+const countersExtract = {
+  node: NODE_VERSION,
+  kind: 'counters-extract',
+  now: new Date().toISOString().slice(0, 7),
+  fixture: 'typical',
+  options: 'parseCardOptions({}) — variante « default » du manifeste',
+  uidRule: 'u = valeur du compteur global cardIdCounter au moment du rendu ; +1 par rendu réussi ; un rendu en échec (err) ne consomme rien ; numérotation globale du script',
+  numericValues: NUM_VALUES.map(serInput),
+  textValues: TEXT_VALUES.map(serInput),
+  numericFields: NUMERIC_FIELDS,
+  textFields: TEXT_FIELDS,
+  entries: counterEntries,
+};
+writeFileSync(`${goldenDir}/meta/counters-extract.json`, JSON.stringify(countersExtract));
+console.log(`r2: ${counterEntries.length} entrées compteurs/texte, uid fini à ${uid - 1}`);
 console.log('GEN_OK');
