@@ -281,6 +281,35 @@ fn pool_error_to_github(e: crate::pat_pool::PatPoolError) -> GitHubError {
     }
 }
 
+/// `fetchWithRetry` sur un pool PARTAGÉ entre requêtes (phase 4 : routes axum).
+/// Les verrous sont pris PONCTUELLEMENT — jamais tenus à travers `.await` —
+/// et la logique est exactement celle de `fetchWithRetry` (github.ts:167-178) :
+/// un jeton, UN seul nouvel essai avec le jeton suivant si limite, le jeton
+/// échu marqué AVANT le 2e essai, le second échec propagé.
+pub async fn fetch_with_retry_shared(
+    http: &reqwest::Client,
+    pool: &std::sync::Mutex<crate::pat_pool::PatPool>,
+    url: &str,
+    username: &str,
+) -> Result<FetchResult, GitHubError> {
+    let token = {
+        let mut p = pool.lock().unwrap_or_else(|e| e.into_inner());
+        p.get_next_token().map_err(pool_error_to_github)?
+    };
+    match fetch_github_data_at(http, url, username, &token).await {
+        Ok(result) => Ok(result),
+        Err(GitHubError::RateLimit { .. }) => {
+            let token2 = {
+                let mut p = pool.lock().unwrap_or_else(|e| e.into_inner());
+                p.mark_exhausted(&token);
+                p.get_next_token().map_err(pool_error_to_github)?
+            };
+            fetch_github_data_at(http, url, username, &token2).await
+        }
+        Err(err) => Err(err),
+    }
+}
+
 // ---------------------------------------------------------------- agrégations
 
 fn num(v: &Value) -> f64 {

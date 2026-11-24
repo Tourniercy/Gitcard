@@ -15,7 +15,10 @@
 //! — là où le legacy lève (RangeError date invalide, TypeError encodeHTML/toFixed),
 //! le Rust retourne une erreur capturable, plus aucun panic sur donnée.
 
+pub mod app;
+pub mod cache;
 pub mod cards;
+pub mod config;
 pub mod fdlibm;
 pub mod github;
 pub mod intl;
@@ -25,6 +28,7 @@ pub mod jsnum;
 pub mod jsval;
 pub mod octicons;
 pub mod pat_pool;
+pub mod query_params;
 pub mod sanitize;
 pub mod themes;
 pub mod types;

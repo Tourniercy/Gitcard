@@ -12,7 +12,13 @@ serde_json = { version = "1", features = ["float_roundtrip", "arbitrary_precisio
 md-5 = "0.10"
 # P3 : client GitHub GraphQL — TLS par rustls/ring (RULES-RUST), pas d'openssl.
 reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
-tokio = { version = "1", features = ["rt-multi-thread", "macros", "time"] }
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "time", "net"] }
+# P4 : HTTP serveur (axum/hyper 1) + cache L1 TTL par entrée (moka) +
+# validation `z.string().url()` des env REDIS_URL/SENTRY_DSN (zod v4 =
+# `URL.canParse` WHATWG → crate `url`, cf. src/config.rs).
+axum = { version = "0.8", default-features = false, features = ["http1", "tokio"] }
+moka = { version = "0.12", default-features = false, features = ["future"] }
+url = "2"
 
 [dev-dependencies]
 # serveur HTTP de test lié sur 127.0.0.1 (valable sous --network none).

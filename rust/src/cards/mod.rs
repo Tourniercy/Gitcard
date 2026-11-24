@@ -18,6 +18,23 @@ pub use streak::render_streak_card;
 
 use std::fmt;
 
+/// `errorSvg(message, width = 495, height = 120)` — gabarit VERBATIM de
+/// `apps/api/src/routes/card-response.ts:17-25` (oracle : tests/golden/errors/,
+/// générés par le legacy). Message NON échappé (`username` brut, écart assumé
+/// « ne pas réparer l'injection » — étude §2.9), `.trim()` final, `width/2`
+/// → `247.5` et `height/2` → `60` littéraux. Ne consomme PAS le compteur d'uid
+/// (pas de `createCardWrapper`).
+pub fn error_svg(message: &str) -> String {
+    const WIDTH: f64 = 495.0;
+    const HEIGHT: f64 = 120.0;
+    let body = format!(
+        "\n<svg width=\"{WIDTH}\" height=\"{HEIGHT}\" viewBox=\"0 0 {WIDTH} {HEIGHT}\" xmlns=\"http://www.w3.org/2000/svg\">\n  <rect width=\"{WIDTH}\" height=\"{HEIGHT}\" rx=\"8\" fill=\"#fef2f2\" stroke=\"#fca5a5\" />\n  <text x=\"{}\" y=\"{}\" text-anchor=\"middle\" dominant-baseline=\"central\"\n        font-family=\"'Segoe UI', system-ui, sans-serif\" font-size=\"14\" fill=\"#dc2626\">\n    {message}\n  </text>\n</svg>",
+        crate::jsnum::js_f64_to_string(WIDTH / 2.0),
+        crate::jsnum::js_f64_to_string(HEIGHT / 2.0),
+    );
+    body.trim().to_string()
+}
+
 /// Équivalent capturable des exceptions JS du renderer legacy.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum RenderError {
