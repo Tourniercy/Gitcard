@@ -10,3 +10,10 @@ description = "P0 gitcard-api : primitives numériques JS + tables Intl + octico
 # décimaux longs (constaté sur 1.1471975511965977 — oracle arc-extract.json).
 serde_json = { version = "1", features = ["float_roundtrip", "arbitrary_precision"] }
 md-5 = "0.10"
+# P3 : client GitHub GraphQL — TLS par rustls/ring (RULES-RUST), pas d'openssl.
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "time"] }
+
+[dev-dependencies]
+# serveur HTTP de test lié sur 127.0.0.1 (valable sous --network none).
+wiremock = "0.6"

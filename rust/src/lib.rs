@@ -17,11 +17,14 @@
 
 pub mod cards;
 pub mod fdlibm;
+pub mod github;
 pub mod intl;
+pub mod js_json;
 pub mod jsdate;
 pub mod jsnum;
 pub mod jsval;
 pub mod octicons;
+pub mod pat_pool;
 pub mod sanitize;
 pub mod themes;
 pub mod types;

@@ -1,0 +1,111 @@
+{
+  "data": {
+    "user": {
+      "name": "Ada Lovelace",
+      "login": "octocat",
+      "createdAt": "2019-04-15T08:32:11Z",
+      "contributionsCollection": {
+        "totalCommitContributions": 1247,
+        "restrictedContributionsCount": 0,
+        "contributionCalendar": {
+          "totalContributions": 842,
+          "weeks": [
+            {
+              "contributionDays": [
+                {
+                  "contributionCount": 3,
+                  "date": "2026-11-02"
+                },
+                {
+                  "contributionCount": 0,
+                  "date": "2026-11-03"
+                },
+                {
+                  "contributionCount": 5,
+                  "date": "2026-11-04"
+                },
+                {
+                  "contributionCount": 7,
+                  "date": "2026-11-05"
+                },
+                {
+                  "contributionCount": 2,
+                  "date": "2026-11-06"
+                },
+                {
+                  "contributionCount": 9,
+                  "date": "2026-11-07"
+                },
+                {
+                  "contributionCount": 4,
+                  "date": "2026-11-08"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "repositories": {
+        "totalCount": 23,
+        "nodes": [
+          {
+            "stargazerCount": 12,
+            "forkCount": 3,
+            "languages": {
+              "edges": [
+                {
+                  "size": 900,
+                  "node": {
+                    "name": "Shell",
+                    "color": null
+                  }
+                },
+                {
+                  "size": 300,
+                  "node": {
+                    "name": "Vim Script",
+                    "color": null
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "stargazerCount": 8,
+            "forkCount": 2,
+            "languages": {
+              "edges": [
+                {
+                  "size": 600,
+                  "node": {
+                    "name": "C",
+                    "color": "#555555"
+                  }
+                },
+                {
+                  "size": 150,
+                  "node": {
+                    "name": "Makefile",
+                    "color": null
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "pullRequests": {
+        "totalCount": 87
+      },
+      "issues": {
+        "totalCount": 41
+      },
+      "followers": {
+        "totalCount": 512
+      },
+      "repositoriesContributedTo": {
+        "totalCount": 118
+      }
+    }
+  }
+}

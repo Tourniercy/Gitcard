@@ -1,0 +1,49 @@
+
+query($login: String!) {
+  user(login: $login) {
+    name
+    login
+    createdAt
+    contributionsCollection {
+      totalCommitContributions
+      restrictedContributionsCount
+      contributionCalendar {
+        totalContributions
+        weeks {
+          contributionDays {
+            contributionCount
+            date
+          }
+        }
+      }
+    }
+    repositories(first: 100, ownerAffiliations: OWNER, orderBy: {field: STARGAZERS, direction: DESC}) {
+      totalCount
+      nodes {
+        stargazerCount
+        forkCount
+        languages(first: 10, orderBy: {field: SIZE, direction: DESC}) {
+          edges {
+            size
+            node {
+              name
+              color
+            }
+          }
+        }
+      }
+    }
+    pullRequests(first: 1) {
+      totalCount
+    }
+    issues(first: 1) {
+      totalCount
+    }
+    followers {
+      totalCount
+    }
+    repositoriesContributedTo(first: 1, contributionTypes: [COMMIT, ISSUE, PULL_REQUEST, REPOSITORY]) {
+      totalCount
+    }
+  }
+}

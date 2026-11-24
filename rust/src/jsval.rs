@@ -57,7 +57,7 @@ impl JsVal {
 /// chaîne) et `as_f64` rend alors `None` — V8, lui, rend ±Infinity. Re-parsé
 /// via la forme sérialisée (le littéral verbatim) : « 1e400 » → +inf,
 /// « -1e400 » → -inf, sous-normales et zéros signés inchangés.
-fn number_as_f64(n: &serde_json::Number) -> f64 {
+pub fn number_as_f64(n: &serde_json::Number) -> f64 {
     match n.as_f64() {
         Some(f) => f,
         None => serde_json::to_string(n)
