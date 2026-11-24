@@ -284,17 +284,14 @@ Request -> CDN (Cloudflare) -> VPS (Docker -> Rust API binary)
 
 ### Tech Stack
 
-|                 |                                                                                       |
-| --------------- | ------------------------------------------------------------------------------------- |
-| Runtime         | Rust (stable toolchain, static musl binary)                                           |
-| Framework       | [axum](https://docs.rs/axum) + [tokio](https://tokio.rs)                              |
-| Language        | TypeScript 5.8+ (strict)                                                              |
-| Build           | [Vite 8](https://vite.dev) (Rolldown-powered)                                         |
-| Linter          | [Oxlint](https://oxc.rs/docs/guide/usage/linter)                                      |
-| Formatter       | [Oxfmt](https://oxc.rs/docs/guide/usage/formatter)                                    |
-| Version manager | [Volta](https://volta.sh) (local dev)                                                 |
-| Package manager | pnpm                                                                                  |
-| Deployment      | Docker                                                                                |
+| | |
+| --- | --- |
+| API | Rust (stable toolchain, static musl binary) — [axum](https://docs.rs/axum) + [tokio](https://tokio.rs) |
+| Web | TypeScript 6.0+ (strict) — [Vite 8](https://vite.dev) (Rolldown-powered) — [Oxlint](https://oxc.rs/docs/guide/usage/linter) |
+| Formatter | [Oxfmt](https://oxc.rs/docs/guide/usage/formatter) |
+| Version manager | [Volta](https://volta.sh) (local dev) |
+| Package manager | pnpm |
+| Deployment | Docker |
 
 ---
 

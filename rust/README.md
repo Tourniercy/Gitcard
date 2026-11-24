@@ -28,10 +28,26 @@ The Rust port has served production traffic via Coolify since **2026-11-24
   `packages`, `node_modules`, `rust/target`, most of `tests/golden`) and
   re-includes exactly the 3 goldens embedded by `include_str!` (see below).
 - Coolify deployment uses `dockerfile_location=/rust/Dockerfile` (context =
-  repo root), `watch_paths` = `rust/**` + `tests/**`, container limit **128 Mio
-  without swap** (a full L1 cache measures ≈ 97 Mio RSS per the `p4b_l1_bound`
-  probe, plus margin), health check `GET /health`. Resting RSS ≈ 3–5 Mio;
-  final image ≈ 24.6 Mo.
+  repo root). The watched paths (`watch_paths`, one entry per line) are the
+  files that end up **in the image** — the port sources, the manifest and its
+  lockfile, the Dockerfile and its dedicated dockerignore, and the goldens
+  (including the 3 embedded by `include_str!`):
+
+  ```
+  rust/src/**
+  rust/Cargo.toml
+  rust/Cargo.lock
+  rust/Dockerfile
+  rust/Dockerfile.dockerignore
+  tests/golden/**
+  ```
+
+  A documentation change under `rust/` (this README) or to the Rust tests
+  (`rust/tests/**`) touches none of these watched paths, so it does not
+  redeploy.
+- Container limit **128 Mio without swap** (a full L1 cache measures ≈ 97 Mio
+  RSS per the `p4b_l1_bound` probe, plus margin), health check `GET /health`.
+  Resting RSS ≈ 3–5 Mio; final image ≈ 24.6 Mo.
 
 ## Developer commands — always in a container
 
@@ -254,7 +270,12 @@ excluded by `rust/Dockerfile.dockerignore` — the image build breaks otherwise.
   cache measures ≈ 97 Mio RSS (probe `p4b_l1_bound`), the limit leaves the
   margin; resting RSS ≈ 3–5 Mio.
 - Health check: `GET /health` (mirrored by the image `HEALTHCHECK`).
-- `watch_paths`: `rust/**` + `tests/**` — any change to the port or to the
-  goldens rebuilds the image.
+- `watch_paths` (one entry per line): `rust/src/**`, `rust/Cargo.toml`,
+  `rust/Cargo.lock`, `rust/Dockerfile`, `rust/Dockerfile.dockerignore`,
+  `tests/golden/**` — the files that end up **in the image**, so a change to
+  the port sources, the manifest/lockfile, the Dockerfile or the goldens
+  (including the 3 embedded by `include_str!`) rebuilds the image; a
+  documentation change under `rust/` (this README) and the Rust tests
+  (`rust/tests/**`) do not redeploy.
 - Same listen port, health path and environment variable names as the legacy
   service: the Coolify environment is unchanged.
