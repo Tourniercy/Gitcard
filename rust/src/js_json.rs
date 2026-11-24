@@ -99,7 +99,7 @@ impl JsJson {
 }
 
 /// `JSON.stringify(string)` : échappement minimal de V8.
-fn write_json_string(out: &mut String, s: &str) {
+pub(crate) fn write_json_string(out: &mut String, s: &str) {
     out.push('"');
     for c in s.chars() {
         match c {

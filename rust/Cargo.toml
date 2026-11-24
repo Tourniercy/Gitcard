@@ -20,6 +20,13 @@ axum = { version = "0.8", default-features = false, features = ["http1", "tokio"
 moka = { version = "0.12", default-features = false, features = ["future"] }
 url = "2"
 
+# P4b : L2 Redis — client async tokio (connexion multiplexée, RESP2). Les
+# commandes (GET / SET…PX / UNLINK / SCAN…MATCH…COUNT…TYPE) sont épinglées
+# byte-exact par l'oracle `tests/golden/redis/`. default-features = false :
+# pas de TLS (REDIS_URL interne au réseau de l'app, comme le legacy qui passe
+# l'URL brute à node-redis) ni cluster.
+redis = { version = "0.32", default-features = false, features = ["tokio-comp"] }
+
 [dev-dependencies]
 # serveur HTTP de test lié sur 127.0.0.1 (valable sous --network none).
 wiremock = "0.6"

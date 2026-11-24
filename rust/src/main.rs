@@ -1,7 +1,9 @@
-//! Binaire gitcard-api (phase 4) — équivalent du boot legacy :
+//! Binaire gitcard-api (phase 4b) — équivalent du boot legacy :
 //! `loadConfig()` (crash zod au boot, stderr identique, exit 1) → pool PAT →
-//! cache (L1 moka, L2 no-op ; Redis phase 4b) → `cache.flush()` fire-and-forget
-//! (index.ts:20-22) → serve HTTP 0.0.0.0:PORT (prod @hono/node-server).
+//! cache (L1 moka + L2 Redis si `REDIS_URL`, sinon no-op) → `cache.flush()`
+//! fire-and-forget (index.ts:20-22, spawn : ne bloque jamais le boot, erreur
+//! avalée — oracle redis-unavailable.json) → serve HTTP 0.0.0.0:PORT
+//! (prod @hono/node-server).
 //!
 //! Le bind écoute sur le port `Number(PORT)` (défaut 3000, validé 1..65535) ;
 //! PORT non entier : le legacy jette `ERR_SOCKET_BAD_PORT` AU LISTEN (pas à la
@@ -9,8 +11,8 @@
 //! (aucune valeur non entière observable en prod).
 
 use gitcard_p0::app::{build_router, prod_state};
-use gitcard_p0::cache::{AppCache, NoopL2};
-use gitcard_p0::config::{load_config, OsEnv};
+use gitcard_p0::cache::{AppCache, L2Cache, NoopL2, RedisL2};
+use gitcard_p0::config::{load_config, Config, OsEnv};
 use gitcard_p0::pat_pool::PatPool;
 use std::sync::Arc;
 use std::time::SystemTime;
@@ -47,15 +49,30 @@ async fn main() {
         }
     };
 
-    let state = prod_state(
-        AppCache::new(NoopL2),
-        pool,
-        config.cache_ttl,
-        config.cors_origin.clone(),
-    );
+    // `createCache(config.redisUrl)` : `REDIS_URL` posé → `secondary = new
+    // KeyvRedis(url)` (L1 mémoire DEVANT, oracle tests/golden/redis §store) ;
+    // absent → `Cacheable` seul (phase 4, comportement inchangé).
+    match &config.redis_url {
+        Some(url) => match RedisL2::new(url) {
+            Some(l2) => run(AppCache::new(l2), pool, config).await,
+            None => {
+                // URL invalide pour le client Redis (zod WHATWG OK mais
+                // schéma redis non supporté) : le legacy crasherait à la
+                // construction (`createClient` throw) — même issue de boot.
+                eprintln!("Error: Invalid Redis client options: {url}");
+                std::process::exit(1);
+            }
+        },
+        None => run(AppCache::new(NoopL2), pool, config).await,
+    }
+}
+
+async fn run<L2: L2Cache>(cache: AppCache<L2>, pool: PatPool, config: Config) {
+    let state = prod_state(cache, pool, config.cache_ttl, config.cors_origin.clone());
 
     // `cache.flush().catch(err => console.error('Failed to flush cache on startup:', err))`
-    // — fire-and-forget au legacy ; no-op observable en phase 4 (L2 absent).
+    // — fire-and-forget au legacy (l'erreur est loggée, le boot continue) ;
+    // spawn : SCAN/UNLINK Redis ne retardent jamais le listen.
     let flush_state = state.clone();
     tokio::spawn(async move { flush_state.cache.flush().await });
 
