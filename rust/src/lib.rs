@@ -6,11 +6,33 @@
 //! - [`intl`]  : formateurs entiers/dates par table extraite de Node (20 locales)
 //! - [`octicons`] : icônes embarquées `@primer/octicons@19.23.1`
 //! - `params_hash` / `md5_hex` : ETag et hash de cache du legacy (étude §1.7)
+//! - [`sanitize`] / [`themes`] / [`types`] / [`cards`] : port P2 du renderer SVG
+//!   (`packages/svg-renderer/src/`), parité à l'octet vs corpus golden (porte G2).
 
+pub mod cards;
 pub mod fdlibm;
 pub mod intl;
 pub mod jsnum;
 pub mod octicons;
+pub mod sanitize;
+pub mod themes;
+pub mod types;
+
+// Surface publique équivalente à `packages/svg-renderer/src/index.ts`.
+pub use cards::base::{
+    create_arc_path, create_card_wrapper, create_donut_segment, create_ring_chart, encode_html,
+    format_number, octicon_svg, set_card_id_counter,
+};
+pub use cards::langs::render_langs_card;
+pub use cards::profile::render_profile_card;
+pub use cards::stats::render_stats_card;
+pub use cards::streak::render_streak_card;
+pub use sanitize::encode_html as encode_html_reexport;
+pub use themes::{get_theme, THEME_GROUPS, THEME_NAMES};
+pub use types::{
+    country_to_flag, locale_codes, supported_locales, CardOptions, ContributionDay, GitHubStats,
+    LanguageData, ProfileData, StreakData, TopLangsData,
+};
 
 use md5::{Digest, Md5};
 
