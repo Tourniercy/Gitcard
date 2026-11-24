@@ -334,10 +334,27 @@ pub struct AppCache<L2: L2Cache> {
 impl<L2: L2Cache> AppCache<L2> {
     /// `createCache(redisUrl)` — capacité NON BORNÉE (parité KeyvCacheableMemory).
     pub fn new(l2: L2) -> Self {
-        let l1 = moka::future::Cache::builder()
-            .max_capacity(u64::MAX)
-            .expire_after(PerEntryTtl)
-            .build();
+        Self::with_l1_bound(l2, 0)
+    }
+
+    /// Borne protectrice du L1 par POIDS D'OCTETS (revue P4 I-1, divergence
+    /// assumée — voir `Config::l1_max_mib`) : `max_bytes > 0` → `moka`
+    /// weigher (poids = octets de la clé + de la valeur) + capacité
+    /// `max_bytes` → éviction LRU au lieu d'OOM ; `0` → non borné (parité
+    /// stricte avec le Map du legacy). Le TTL par entrée est conservé.
+    pub fn with_l1_bound(l2: L2, max_bytes: u64) -> Self {
+        let l1 = if max_bytes == 0 {
+            moka::future::Cache::builder()
+                .max_capacity(u64::MAX)
+                .expire_after(PerEntryTtl)
+                .build()
+        } else {
+            moka::future::Cache::builder()
+                .weigher(|key: &String, value: &CachedValue| (key.len() + value.data.len()) as u32)
+                .max_capacity(max_bytes)
+                .expire_after(PerEntryTtl)
+                .build()
+        };
         Self {
             l1,
             l2: Arc::new(l2),
@@ -410,5 +427,16 @@ impl<L2: L2Cache> AppCache<L2> {
             self.hits.load(Ordering::Relaxed),
             self.misses.load(Ordering::Relaxed),
         )
+    }
+
+    /// Force le traitement des tâches internes moka (évictons en attente) —
+    /// utilisé par les tests de borne et la mesure RSS (future moka → await).
+    pub async fn run_pending_tasks(&self) {
+        self.l1.run_pending_tasks().await;
+    }
+
+    /// Nombre d'entrées vivantes du L1 (après `run_pending_tasks`).
+    pub fn entry_count(&self) -> u64 {
+        self.l1.entry_count()
     }
 }

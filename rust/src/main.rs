@@ -51,10 +51,13 @@ async fn main() {
 
     // `createCache(config.redisUrl)` : `REDIS_URL` posé → `secondary = new
     // KeyvRedis(url)` (L1 mémoire DEVANT, oracle tests/golden/redis §store) ;
-    // absent → `Cacheable` seul (phase 4, comportement inchangé).
+    // absent → `Cacheable` seul (phase 4, comportement inchangé). L1 borné
+    // par L1_MAX_MIB (défaut 24 Mio, 0 = non borné) — divergence protectrice
+    // I-1, voir Config.
+    let l1_bytes = config.l1_max_mib.saturating_mul(1024 * 1024);
     match &config.redis_url {
         Some(url) => match RedisL2::new(url) {
-            Some(l2) => run(AppCache::new(l2), pool, config).await,
+            Some(l2) => run(AppCache::with_l1_bound(l2, l1_bytes), pool, config).await,
             None => {
                 // URL invalide pour le client Redis (zod WHATWG OK mais
                 // schéma redis non supporté) : le legacy crasherait à la
@@ -63,7 +66,7 @@ async fn main() {
                 std::process::exit(1);
             }
         },
-        None => run(AppCache::new(NoopL2), pool, config).await,
+        None => run(AppCache::with_l1_bound(NoopL2, l1_bytes), pool, config).await,
     }
 }
 

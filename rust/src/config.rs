@@ -47,6 +47,15 @@ pub struct Config {
     pub sentry_traces_sample_rate_telemetry: f64,
     /// Lecture hors zod de `telemetry.ts` (`process.env.X ?? 'production'`).
     pub sentry_environment_telemetry: String,
+    /// DIVERGENCE PROTECTRICE (revue P4 I-1, arbitrée par l'orchestrateur) :
+    /// borne de poids du L1 en Mio (`L1_MAX_MIB`, défaut 24, `0` = non borné
+    /// = parité stricte). Le legacy est NON BORNÉ (`KeyvCacheableMemory`,
+    /// `_lruSize=0`, Map nue) sous un conteneur de prod 64 Mio → OOM réaliste
+    /// en ~1-2 h de flood de usernames distincts (revue §9). Cette variable
+    /// n'existe PAS chez le legacy : elle ne modifie le comportement QUE sous
+    /// pression mémoire (évince en LRU par poids d'octets au lieu d'OOM).
+    /// Lue HORS zod (aucune validation legacy à reproduire), invalide → défaut.
+    pub l1_max_mib: u64,
 }
 
 /// Un issue zod (format inspect de la capture).
@@ -436,6 +445,12 @@ pub fn load_config(env: &dyn EnvSource) -> Result<Config, ConfigError> {
         .get("SENTRY_ENVIRONMENT")
         .unwrap_or_else(|| "production".to_string());
 
+    // Borne protectrice L1 (I-1) — hors zod, voir le doc de `Config`.
+    let l1_max_mib = env
+        .get("L1_MAX_MIB")
+        .and_then(|raw| raw.trim().parse::<u64>().ok())
+        .unwrap_or(24);
+
     Ok(Config {
         pats,
         port,
@@ -448,6 +463,7 @@ pub fn load_config(env: &dyn EnvSource) -> Result<Config, ConfigError> {
         sentry_environment,
         sentry_traces_sample_rate_telemetry,
         sentry_environment_telemetry,
+        l1_max_mib,
     })
 }
 
