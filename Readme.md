@@ -22,6 +22,38 @@
 
 ---
 
+## API
+
+The API serving the cards above is the **Rust port** of GitCard's API (binary
+`rilcy-gitcard-api`, crate `rust/`), **in production since 2026-11-24**. It is
+built by the multi-stage Dockerfile **`rust/Dockerfile`** (static
+`x86_64-unknown-linux-musl` binary, non-root `alpine:3.20` runtime, Coolify
+deployment, 128 Mio container without swap). Full developer documentation —
+endpoints, environment variables, rate limiter, cache, deployment — lives in
+**[rust/README.md](rust/README.md)**.
+
+Run the full test suite in one command (from the repo root; builds and tests
+always run inside this memory-capped container, never with a host toolchain):
+
+```bash
+docker run --rm --network none --memory=1200m --memory-swap=1200m --cpus=2 \
+  -v "$PWD":/w -v hermes-cargo-reg:/usr/local/cargo/registry -v hermes-cargo-rustup:/usr/local/rustup \
+  -e HOME=/tmp -e CARGO_BUILD_JOBS=2 -e CARGO_INCREMENTAL=0 -e CARGO_PROFILE_DEV_DEBUG=0 \
+  -e CARGO_PROFILE_TEST_DEBUG=0 -e CARGO_TERM_COLOR=never -w /w/rust rust:1-alpine \
+  cargo test -j 2
+```
+
+Expected: **106 passed, 0 failed, 2 ignored** (manual live probes, documented
+in rust/README.md), golden corpus 512/512 byte-exact.
+
+`apps/api` (Node.js + Hono + TypeScript) is the **legacy implementation**:
+no longer deployed, it is kept only as the **parity oracle** that regenerates
+the byte-exact expectations in `tests/golden/` (offline, via the
+`scripts/gen-*.mjs` runners). The bundled `docker-compose.yml` still builds
+this legacy image — production (Coolify) builds `rust/Dockerfile` instead.
+
+---
+
 ## Stats Card
 
 ![rilcydev's GitHub stats](https://api-gitcard.rilcy.app/stats/rilcydev)
@@ -172,22 +204,18 @@ GitCard is designed to be self-hosted. No shared public instance, no rate-limit 
 
 ### Quick Start
 
+The API image is built from `rust/Dockerfile` (build context = repo root):
+
 ```bash
 git clone https://github.com/rilcydev/Gitcard.git
 cd Gitcard
-cp apps/api/.env.example apps/api/.env
+docker build -f rust/Dockerfile -t gitcard-api .
 ```
 
-Edit `apps/api/.env` and add at least one PAT:
-
-```env
-PAT_1=ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-```
-
-Then start everything:
+Run it with at least one GitHub PAT:
 
 ```bash
-docker compose up -d
+docker run -d -p 3000:3000 -e PAT_1=ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx gitcard-api
 ```
 
 That's it. Open `http://localhost:3000/stats/rilcydev` and you should see an SVG card.
@@ -198,7 +226,7 @@ That's it. Open `http://localhost:3000/stats/rilcydev` and you should see an SVG
 | ------------------- | ---------------- | -------------------- | ------------------------------------------------------------- |
 | `PAT_1` ... `PAT_N` | Yes (at least 1) | -                    | GitHub Personal Access Tokens for API access                  |
 | `PORT`              | No               | `3000`               | Server port                                                   |
-| `REDIS_URL`         | No               | `redis://redis:6379` | Redis connection URL (docker compose sets this automatically) |
+| `REDIS_URL`         | No               | -                    | Redis connection URL, enables the L2 cache (unset = in-memory L1 only)        |
 | `CACHE_TTL`         | No               | `14400`              | Cache TTL in seconds (4 hours)                                |
 | `LOG_LEVEL`         | No               | `info`               | Log level (`debug`, `info`, `warn`, `error`)                  |
 | `CORS_ORIGIN`       | No               | `*`                  | Allowed CORS origin for the web frontend                      |
@@ -212,7 +240,7 @@ Each GitHub Personal Access Token provides 5,000 GraphQL points/hour. GitCard re
 Any $4-5/month VPS works (Hetzner, DigitalOcean, Vultr).
 
 ```
-User (GitHub README) -> Camo proxy -> Cloudflare CDN -> nginx -> Docker (Node.js + Hono)
+User (GitHub README) -> Camo proxy -> Cloudflare CDN -> nginx -> Docker (Rust API)
                                                                     |
                                                                   Redis
 ```
@@ -239,9 +267,9 @@ docker compose up -d --build
 ## Architecture
 
 ```
-Request -> CDN (Cloudflare) -> VPS (Docker -> Node.js + Hono)
-                                  |-- In-memory LRU cache (lru-cache)
-                                  |-- Redis cache (via docker compose)
+Request -> CDN (Cloudflare) -> VPS (Docker -> Rust API binary)
+                                  |-- In-memory L1 cache (moka, byte-weight bounded)
+                                  |-- Redis cache (L2, optional via REDIS_URL)
                                   '-- GitHub GraphQL API (PAT pool)
                                           |
                                     SVG string response
@@ -251,15 +279,15 @@ Request -> CDN (Cloudflare) -> VPS (Docker -> Node.js + Hono)
 ### Caching Layers
 
 1. **CDN edge** -- `Cache-Control: public, s-maxage=14400` (4 hours) serves most requests without hitting origin
-2. **In-memory LRU** -- 500 entries, 4-hour TTL, near-zero latency for cache hits
-3. **Redis** -- runs alongside the app via docker compose, survives container restarts
+2. **In-memory L1** -- per-entry TTL, byte-weight bounded (`L1_MAX_MIB`, default 24 MiB, LRU eviction), near-zero latency for cache hits
+3. **Redis (L2)** -- enabled by `REDIS_URL`, survives container restarts
 
 ### Tech Stack
 
 |                 |                                                                                       |
 | --------------- | ------------------------------------------------------------------------------------- |
-| Runtime         | Node.js 24 LTS (Krypton)                                                              |
-| Framework       | [Hono](https://hono.dev) + [@hono/node-server](https://github.com/honojs/node-server) |
+| Runtime         | Rust (stable toolchain, static musl binary)                                           |
+| Framework       | [axum](https://docs.rs/axum) + [tokio](https://tokio.rs)                              |
 | Language        | TypeScript 5.8+ (strict)                                                              |
 | Build           | [Vite 8](https://vite.dev) (Rolldown-powered)                                         |
 | Linter          | [Oxlint](https://oxc.rs/docs/guide/usage/linter)                                      |
