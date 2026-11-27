@@ -32,7 +32,7 @@ services:
       dockerfile: apps/web/Dockerfile
       args:
         VITE_API_URL: ${VITE_API_URL:-http://localhost:3000}
-        VITE_SENTRY_DSN: ${VITE_SENTRY_DSN:-}
+        VITE_SENTRY_DSN: ${VITE_SENTRY_DSN:-https://cf75c98a-b705-4611-abd8-7543a0cdbf54@errors.rilcy.app/16}
     ports:
       - '8080:80'
     restart: unless-stopped
